@@ -155,7 +155,6 @@ monthprice <- read.csv("nzu-month-price.csv", colClasses = c("Date","numeric"))
 weeklyprice <- read.csv("weeklymeanprice.csv", colClasses = c("Date","numeric","character")) 
 data <- read.csv("nzu-final-prices-data.csv", colClasses = c("Date","numeric","character","character","character")) 
 
-
 # This is the month data in a format closest to my preferred base R chart - it is in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 2 years
 svg(filename="NZU-monthprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 #png("NZU-monthprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
@@ -195,45 +194,10 @@ labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZ
 annotate("text", x= max(data[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
-
-
-# graph of spot prices in Base R
-svg(filename="NZU-spot-prices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-par(mar=c(2.7,2.7,1,1)+0.1)
-plot(data[["date"]],data[["price"]],tck=0.01,axes=TRUE,ann=TRUE, las=1,col="#F32424",lwd=2,type='l',lty=1) # color is Pomegranate not 'red'.
-grid(col="darkgray",lwd=1)
-axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
-mtext(side=1,cex=0.9,line=-1.3,"Data: 'NZU monthly prices' https://github.com/theecanmole/nzu")
-mtext(side=3,cex=1.2, line=-2.2,expression(paste("New Zealand Unit spot prices 2010 - 2023")) )
-mtext(side=2,cex=1, line=-1.3,"$NZ Dollars/tonne")
-mtext(side=4,cex=0.75, line=0.05,R.version.string)
-dev.off() 
-
 #F32424 name is pomegranate which is 'creamy tomato' actually
 #ED1A3B is crimson
 
-svg(filename="NZU-spot-price-720by540-ggplot-gray.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-560by420-ggplot.png", bg="white", width=560, height=420,pointsize = 16)
-ggplot(data, aes(x = date, y = price)) +  geom_line(colour = "#F32424") +
-theme(plot.title = element_text(size = 17, hjust = 0.5)) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot market prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: 'NZU prices' https://github.com/theecanmole/nzu") +
-annotate("text", x=max(data[["date"]]), y =1, size = 3, hjust = 1,angle =0, label=R.version.string)
-dev.off()
-
-# "#ED1A3B" is Crimson 
-
-svg(filename="NZU-week-price-720by540-ggplot.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-week-560by420-ggplot.png", bg="white", width=560, height=420)
-ggplot(weeklyprice, aes(x = date, y = price)) +  geom_line(colour = "#F32424") +
-theme(plot.title = element_text(size = 17, hjust = 0.5)) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit weekly mean spot market prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: 'NZU prices' https://github.com/theecanmole/nzu") +
-#annotate("text", x=data[["date"]][1], y =1, size = 3, hjust =0, angle =0, label=R.version.string) +
-annotate("text", x=weeklyprice[["date"]][608], y =2, size = 3, hjust = 1,angle =0, label=R.version.string)
-dev.off() 
-
-# chart in Base R, 720 by 540,  
+# monthly price chart in Base R, 720 by 540,  
 svg(filename="NZU-monthly-spot-prices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 par(mar=c(2.7,2.7,1,1)+0.1)
 plot(monthprice[["date"]],monthprice[["price"]],tck=0.01,axes=TRUE,ann=TRUE, las=1,col="#F32424",lwd=2,type='l',lty=1) # color is Pomegranate not 'red'.

@@ -14,7 +14,7 @@ The price data is then charted in Base R and in Ggplot2.
 
 ![](NZU-weeklyprice-720by540-ggplot-theme-bw.svg)
 
-![](NZU-spot-prices-720by540.svg)
+![](NZU-spotprice-720by540-ggplot-theme-bw.svg)
 
 ### License
 

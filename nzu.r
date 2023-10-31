@@ -171,7 +171,7 @@ dev.off()
 
 # weekly mean prices
 svg(filename="NZU-weeklyprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-png("NZU-weeklyprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+#png("NZU-weeklyprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(weeklyprice, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
 theme_bw(base_size = 12) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
@@ -195,19 +195,7 @@ labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZ
 annotate("text", x= max(data[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
-# spot prices in Ggplot2 gray default theme
 
-svg(filename="NZUprice-720by540-ggplot-theme-default.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-560by420-ggplot-theme-bw.png", bg="white", width=560, height=420)
-ggplot(data, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
-#theme_gray(base_size = 14) +
-theme(plot.title = element_text(size = 20, hjust = 0.5)) + # ,vjust= -8 
-theme(plot.caption = element_text( hjust = 0.5 )) +
-scale_y_continuous(breaks = c(10,20,30,40,50,60,70,80))  +
-scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
-labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: 'NZU monthly prices' https://github.com/theecanmole/nzu") +
-annotate("text", x= max(data[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
-dev.off()
 
 # graph of spot prices in Base R
 svg(filename="NZU-spot-prices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  

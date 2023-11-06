@@ -16,13 +16,15 @@ library("ggplot2")
 # check my current working folder
 getwd()
 [1] "/home/user/R/nzu/nzu-fork-master/apipy"
+#setwd("/home/user/R/nzu/nzu-fork-master/apipy")  # if needed
+
 # read in data  reading the .csv file specifying header status as false
 data <- read.csv("nzu-edited-raw-prices-data.csv",header=FALSE)
 dim(data)
-[1] 1696    5
+[1] 1702    5
 # there is an extra row of data which is the first row
 str(data) 
-'data.frame':	1696 obs. of  5 variables:
+'data.frame':	1702 obs. of  5 variables:
  $ V1: chr  "2010/05/14" "2010/05/21" "2010/05/29" "2010/06/11" ...
  $ V2: chr  "17.75" "17.5" "17.5" "17" ...
  $ V3: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -30,24 +32,19 @@ str(data)
  $ V5: chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" ...
 
 # look at that last row again
-data[1696,]
+data[1702,]
       V1    V2        V3    V4   V5
-1696 date price reference month week
+1702 date price reference month week
 
 # look at last 6 rows
 tail(data,2) 
-             V1    V2                                                   V3
-1695 2023/10/27 69.30 https://www.carbonnews.co.nz/story.asp?storyID=29097
-1696       date price                                            reference
-          V4       V5
-1695 2023-10 2023-W43
-1696   month     week 
+
 
 # try converting the last row to a character vector
-as.character(data[1696,])
+as.character(data[nrow(data),])
 [1] "date"      "price"     "reference" "month"     "week" 
 # add column names as character formated last row cells
-colnames(data) <- as.character(data[1696,])
+colnames(data) <- as.character(data[nrow(data),])
 colnames(data)
 [1] "date"      "price"     "reference" "month"     "week" 
 head(data,2) 
@@ -60,13 +57,13 @@ head(data,2)
 
 # look at last two rows
 # delete last row 1696 - the header names
-data <- data[-1696,]
+data <- data[-nrow(data),]
 tail(data,1)
 tail(data,1)
-           date price                                            reference
-1695 2023/10/27 69.30 https://www.carbonnews.co.nz/story.asp?storyID=29097
+          date price                                            reference
+1701 2023/11/06 70.00 https://www.carbonnews.co.nz/story.asp?storyID=29170
        month     week
-1695 2023-10 2023-W43
+1701 2023-11 2023-W45
 
 # change formats of date column and price column
 data$date <- as.Date(data$date)
@@ -78,11 +75,11 @@ data$month <- as.factor(format(data$date, "%Y-%m"))
 # ok make aweek vector from date format column and overwrite contents of week column  
 data$week <- as.aweek(data$date) 
 str(data) 
-'data.frame':	1695 obs. of  5 variables:
+'data.frame':	1701 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
- $ month    : Factor w/ 162 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
+ $ month    : Factor w/ 163 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
  $ week     : 'aweek' chr  "2010-W19-5" "2010-W20-5" "2010-W21-6" "2010-W23-5" ...
   ..- attr(*, "week_start")= int 1
  
@@ -97,10 +94,17 @@ colnames(monthprice) <- c("date","price")
 
 # check structure of dataframe
 str(monthprice) 
-'data.frame':	164 obs. of  2 variables:
+'data.frame':	163 obs. of  2 variables:
  $ date : Date, format: "2010-05-15" "2010-06-15" ...
  $ price: num  17.6 17.4 18.1 18.4 20.1 ...
-
+tail(monthprice) 
+          date price
+158 2023-06-15 51.79
+159 2023-07-15 47.58
+160 2023-08-15 62.43
+161 2023-09-15 68.91
+162 2023-10-15 67.84
+163 2023-11-15 70.00
 # write the mean monthly price dataframe to a .csv file 
 write.table(monthprice, file = "nzu-month-price.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
 
@@ -122,7 +126,7 @@ weeklyprice[["date"]] <- as.Date(weeklyprice[["week"]])
 weeklyprice <- weeklyprice[,c(3,2,1)]
 
 str(weeklyprice)
-'data.frame':	608 obs. of  3 variables:
+'data.frame':	610 obs. of  3 variables:
  $ date : Date, format: "2010-05-10" "2010-05-17" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ...
  $ week : 'aweek' chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" ...
@@ -133,7 +137,7 @@ write.table(weeklyprice, file = "weeklymeanprice.csv", sep = ",", col.names = TR
 
 # check the dataframe again
 str(data) 
-'data.frame':	1695 obs. of  5 variables:
+'data.frame':	1701 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -146,7 +150,7 @@ write.csv(data, file = "nzu-final-prices-data.csv", row.names = FALSE)
 
 # check the structure of the average monthly price data
 str(monthprice) 
-'data.frame':	164 obs. of  2 variables:
+'data.frame':	163 obs. of  2 variables:
  $ date : Date, format: "2010-05-01" "2010-06-01" ...
  $ price: num  17.6 17.4 18.1 18.4 20.1 ... 
 
@@ -168,7 +172,20 @@ labs(title="New Zealand Unit mean monthly prices 2010 - 2023", x ="Years", y ="P
 annotate("text", x= monthprice[["date"]][161], y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
-# weekly mean prices
+monthprice[100:161,]
+plot(monthprice[150:162,],col = "#ED1A3B",type="o")
+str(weeklyprice) 
+'data.frame':	608 obs. of  3 variables:
+ $ date : Date, format: "2010-05-10" "2010-05-17" ...
+ $ price: num  17.8 17.5 17.5 17 17.8 ...
+ $ week : chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" .. 
+
+plot(weeklyprice[["date"]][559:608],weeklyprice[["price"]][559:608],col = "#ED1A3B",type="o")
+wp2 <- weeklyprice[559:608,1:2]
+
+ggplot(wp2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B")
+
+ # weekly mean prices
 svg(filename="NZU-weeklyprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 #png("NZU-weeklyprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(weeklyprice, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
@@ -193,6 +210,44 @@ theme(plot.caption = element_text( hjust = 0.5 )) +
 labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: 'NZU spotly prices' https://github.com/theecanmole/nzu") +
 annotate("text", x= max(data[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
+
+data[1478,]
+           date price                                            reference
+1478 2022-11-09 
+data[1701,]
+          date price                                            reference
+1701 2023-11-06 
+help(scale_x_date)
+plot(data[1478:1701,1:2],type="l",col="#F32424",lwd=2)
+d1 <- data[1550:1701,1:2]
+d2 <- data[1478:1701,1:2]
+
+# 2023 spot prices theme black and white  - bw
+svg(filename="NZU-spotprice2023-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+png("NZU-spotprice2023-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(d1, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "month", date_labels = "%b") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit spot prices 2023", x ="2023", y ="Price $NZD", caption="Data: 'NZU spotly prices' https://github.com/theecanmole/nzu") +
+annotate("text", x= max(d1[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+dev.off()
+
+# 2023 spot prices theme black and white  - bw
+svg(filename="NZU-spotprice2023-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+png("NZU-spotprice22023-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(d2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "month", date_labels = "%b") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit spot prices 2022 - 2023", x ="Months", y ="Price $NZD", caption="Data: 'NZU spotly prices' https://github.com/theecanmole/nzu") +
+annotate("text", x= max(d1[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+dev.off()
+
 
 #F32424 name is pomegranate which is 'creamy tomato' actually
 #ED1A3B is crimson

@@ -16,6 +16,8 @@ The price data is then charted in  R and in Ggplot2.
 
 ![](NZU-spotprice-720by540-ggplot-theme-bw.svg)
 
+![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg)
+
 ### License
 
 #### ODC-PDDL-1.0

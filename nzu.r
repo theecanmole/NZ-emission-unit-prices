@@ -200,7 +200,7 @@ dev.off()
 
 # spot price theme black and white  - bw
 svg(filename="NZU-spotprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-spotprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+png("NZU-spotprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(data, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
 theme_bw(base_size = 14) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +

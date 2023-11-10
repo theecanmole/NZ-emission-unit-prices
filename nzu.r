@@ -21,24 +21,25 @@ getwd()
 # read in data  reading the .csv file specifying header status as false
 data <- read.csv("nzu-edited-raw-prices-data.csv",header=FALSE)
 dim(data)
-[1] 1702    5
-# there is an extra row of data which is the first row
+[1] 1706    5
 str(data) 
-'data.frame':	1702 obs. of  5 variables:
+'data.frame':	1706 obs. of  5 variables:
  $ V1: chr  "2010/05/14" "2010/05/21" "2010/05/29" "2010/06/11" ...
  $ V2: chr  "17.75" "17.5" "17.5" "17" ...
  $ V3: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
  $ V4: chr  "2010/05/01" "2010/05/01" "2010/05/01" "2010/06/01" ...
  $ V5: chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" ...
 
+# after the Python script is run, the last row is the what used to be the column headers 
+
 # look at that last row again
-data[1702,]
-      V1    V2        V3    V4   V5
-1702 date price reference month week
-
-# look at last 6 rows
 tail(data,2) 
-
+             V1    V2                                                   V3
+1705 2023/11/10 71.00 https://www.carbonnews.co.nz/story.asp?storyID=29223
+1706       date price                                            reference
+          V4       V5
+1705 2023-11 2023-W45
+1706   month     week 
 
 # try converting the last row to a character vector
 as.character(data[nrow(data),])
@@ -47,6 +48,7 @@ as.character(data[nrow(data),])
 colnames(data) <- as.character(data[nrow(data),])
 colnames(data)
 [1] "date"      "price"     "reference" "month"     "week" 
+
 head(data,2) 
        date price                                          reference
 1 2010/05/14 17.75 http://www.carbonnews.co.nz/story.asp?storyID=4529
@@ -59,11 +61,10 @@ head(data,2)
 # delete last row 1696 - the header names
 data <- data[-nrow(data),]
 tail(data,1)
-tail(data,1)
-          date price                                            reference
-1701 2023/11/06 70.00 https://www.carbonnews.co.nz/story.asp?storyID=29170
+           date price                                            reference
+1705 2023/11/10 71.00 https://www.carbonnews.co.nz/story.asp?storyID=29223
        month     week
-1701 2023-11 2023-W45
+1705 2023-11 2023-W45
 
 # change formats of date column and price column
 data$date <- as.Date(data$date)
@@ -75,7 +76,7 @@ data$month <- as.factor(format(data$date, "%Y-%m"))
 # ok make aweek vector from date format column and overwrite contents of week column  
 data$week <- as.aweek(data$date) 
 str(data) 
-'data.frame':	1701 obs. of  5 variables:
+'data.frame':	1705 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -97,14 +98,7 @@ str(monthprice)
 'data.frame':	163 obs. of  2 variables:
  $ date : Date, format: "2010-05-15" "2010-06-15" ...
  $ price: num  17.6 17.4 18.1 18.4 20.1 ...
-tail(monthprice) 
-          date price
-158 2023-06-15 51.79
-159 2023-07-15 47.58
-160 2023-08-15 62.43
-161 2023-09-15 68.91
-162 2023-10-15 67.84
-163 2023-11-15 70.00
+
 # write the mean monthly price dataframe to a .csv file 
 write.table(monthprice, file = "nzu-month-price.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
 
@@ -116,8 +110,6 @@ weeklyprice <- aggregate(price ~ week, data, mean)
 
 # round mean prices to whole cents
 weeklyprice[["price"]] = round(weeklyprice[["price"]], digits = 2)
-
-str(weeklyprice)
 
 # add date column from aweek week & change to date format 
 weeklyprice[["date"]] <- as.Date(weeklyprice[["week"]]) 
@@ -137,7 +129,7 @@ write.table(weeklyprice, file = "weeklymeanprice.csv", sep = ",", col.names = TR
 
 # check the dataframe again
 str(data) 
-'data.frame':	1701 obs. of  5 variables:
+'data.frame':	1705 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -168,7 +160,7 @@ scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
 theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
 theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit mean monthly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: 'NZU monthly prices' https://github.com/theecanmole/nzu") +
+labs(title="New Zealand Unit mean monthly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= monthprice[["date"]][161], y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
@@ -194,20 +186,20 @@ scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
 theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
 theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit mean weekly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: 'NZU monthly prices' https://github.com/theecanmole/nzu") +
+labs(title="New Zealand Unit mean weekly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(weeklyprice[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
 # spot price theme black and white  - bw
 svg(filename="NZU-spotprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-png("NZU-spotprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+#png("NZU-spotprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(data, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
 theme_bw(base_size = 14) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
 theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
 theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: 'NZU spotly prices' https://github.com/theecanmole/nzu") +
+labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(data[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
@@ -221,6 +213,24 @@ help(scale_x_date)
 plot(data[1478:1701,1:2],type="l",col="#F32424",lwd=2)
 d1 <- data[1550:1701,1:2]
 d2 <- data[1478:1701,1:2]
+# vertical lines at x axis or date ticks
+geom_vline(xintercept = as.numeric(16236)) 
+geom_vline(xintercept = as.numeric(monthprice[["month"]][50])) 
+
+https://www.youtube.com/watch?v=DLn-gs626Ts 
+
+https://www.youtube.com/watch?v=tRTo9p2nL88
+ggp ＜- ggplot(data, aes(x, y)) +    # Create plot without line
+  geom_point()
+ggp                                 # Draw plot without line
+
+h_line ＜- 8.7                       # Position of horizontal line
+
+ggp +                               # Add horizontal line & label
+  geom_hline(aes(yintercept = h_line)) +
+  geom_text(aes(0, h_line, label = h_line, vjust = - 1))
+
+
 
 # 2023 spot prices theme black and white  - bw
 svg(filename="NZU-spotprice2023-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
@@ -231,21 +241,21 @@ scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "month", date_labels = "%b") +
 theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
 theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices 2023", x ="2023", y ="Price $NZD", caption="Data: 'NZU spotly prices' https://github.com/theecanmole/nzu") +
+labs(title="New Zealand Unit spot prices 2023", x ="2023", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(d1[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
 # 2023 spot prices theme black and white  - bw
 svg(filename="NZU-spotprice2023-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-png("NZU-spotprice22023-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+#png("NZU-spotprice22023-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(d2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
 theme_bw(base_size = 14) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "month", date_labels = "%b") +
 theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
 theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices 2022 - 2023", x ="Months", y ="Price $NZD", caption="Data: 'NZU spotly prices' https://github.com/theecanmole/nzu") +
-annotate("text", x= max(d1[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+labs(title="New Zealand Unit spot prices 2022 - 2023", x ="Months", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= max(d2[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
 
@@ -263,3 +273,5 @@ mtext(side=3,cex=1.2, line=-2.2,expression(paste("New Zealand Unit mean monthly 
 mtext(side=2,cex=1, line=-1.3,"$NZ Dollars/tonne")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off()  
+
+ggplot(vw, aes(x = weeks, y = values)) +  geom_line(colour = "#ED1A3B")

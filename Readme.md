@@ -1,14 +1,15 @@
 ## New Zealand emission unit (NZU) prices
 
-This repository features New Zealand emission unit (NZU) prices web-scraped via Python (api.py file) and saved to a .csv file.
+This repository features New Zealand emission unit (NZU) prices web-scraped via a Python script [https://github.com/theecanmole/nz-emission-unit-prices/blob/main/api.py](api.py) and saved to a .csv file [https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-edited-raw-prices-data.csv](nzu-edited-raw-prices-data.csv).
 
-The prices are then processed in the R programming language (nzu.r file) into data sets of;
+The prices are then processed in the R programming language [nzu.r file](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu.r) into data sets of;
 
 * [average monthly prices](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-month-price.csv) 
-* [average weekly prices](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklymeanprice.csv) 
+* [average weekly prices (with missing values)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklymeanprice.csv) 
+* [average weekly prices (with missing values filled by linear interpolation)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklypricefilled.csv) 
 * [spot prices](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/nzu-final-prices-data.csv).
 
-The price data is then charted in  R and in Ggplot2.
+The price data is then charted in  R and in Ggplot2 and in R with an 'xts' object.
 
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
 
@@ -17,6 +18,10 @@ The price data is then charted in  R and in Ggplot2.
 ![](NZU-spotprice-720by540-ggplot-theme-bw.svg)
 
 ![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg)
+
+This is the plot of the weekly prices when expressed in 'xts' format
+
+![](NZU-weeklyXTStimeseriesprices-720by540.svg)
 
 ### License
 

@@ -2,6 +2,8 @@ nzu.r
 
 https://github.com/edi-rose/nzu-fork
 
+# remember to "find and replace" "-" with "/" (replace short dashs with backslashs in the csv file "nzu-edited-raw-prices-data.csv"
+
 # in an xterminal run "python3 api.py"
 
 # the csv file "nzu-edited-raw-prices-data.csv" is the output of 'api.py'
@@ -13,6 +15,10 @@ library("aweek")
 # load package Ggplot2 for graphs
 library("ggplot2")
 
+library("xts") 
+
+library("zoo")
+
 # check my current working folder
 getwd()
 [1] "/home/user/R/nzu/nzu-fork-master/apipy"
@@ -21,9 +27,9 @@ getwd()
 # read in data  reading the .csv file specifying header status as false
 data <- read.csv("nzu-edited-raw-prices-data.csv",header=FALSE)
 dim(data)
-[1] 1706    5
+[1] 1711    5
 str(data) 
-'data.frame':	1706 obs. of  5 variables:
+'data.frame':	1711 obs. of  5 variables:
  $ V1: chr  "2010/05/14" "2010/05/21" "2010/05/29" "2010/06/11" ...
  $ V2: chr  "17.75" "17.5" "17.5" "17" ...
  $ V3: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -34,12 +40,12 @@ str(data)
 
 # look at that last row again
 tail(data,2) 
-             V1    V2                                                   V3
-1705 2023/11/10 71.00 https://www.carbonnews.co.nz/story.asp?storyID=29223
-1706       date price                                            reference
+              V1    V2                                                   V3
+1710 2023/11/17 69.75 https://www.carbonnews.co.nz/story.asp?storyID=29287
+1711       date price                                            reference
           V4       V5
-1705 2023-11 2023-W45
-1706   month     week 
+1710 2023-11 2023-W46
+1711   month     week           
 
 # try converting the last row to a character vector
 as.character(data[nrow(data),])
@@ -57,8 +63,7 @@ head(data,2)
 1 2010/05/01 2010/W19
 2 2010/05/01 2010/W20
 
-# look at last two rows
-# delete last row 1696 - the header names
+# delete last row - the header names
 data <- data[-nrow(data),]
 tail(data,1)
            date price                                            reference
@@ -76,7 +81,7 @@ data$month <- as.factor(format(data$date, "%Y-%m"))
 # ok make aweek vector from date format column and overwrite contents of week column  
 data$week <- as.aweek(data$date) 
 str(data) 
-'data.frame':	1705 obs. of  5 variables:
+'data.frame':	1710 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -102,6 +107,7 @@ str(monthprice)
 # write the mean monthly price dataframe to a .csv file 
 write.table(monthprice, file = "nzu-month-price.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
 
+## weekly time series
 # remove week day part from aweek week and stay in aweek format
 data$week <- trunc(data$week) 
   
@@ -118,7 +124,7 @@ weeklyprice[["date"]] <- as.Date(weeklyprice[["week"]])
 weeklyprice <- weeklyprice[,c(3,2,1)]
 
 str(weeklyprice)
-'data.frame':	610 obs. of  3 variables:
+'data.frame':	611 obs. of  3 variables:
  $ date : Date, format: "2010-05-10" "2010-05-17" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ...
  $ week : 'aweek' chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" ...
@@ -127,15 +133,121 @@ str(weeklyprice)
 # write the mean price per week dataframe to a .csv file 
 write.table(weeklyprice, file = "weeklymeanprice.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)
 
+# Fill in the missing values in the weekly prices data series - as there are no prices for at least 95 weeks
+
+# How many weeks should be included if there were prices for all weeks?
+weeklypriceallDates <- seq.Date( min(weeklyprice$date), max(weeklyprice$date), "week")
+length(weeklypriceallDates) 
+[1] 706 
+# How many weeks were there in weekly prices dataframe?
+nrow(weeklyprice)
+[1] 611
+# SO 706 - 611 = 95 missing prices 
+
+# create dataframe of all the weeks with missing weeks of prices as NA
+weeklypricemissingprices <- merge(x= data.frame(date = weeklypriceallDates),  y = weeklyprice,  all.x=TRUE)
+
+str(weeklypricemissingprices)
+'data.frame':	706 obs. of  3 variables:
+ $ date : Date, format: "2010-05-10" "2010-05-17" ...
+ $ price: num  17.8 17.5 17.5 NA 17 ...
+ $ week : 'aweek' chr  "2010-W19" "2010-W20" "2010-W21" NA ...
+  ..- attr(*, "week_start")= int 1 
+  
+head(weeklypricemissingprices)
+        date price     week
+1 2010-05-10 17.75 2010-W19
+2 2010-05-17 17.50 2010-W20
+3 2010-05-24 17.50 2010-W21
+4 2010-05-31    NA     <NA>
+5 2010-06-07 17.00 2010-W23
+6 2010-06-14    NA     <NA> 
+
+# Convert the data frame price and date columns to a zoo time series object
+weeklypricemissingpriceszoo <- zoo(weeklypricemissingprices[["price"]], weeklypricemissingprices[["date"]])
+
+head(weeklypricemissingpriceszoo)
+2010-05-10 2010-05-17 2010-05-24 2010-05-31 2010-06-07 2010-06-14 
+     17.75      17.50      17.50         NA      17.00         NA 
+     
+na.approx(weeklypricemissingpriceszoo)
+2010-05-10 2010-05-17 2010-05-24 2010-05-31 2010-06-07 2010-06-14 2010-06-21 
+   17.7500    17.5000    17.5000    17.2500    17.0000    17.3750    17.7500 
+2010-06-28 2010-07-05 2010-07-12 2010-07-19 2010-07-26 2010-08-02 2010-08-09 
+   17.5000    18.0000    18.3000    18.3125    18.3250    18.3375    18.3500 
+2010-08-16 
+   18.3500 
+# fill in the missing prices with linear interpolation via zoo package   
+weeklypricefilled <- na.approx(weeklypricemissingpriceszoo)
+head(weeklypricefilled)
+2010-05-10 2010-05-17 2010-05-24 2010-05-31 2010-06-07 2010-06-14 
+    17.750     17.500     17.500     17.250     17.000     17.375
+str(weeklypricefilled)
+‘zoo’ series from 2010-05-10 to 2023-11-13
+  Data: num [1:706] 17.8 17.5 17.5 17.2 17 ...
+  Index:  Date[1:706], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ... 
+
+# Convert xts to data.frame
+weeklypricefilleddataframe <- as.data.frame(weeklypricefilled)   
+ 
+str(weeklypricefilleddataframe) 
+'data.frame':	706 obs. of  1 variable:
+ $ weeklypricefilled: num  17.8 17.5 17.5 17.2 17 ... 
+ 
+head(weeklypricefilleddataframe) 
+           weeklypricefilled
+2010-05-10            17.750
+2010-05-17            17.500
+2010-05-24            17.500
+2010-05-31            17.250
+2010-06-07            17.000
+2010-06-14            17.375
+
+# Convert row names to a column called date
+weeklypricefilleddataframe$date <- rownames(weeklypricefilleddataframe)    
+head(weeklypricefilleddataframe)
+           weeklypricefilled       date
+2010-05-10            17.750 2010-05-10
+2010-05-17            17.500 2010-05-17 
+
+# Reset row names
+rownames(weeklypricefilleddataframe) <- NULL           
+ head(weeklypricefilleddataframe)
+  weeklypricefilled       date
+1            17.750 2010-05-10
+2            17.500 2010-05-17 
+'data.frame':	706 obs. of  2 variables:
+ $ weeklypricefilled: num  17.8 17.5 17.5 17.2 17 ...
+ $ date             : chr  "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" ... 
+
+ # set weekly date to dates format 
+weeklypricefilleddataframe$date <- as.Date(weeklypricefilleddataframe$date)
+
+str(weeklypricefilleddataframe)
+'data.frame':	706 obs. of  2 variables:
+ $ weeklypricefilled: num  17.8 17.5 17.5 17.2 17 ...
+ $ date             : Date, format: "2010-05-10" "2010-05-17" ... 
+
+# make the date column the left column and the price the right or second column 
+weeklypricefilleddataframe <- weeklypricefilleddataframe[,c(2,1)]  
+
+str(weeklypricefilleddataframe)
+'data.frame':	706 obs. of  2 variables:
+ $ date             : Date, format: "2010-05-10" "2010-05-17" ...
+ $ weeklypricefilled: num  17.8 17.5 17.5 17.2 17 ... 
+
+# write the infilled mean price per week dataframe to a .csv file 
+write.table(weeklypricefilleddataframe, file = "weeklypricefilled.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)
+
 # check the dataframe again
 str(data) 
-'data.frame':	1705 obs. of  5 variables:
+'data.frame':	1710 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
- $ month    : Factor w/ 162 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
+ $ month    : Factor w/ 163 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
  $ week     : 'aweek' chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" ...
-  ..- attr(*, "week_start")= int 1 
+  ..- attr(*, "week_start")= int 1
 
 # Create a .csv formatted data file
 write.csv(data, file = "nzu-final-prices-data.csv", row.names = FALSE)
@@ -164,6 +276,18 @@ labs(title="New Zealand Unit mean monthly prices 2010 - 2023", x ="Years", y ="P
 annotate("text", x= monthprice[["date"]][161], y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
+svg(filename="NZU-monthpriceYr-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("NZU-monthpriceYr-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(monthprice, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "year", date_labels = "%Y") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit mean monthly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= monthprice[["date"]][161], y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+dev.off()
+
 monthprice[100:161,]
 plot(monthprice[150:162,],col = "#ED1A3B",type="o")
 str(weeklyprice) 
@@ -177,9 +301,9 @@ wp2 <- weeklyprice[559:608,1:2]
 
 ggplot(wp2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B")
 
- # weekly mean prices
-svg(filename="NZU-weeklyprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-weeklyprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ # weekly mean prices x axis years annual
+svg(filename="NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("NZU-weeklypriceYr-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(weeklyprice, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
 theme_bw(base_size = 12) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
@@ -211,11 +335,28 @@ data[1701,]
 1701 2023-11-06 
 help(scale_x_date)
 plot(data[1478:1701,1:2],type="l",col="#F32424",lwd=2)
+
+
 d1 <- data[1550:1701,1:2]
 d2 <- data[1478:1701,1:2]
+head(d2,1)
+           date price
+1478 2022-11-09  87.1
 # vertical lines at x axis or date ticks
-geom_vline(xintercept = as.numeric(16236)) 
+geom_vline(xintercept = as.numeric(19563)) 
 geom_vline(xintercept = as.numeric(monthprice[["month"]][50])) 
+head(d1,1)
+          date price
+1550 2023-03-21 65.75
+
+d1[["date"]][50] 
+[1] "2023-06-09"
+
+d1[["date"]][79] 
+[1] "2023-07-25" 
+
+as.numeric(d1[["date"]][79]) 
+[1] 19563 
 
 https://www.youtube.com/watch?v=DLn-gs626Ts 
 
@@ -241,8 +382,27 @@ scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "month", date_labels = "%b") +
 theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
 theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices 2023", x ="2023", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(d1[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+labs(title="New Zealand Unit spot prices 2023", x ="Months 2023", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= max(d1[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) +
+annotate("text", x= d1[["date"]][74], y = 2, size = 3, angle = 90, hjust = 0, label="the ETS Prices & Settings announcement") +
+geom_vline(xintercept = as.numeric(19563))  
+
++     # add vertical line at 25 July 2023 the ETS Prices & Settings announcement
+
+https://www.carbonnews.co.nz/story.asp?storyID=26749
+Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations
+Friday 16 Dec 22 10:00am    By Jeremy Rose
+Cabinet has ignored a Climate Change Commission recommendation to significantly increase the trigger price of the cost containment reserve and failed to reduce the number of credits available at auction by as much as the commission proposed. 
+The decision, announced just after 5pm yesterday, has seen the price of carbon plummet on the secondary market from $86.00 at the close of trade yesterday to $75.00 as Carbon News goes to press.
+
+https://www.carbonnews.co.nz/story.asp?storyID=28019
+Carbon price plummets: what does ETS review mean for future prices? Thursday 22 Jun 23 10:30am
+The carbon price on the secondary market has slumped to its lowest point since 2021 in the wake of the government’s ETS announcement, after rallying briefly following last week’s failed Emissions Trading Scheme auction.
+# another vertical line at 22/06/2023
+https://consult.environment.govt.nz/climate/nzets-review/ Opened 19 Jun 2023  
+https://environment.govt.nz/news/nz-ets-review-consultation-now-closed/ New Zealanders were invited to have their say on a review of the design of the New Zealand Emissions Trading Scheme (NZ ETS) and its permanent forestry category. Last updated: 19 June 2023 
+# reduce gross emissions or rely on forestry removals in ETS
+
 dev.off()
 
 # 2023 spot prices theme black and white  - bw
@@ -255,9 +415,32 @@ scale_x_date(date_breaks = "month", date_labels = "%b") +
 theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
 theme(plot.caption = element_text( hjust = 0.5 )) +
 labs(title="New Zealand Unit spot prices 2022 - 2023", x ="Months", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(d2[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+annotate("text", x= max(d2[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) +
+annotate("text", x= d2[["date"]][151]-10, y = 2, size = 3, angle = 90, hjust = 0, label="2024 ETS Prices & Settings announcement") +
+geom_vline(xintercept = as.numeric(19563))    +
+annotate("text", x= d2[["date"]][130]-10, y = 2, size = 3, angle = 90, hjust = 0, label="ETS gross emissions vs forestry removals consultation") +
+geom_vline(xintercept = as.numeric(19530)) +
+annotate("text", x= d2[["date"]][28]-10, y = 2, size = 3, angle = 90, hjust = 0, label="Cabinet rejects Commission ETS 2023 price recommendations") +
+geom_vline(xintercept = as.numeric(19342))    
 dev.off()
 
+# first vertical line should be at 16/12/2022 (x intercept)
+d2[["date"]][28] 
+[1] "2022-12-16"
+as.numeric(d2[["date"]][28]) 
+[1] 19342
+
+# add 2nd vertical line at 22 June 2023 the ETS
+d2[["date"]][130] 
+[1] "2023-06-22" 
+as.numeric(d2[["date"]][130]) 
+[1] 19530
+
+# add vertical line at 25 July 2023 the ETS Prices & Settings announcement
+ d2[["date"]][151] 
+[1] "2023-07-25" 
+as.numeric(d2[["date"]][151]) 
+[1] 19563 
 
 #F32424 name is pomegranate which is 'creamy tomato' actually
 #ED1A3B is crimson
@@ -275,3 +458,30 @@ mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off()  
 
 ggplot(vw, aes(x = weeks, y = values)) +  geom_line(colour = "#ED1A3B")
+
+--------------------------------------------------------------------------
+xts 
+str(weeklyprice)
+'data.frame':	611 obs. of  3 variables:
+ $ date : Date, format: "2010-05-10" "2010-05-17" ...
+ $ price: num  17.8 17.5 17.5 17 17.8 ...
+ $ week : 'aweek' chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" ...
+  ..- attr(*, "week_start")= int 1 
+  
+# create an xts timeseries from the weekly mean prices dataframe
+weeklyprice_ts <- xts(weeklyprice$price, weeklyprice$date)
+# look at first 6 rows of time series
+head(weeklyprice_ts)
+            [,1]
+2010-05-10 17.75
+2010-05-17 17.50
+2010-05-24 17.50
+2010-06-07 17.00
+2010-06-21 17.75
+2010-06-28 17.50 
+# create a XTS plot from the weekly 'xts' object
+
+svg(filename="NZU-weeklyXTStimeseriesprices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+plot(weeklyprice_ts,type='l',las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit mean weekly spot prices")
+dev.off()
+

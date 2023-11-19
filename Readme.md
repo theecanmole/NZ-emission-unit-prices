@@ -1,6 +1,6 @@
 ## New Zealand emission unit (NZU) prices
 
-This repository features New Zealand emission unit (NZU) prices web-scraped via a Python script [https://github.com/theecanmole/nz-emission-unit-prices/blob/main/api.py](api.py) and saved to a .csv file [https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-edited-raw-prices-data.csv](nzu-edited-raw-prices-data.csv).
+This repository features New Zealand emission unit (NZU) prices web-scraped via a Python script [api.py](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/api.py) and saved to a .csv file [nzu-edited-raw-prices-data.csv](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-edited-raw-prices-data.csv).
 
 The prices are then processed in the R programming language [nzu.r file](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu.r) into data sets of;
 
@@ -9,7 +9,7 @@ The prices are then processed in the R programming language [nzu.r file](https:/
 * [average weekly prices (with missing values filled by linear interpolation)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklypricefilled.csv) 
 * [spot prices](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/nzu-final-prices-data.csv).
 
-The price data is then charted in  R and in Ggplot2 and in R with an 'xts' object.
+The price data is then charted in R Ggplot2 and in R with an 'xts' object.
 
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
 

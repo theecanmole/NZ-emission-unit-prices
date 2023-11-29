@@ -11,17 +11,20 @@ The prices are then processed in the R programming language [nzu.r file](https:/
 
 The price data is then charted in R Ggplot2 and in R with an 'xts' object.
 
+This graph is the mean price for each calendar month.
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
 
+This graph is the mean price for each week. It includes missing values infilled via linear interpolation
 ![](NZU-weeklyprice-720by540-ggplot-theme-bw.svg)
 
+This graph is the spot prices of trading on week days. It is an irregular time series.
 ![](NZU-spotprice-720by540-ggplot-theme-bw.svg)
 
+This graph is the spot prices from November 2022 to November 2023.
 ![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg)
 
-This is the plot of the weekly prices when expressed in 'xts' format
-
-![](NZU-weeklyXTStimeseriesprices-720by540.svg)
+This is the plot of the spot prices when expressed in the 'xts' format
+![](NZU-spotXTStimeseriesprices-720by540.svg)
 
 ### License
 

@@ -513,9 +513,9 @@ head(weeklyprice_ts)
 # create an xts format (irregular) timeseries from the spot prices dataframe
 spotpricexts <- xts(spotprices$price, spotprices$date)
 str(spotpricexts) 
-An xts object on 2010-05-14 / 2023-11-29 containing: 
-  Data:    double [1718, 1]
-  Index:   Date [1718] (TZ: "UTC") 
+An xts object on 2010-05-14 / 2023-12-01 containing: 
+  Data:    double [1720, 1]
+  Index:   Date [1720] (TZ: "UTC")
 
 # create a XTS plot from the spot price 'xts' object
 

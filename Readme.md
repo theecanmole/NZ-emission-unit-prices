@@ -17,7 +17,7 @@ This graph is the mean price for each calendar month.
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
 
 This graph is the mean price for each week. It includes missing values infilled via linear interpolation
-![](NZU-weeklyprice-720by540-ggplot-theme-bw.svg)
+![](NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg)
 
 This graph is the spot prices of trading on week days. It is an irregular time series.
 ![](NZU-spotprice-720by540-ggplot-theme-bw.svg)

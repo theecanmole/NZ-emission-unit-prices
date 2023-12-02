@@ -21,9 +21,9 @@ getwd()
 # read in data  reading the .csv file specifying header status as false
 data <- read.csv("nzu-edited-raw-prices-data.csv",header=FALSE)
 dim(data)
-[1] 1719    5
+[1] 1721    5
 str(data) 
-'data.frame':	1719 obs. of  5 variables:
+'data.frame':	1721 obs. of  5 variables:
  $ V1: chr  "2010/05/14" "2010/05/21" "2010/05/29" "2010/06/11" ...
  $ V2: chr  "17.75" "17.5" "17.5" "17" ...
  $ V3: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -35,7 +35,7 @@ str(data)
 # look at that last row again
 tail(data,1) 
        V1    V2        V3    V4   V5
-1719 date price reference month week
+1721 date price reference month week
 
 # try converting the last row to a character vector
 as.character(data[nrow(data),])
@@ -57,9 +57,9 @@ head(data,2)
 data <- data[-nrow(data),]
 tail(data,1)
            date price                                            reference
-1718 2023/11/29 73.15 https://www.carbonnews.co.nz/story.asp?storyID=29381
+1720 2023/12/01 74.85 https://www.carbonnews.co.nz/story.asp?storyID=29411
        month     week
-1718 2023-11 2023-W48
+1720 2023-12 2023-W48
 
 # change formats of date column and price column
 data$date <- as.Date(data$date)
@@ -70,7 +70,7 @@ data$month <- as.factor(format(data$date, "%Y-%m"))
 # create dataframe of only the spot prices
 spotprices <- data[,1:2]
 str(spotprices) 
-'data.frame':	1718 obs. of  2 variables:
+'data.frame':	1720 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-21" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ... 
 # write the spot prices dataframe to a .csv file 
@@ -82,11 +82,11 @@ library("aweek")
 # make aweek vector (with Monday being day 1 - the default) from date format column and overwrite contents of week column   
 data$week <- as.aweek(data$date) 
 str(data) 
-'data.frame':	1718 obs. of  5 variables:
+'data.frame':	1720 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
- $ month    : Factor w/ 163 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
+ $ month    : Factor w/ 164 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
  $ week     : 'aweek' chr  "2010-W19-5" "2010-W20-5" "2010-W21-6" "2010-W23-5" ...
   ..- attr(*, "week_start")= int 1
  
@@ -100,7 +100,7 @@ monthprice[["month"]] = seq(as.Date('2010-05-15'), by = 'months', length = nrow(
 colnames(monthprice) <- c("date","price")
 # check structure of dataframe
 str(monthprice) 
-'data.frame':	163 obs. of  2 variables:
+'data.frame':	164 obs. of  2 variables:
  $ date : Date, format: "2010-05-15" "2010-06-15" ...
  $ price: num  17.6 17.4 18.1 18.4 20.1 ...
 # write the mean monthly price dataframe to a .csv file 
@@ -132,7 +132,7 @@ str(weeklyprice)
 # write the mean price per week dataframe to a .csv file 
 write.table(weeklyprice, file = "weeklymeanprice.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)
 
-## Missing values and interpolation in week series
+## Missing values and interpolation in the week series
 # Fill in the missing values in the weekly prices data series - as there are no prices for at least 95 weeks
 # load package xts (Ryan JA, Ulrich JM (2023). _xts: eXtensible Time Series_. R package version 0.13.1)
 library("xts") 
@@ -148,7 +148,7 @@ nrow(weeklyprice)
 [1] 613
 # So 708 - 613 = 95 missing weeks out of 708 weeks since May 2010 
 
-# create dataframe of all the weeks with missing weeks of prices as NA
+# create dataframe of all the weeks with missing weeks of prices added as NA
 weeklypricemissingprices <- merge(x= data.frame(date = weeklypriceallDates),  y = weeklyprice,  all.x=TRUE)
 # check dataframes
 str(weeklypricemissingprices)
@@ -157,7 +157,8 @@ str(weeklypricemissingprices)
  $ price: num  17.8 17.5 17.5 NA 17 ...
  $ week : 'aweek' chr  "2010-W19" "2010-W20" "2010-W21" NA ...
   ..- attr(*, "week_start")= int 1 
-  
+class(weeklypricemissingprices)  
+
 head(weeklypricemissingprices,9)
        date price     week
 1 2010-05-10 17.75 2010-W19
@@ -187,12 +188,12 @@ head(weeklypricemissingpriceszoo,9)
 # calculate the missing values with zoo na.approx which uses linear interpolation to fill in the NA values     
 na.approx(weeklypricemissingpriceszoo)
 2010-05-10 2010-05-17 2010-05-24 2010-05-31 2010-06-07 2010-06-14 2010-06-21 
-   17.7500    17.5000    17.5000    17.2500    17.0000    17.3750    17.7500 
+   17.7500    17.500m0    17.5000    17.2500    17.0000    17.3750    17.7500 
 2010-06-28 2010-07-05 2010-07-12 2010-07-19 2010-07-26 2010-08-02 2010-08-09 
    17.5000    18.0000    18.3000    18.3125    18.3250    18.3375    18.3500 
 2010-08-16 
    18.3500 
-# fill in the missing prices with linear interpolation via zoo package and save output  
+# create a dataframe with filled in the missing prices with linear interpolation via zoo package and save output  
 weeklypricefilled <- na.approx(weeklypricemissingpriceszoo)
 # check first 6 values
 head(weeklypricefilled)
@@ -220,6 +221,7 @@ head(weeklypricefilleddataframe)
 2010-06-14            17.375
 
 weeklypricefilleddataframe[["weeklypricefilled"]] 
+
 # Convert row names to a column called date
 weeklypricefilleddataframe$date <- rownames(weeklypricefilleddataframe)    
 # check first 6 values
@@ -269,7 +271,7 @@ str(weekts)
 Time-Series [1:708] from 2010 to 2024: 17.8 17.5 17.5 17.2 17 ... 
  # check the dataframe again
 str(data) 
-'data.frame':	1718 obs. of  5 variables:
+'data.frame':	1720 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -293,7 +295,7 @@ data <- read.csv("nzu-final-prices-data.csv", colClasses = c("Date","numeric","c
 ## Graphs
 # what is the most recent month? (maximum extent of date or x axis)
 max(monthprice[["date"]]) 
-[1] "2023-11-15" 
+[1] "2023-12-15" 
 
 # This is the month data in a format closest to my preferred base R chart - it is in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 1 year
 svg(filename="NZU-monthprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
@@ -508,7 +510,7 @@ head(weeklyprice_ts)
 2010-06-21 17.75
 2010-06-28 17.50 
 
-# create an xts timeseries from the weekly mean prices dataframe
+# create an xts format (irregular) timeseries from the spot prices dataframe
 spotpricexts <- xts(spotprices$price, spotprices$date)
 str(spotpricexts) 
 An xts object on 2010-05-14 / 2023-11-29 containing: 
@@ -527,8 +529,33 @@ svg(filename="NZU-weeklyXTStimeseriesprices-720by540.svg", width = 8, height = 6
 plot(weeklyprice_ts,type='l',las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit mean weekly spot prices")
 dev.off()
 
-plot(spotpricexts[c('2023-10','2023-11')])
+svg(filename="NZU-spotprices2023-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
+plot(spotpricexts['2023'],ylim=c(0,75),lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit 2023 spot prices")
+dev.off()
 
+spotpricextsJulynov <- spotpricexts[c('2023-07','2023-08','2023-09','2023-10','2023-11')]
+dim(spotpricexts)
+[1] 1718    1 
+ plot(spotpricexts[1600:1718])
+str(spotpricextsJulynov)
+An xts object on 2023-07-03 / 2023-11-29 containing: 
+  Data:    double [105, 1]
+  Index:   Date [105] (TZ: "UTC") 
+max(spotpricextsJulynov)
+
+plot(spotpricextsJulynov,ylim=c(0,75), col="#F32424",lwd=1)
+spotpricexts[1595:1596]
+            [,1]
+2023-06-01 54.75
+2023-06-02 55.00
+
+# the general function, internally calls sapply 
+meanspotxts <- period.apply(spotpricexts,INDEX=endpoints(spotpricexts),FUN=mean)
+str(meanspotxts) 
+An xts object on 2010-05-29 / 2023-11-29 containing: 
+  Data:    double [163, 1]
+  Index:   Date [163] (TZ: "UTC") 
+  
 # weekly infilled by interpolation time series price chart in Base R, 720 by 540,  
 svg(filename="NZU-week-time-series-prices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 par(mar=c(2.7,2.7,1,1)+0.1)

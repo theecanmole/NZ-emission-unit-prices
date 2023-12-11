@@ -9,18 +9,22 @@ The prices are then processed in the [R programming language](https://www.r-proj
 * [average monthly prices](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-month-price.csv) 
 * [average weekly prices (with missing values)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklymeanprice.csv) 
 * [average weekly prices (with the missing values filled by linear interpolation)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklypricefilled.csv) 
-* [spot prices](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/nzu-final-prices-data.csv).
+* [spot prices (with missing values)](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/spotprices.csv).
+* [spot prices (with the missing values filled by linear interpolation)](spotpricesinfilled.csv)
 
 The price data is then charted in R Ggplot2 and in R with an 'xts' object.
 
 This graph is the mean price for each calendar month.
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
 
-This graph is the mean price for each week. It includes missing values infilled via linear interpolation
+This graph is the mean price for each week. The missing values are infilled via linear interpolation
 ![](NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg)
 
-This graph is the spot prices of trading on week days. It is an irregular time series.
+This graph is the spot prices of trading on week days. It is an irregular time series. When trading of units started in 2010, the volume of trades was sufficiently low that several days or weeks could pass by without any trading. 
 ![](NZU-spotprice-720by540-ggplot-theme-bw.svg)
+
+This graph is the spot prices of trading on week days. The missing values are filled via linear interpolation. It is almost a regular time series.
+![](NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg)
 
 This graph is the spot prices from November 2022 to December 2023. I have marked with blue dashed horizontal lines three dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
 ![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg)

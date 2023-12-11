@@ -1,6 +1,6 @@
 ## New Zealand emission unit (NZU) prices
 
-This repository features prices of the [New Zealand emission unit](https://www.al.nz/new-zealand-units-the-basics/) or NZU. The NZU is the "the primary domestic unit of trade" in the [New Zealand Emissions Trading Scheme](https://www.climatecommission.govt.nz/get-involved/new-content-page/what-is-the-nz-ets/). 
+This repository features prices of the [New Zealand emission unit](https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/where-to-buy-new-zealand-emissions-units) or NZU. The NZU is the "the primary domestic unit of trade" in the [New Zealand Emissions Trading Scheme](https://www.climatecommission.govt.nz/get-involved/new-content-page/what-is-the-nz-ets/). 
 
 The prices are web-scraped via a Python script [api.py](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/api.py) and saved to a .csv file [nzu-edited-raw-prices-data.csv](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-edited-raw-prices-data.csv).
 

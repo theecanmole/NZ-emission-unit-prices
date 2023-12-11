@@ -296,379 +296,6 @@ weeklyprice <- read.csv("weeklymeanprice.csv", colClasses = c("Date","numeric","
 data <- read.csv("nzu-final-prices-data.csv", colClasses = c("Date","numeric","character","character","character")) 
 # spotprices <- read.csv("spotprices.csv", colClasses = c("Date","numeric"))
 
-## Graphs
-# what is the most recent month? (maximum extent of date or x axis)
-max(monthprice[["date"]]) 
-[1] "2023-12-15" 
-
-# This is the month data in a format closest to my preferred base R chart - it is in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 1 year
-svg(filename="NZU-monthprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-monthprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
-ggplot(monthprice, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
-theme_bw(base_size = 14) +
-scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
-scale_x_date(date_breaks = "year", date_labels = "%Y") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit mean monthly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(monthprice[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
-dev.off()
-
-# weekly mean prices x axis years annual
-svg(filename="NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-weeklypriceYr-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
-ggplot(weeklypricefilleddataframe, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
-theme_bw(base_size = 12) +
-scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
-scale_x_date(date_breaks = "year", date_labels = "%Y") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit mean weekly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(weeklyprice[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
-dev.off()
-
-# spot price theme black and white  - bw
-svg(filename="NZU-spotprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-spotprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
-ggplot(spotprices, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
-theme_bw(base_size = 14) +
-scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
-scale_x_date(date_breaks = "year", date_labels = "%Y") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(spotprices[["date"]]), y = min(spotprices[["price"]]), size = 3, angle = 0, hjust = 1, label=R.version.string)
-dev.off()
-
-help(scale_x_date)
-
-dim(data) 
-[1] 1725    5
-data[1494,1:2] 
-           date price
-1494 2022-12-01  83.5 
-
-# subset a dataframe of spot prices from 1/12/2023 to 24/11/2023
-d2 <- data[1494:1725,1:2]
-head(d2,1)
-           date price
-1494 2022-12-01  83.5
-
-# vertical lines at x axis or date ticks
-geom_vline(xintercept = as.numeric(19563)) 
-geom_vline(xintercept = as.numeric(monthprice[["month"]][50])) 
-
-d2[["date"]][50] 
-[1] "2023-03-10"
-
-as.numeric(d2[["date"]][79]) 
-[1] 19563 
-
-https://www.youtube.com/watch?v=DLn-gs626Ts 
-
-https://www.youtube.com/watch?v=tRTo9p2nL88
-ggp ＜- ggplot(data, aes(x, y)) +    # Create plot without line
-  geom_point()
-ggp                                 # Draw plot without line
-
-h_line ＜- 8.7                       # Position of horizontal line
-
-ggp +                               # Add horizontal line & label
-  geom_hline(aes(yintercept = h_line)) +
-  geom_text(aes(0, h_line, label = h_line, vjust = - 1))
-
-https://www.carbonnews.co.nz/story.asp?storyID=26749
-Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations
-Friday 16 Dec 22 10:00am    By Jeremy Rose
-Cabinet has ignored a Climate Change Commission recommendation to significantly increase the trigger price of the cost containment reserve and failed to reduce the number of credits available at auction by as much as the commission proposed. 
-The decision, announced just after 5pm yesterday, has seen the price of carbon plummet on the secondary market from $86.00 at the close of trade yesterday to $75.00 as Carbon News goes to press.
-
-https://www.carbonnews.co.nz/story.asp?storyID=28019
-Carbon price plummets: what does ETS review mean for future prices? Thursday 22 Jun 23 10:30am
-The carbon price on the secondary market has slumped to its lowest point since 2021 in the wake of the government’s ETS announcement, after rallying briefly following last week’s failed Emissions Trading Scheme auction.
-# another vertical line at 22/06/2023
-https://consult.environment.govt.nz/climate/nzets-review/ Opened 19 Jun 2023  
-https://environment.govt.nz/news/nz-ets-review-consultation-now-closed/ New Zealanders were invited to have their say on a review of the design of the New Zealand Emissions Trading Scheme (NZ ETS) and its permanent forestry category. Last updated: 19 June 2023 
-# reduce gross emissions or rely on forestry removals in ETS
-
-dev.off()
-
-# 2023 spot prices theme black and white  - bw
-
-# check dates of major price changes
-d2[["date"]][12]
-[1] "2022-12-16"
-as.numeric(d2[["date"]][12]) 
-[1] 19342
-
-d2[["date"]][111]
-[1] "2023-06-19"
-
-d2[["date"]][135] 
-[1] "2023-07-25" 
-as.numeric(19563)
-
-
-svg(filename="NZU-spotprice2023-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-spotprice22023-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
-ggplot(d2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
-theme_bw(base_size = 14) +
-scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
-scale_x_date(date_breaks = "month", date_labels = "%b") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices 2022 - 2023", x ="Date", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(d2[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) +
-geom_vline(xintercept = as.numeric(19342),colour="blue",linetype ="dashed") +
-annotate("text", x= d2[["date"]][12]-10, y = 2, size = 3, angle = 90, hjust = 0, label="16/12/2023 Cabinet rejects Commission ETS 2023 price recommendations") +
-geom_vline(xintercept = as.numeric(d2[["date"]][111]),colour="blue",linetype ="dashed") +
-annotate("text", x= d2[["date"]][111]-10, y = 2, size = 3, angle = 90, hjust = 0, label="19/06/2023 ETS gross emissions vs forestry removals consultation") +
-geom_vline(xintercept = d2[["date"]][135], colour="blue",linetype ="dashed")    +
-annotate("text", x= d2[["date"]][135]-10, y = 2, size = 3, angle = 90, hjust = 0, label="25/07/2023 ETS Prices & Settings 2024 announcement") 
-dev.off()
-
-https://www.etsauctions.govt.nz/public/auction_noticeboard      07/12/2022
-d2[["date"]][5]
-[1] "2022-12-07"            d2[["date"]][5]
-https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/where-to-buy-new-zealand-emissions-units/#the-government-is-now-auctioning-nzus
-Four auctions are scheduled for 2023, as shown below:
-Date            Volume available*
-15 March        4.475 million NZUs
-d2[["date"]][53]
-14 June         4.475 million NZUs
-d2[["date"]][109]
-6 September     4.475 million NZUs
-d2[["date"]][166]
-6 December      4.475 million NZUs
-d2[["date"]][230]
-
-svg(filename="NZU-auctions-2023-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-auctions-2023-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
-ggplot(d2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
-theme_bw(base_size = 14) +
-scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
-scale_x_date(date_breaks = "month", date_labels = "%b") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit auctions and spot prices 2023", x ="Date", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(d2[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) +
-geom_vline(xintercept = d2[["date"]][5] ,colour="blue",linetype ="dashed") +
-annotate("text", x= d2[["date"]][5]+5, y = 2, size = 3, angle = 90, hjust = 0, label="7/12/2022 ETS Auction 4,825,000 units sold") +
-geom_vline(xintercept = d2[["date"]][53] ,colour="blue",linetype ="dashed") +
-annotate("text", x= d2[["date"]][53]+5, y = 2, size = 3, angle = 90, hjust = 0, label="15/03/2023 ETS Auction reserve not met") +
-geom_vline(xintercept = as.numeric(d2[["date"]][109]),colour="blue",linetype ="dashed") +
-annotate("text", x= d2[["date"]][109]+5, y = 2, size = 3, angle = 90, hjust = 0, label="14/06/2023 ETS Auction reserve not met") +
-geom_vline(xintercept = d2[["date"]][166], colour="blue",linetype ="dashed")    +
-annotate("text", x= d2[["date"]][166]+5, y = 2, size = 3, angle = 90, hjust = 0, label="25/09/2023 ETS Auction reserve not met") + 
-geom_vline(xintercept = d2[["date"]][230], colour="blue",linetype ="dashed")    +
-annotate("text", x= d2[["date"]][230]+5, y = 2, size = 3, angle = 90, hjust = 0, label="6/12/2023 ETS Auction reserve not met") 
-dev.off()
-
-
-# 2023 spot prices theme classic so no gridlines to obscure the vertical lines
-svg(filename="NZU-spotprice2023-720by540-ggplot-theme-classic.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-spotprice22023-720by540-ggplot-theme-classic.png", bg="white", width=720, height=540)
-ggplot(d2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
-theme_classic(base_size = 14) +
-scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
-scale_x_date(date_breaks = "month", date_labels = "%b") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices 2022 - 2023", x ="Months", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(d2[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) +
-annotate("text", x= d2[["date"]][151]-10, y = 2, size = 3, angle = 90, hjust = 0, label="2024 ETS Prices & Settings announcement") +
-geom_vline(xintercept = as.numeric(19563),colour="darkgray",linetype ="dashed")    +
-annotate("text", x= d2[["date"]][130]-10, y = 2, size = 3, angle = 90, hjust = 0, label="ETS gross emissions vs forestry removals consultation") +
-geom_vline(xintercept = as.numeric(19530),colour="darkgray",linetype ="dashed") +
-annotate("text", x= d2[["date"]][28]-10, y = 2, size = 3, angle = 90, hjust = 0, label="Cabinet rejects Commission ETS 2023 price recommendations") +
-geom_vline(xintercept = as.numeric(19342),colour="darkgray",linetype ="dashed")    
-dev.off() 
-
-# first vertical line should be at 16/12/2022 (x intercept)
-d2[["date"]][28] 
-[1] "2022-12-16"
-as.numeric(d2[["date"]][28]) 
-[1] 19342
-
-# add 2nd vertical line at 22 June 2023 the ETS
-d2[["date"]][130] 
-[1] "2023-06-22" 
-as.numeric(d2[["date"]][130]) 
-[1] 19530
-
-# add vertical line at 25 July 2023 the ETS Prices & Settings announcement
- d2[["date"]][151] 
-[1] "2023-07-25" 
-as.numeric(d2[["date"]][151]) 
-[1] 19563 
-
-#F32424 name is pomegranate which is 'creamy tomato' actually
-#ED1A3B is crimson
-
-# monthly price chart in Base R, 720 by 540,  
-svg(filename="NZU-monthly-spot-prices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-par(mar=c(2.7,2.7,1,1)+0.1)
-plot(monthprice[["date"]],monthprice[["price"]],tck=0.01,axes=TRUE,ann=TRUE, las=1,col="#F32424",lwd=2,type='l',lty=1) # color is Pomegranate not 'red'.
-grid(col="darkgray",lwd=1)
-axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
-mtext(side=1,cex=0.9,line=-1.3,"Data: 'NZU monthly prices' https://github.com/theecanmole/nzu")
-mtext(side=3,cex=1.2, line=-2.2,expression(paste("New Zealand Unit mean monthly spot prices 2010 - 2023")) )
-mtext(side=2,cex=1, line=-1.3,"$NZ Dollars/tonne")
-mtext(side=4,cex=0.75, line=0.05,R.version.string)
-dev.off()  
-
-ggplot(vw, aes(x = weeks, y = values)) +  geom_line(colour = "#ED1A3B")
-
---------------------------------------------------------------------------
-xts 
-str(weeklyprice)
-'data.frame':	611 obs. of  3 variables:
- $ date : Date, format: "2010-05-10" "2010-05-17" ...
- $ price: num  17.8 17.5 17.5 17 17.8 ...
- $ week : 'aweek' chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" ...
-  ..- attr(*, "week_start")= int 1 
-  
-# create an xts timeseries from the weekly mean prices dataframe
-weeklyprice_ts <- xts(weeklyprice$price, weeklyprice$date)
-# look at first 6 rows of time series
-head(weeklyprice_ts)
-            [,1]
-2010-05-10 17.75
-2010-05-17 17.50
-2010-05-24 17.50
-2010-06-07 17.00
-2010-06-21 17.75
-2010-06-28 17.50 
-
-# create an xts format (irregular) timeseries from the spot prices dataframe
-spotpricexts <- xts(spotprices$price, spotprices$date)
-str(spotpricexts) 
-An xts object on 2010-05-14 / 2023-12-01 containing: 
-  Data:    double [1720, 1]
-  Index:   Date [1720] (TZ: "UTC")
-
-# create a XTS plot from the spot price 'xts' object
-
-svg(filename="NZU-spotXTStimeseriesprices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-plot(spotpricexts,type='l',lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit spot prices")
-dev.off()
-
-# create a XTS plot from the weekly 'xts' object
-
-svg(filename="NZU-weeklyXTStimeseriesprices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-plot(weeklyprice_ts,type='l',las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit mean weekly spot prices")
-dev.off()
-
-svg(filename="NZU-spotprices2023-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
-plot(spotpricexts['2023'],ylim=c(0,75),lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit 2023 spot prices")
-dev.off()
-svg(filename="NZU-spotprices2023a-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
-plot(spotpricexts['2023'], lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit 2023 spot prices")
-dev.off()
-# create July to Nov 2023 prices xts matrix
-spotpricextsJulyNov <- spotpricexts[c('2023-07','2023-08','2023-09','2023-10','2023-11')]
-# create July to Nov 2023 prices xts matrix
-spotpricextsAugNov <- spotpricexts[c('2023-08','2023-09','2023-10','2023-11')]
-
-svg(filename="NZU-spotpricesAug2023-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
-plot(spotpricextsAugNov,ylim=c(0,75),lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit Aug Nov 2023 spot prices")
-dev.off()
-svg(filename="NZU-spotpricesAug2023a-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
-plot(spotpricextsAugNov,lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit Aug Nov 2023 spot prices")
-abline(v = as.numeric(index(spotpricextsAugNov[54] )),col = 4,lwd =2,lty =2)  # didn't work
-dev.off()
-as.numeric(index(spotpricextsAugNov[54] ))
-[1] 19643 
-spotpriceAugNovdataframe <- as.data.frame(spotpricextsAugNov)  
-str(spotpriceAugNovdataframe) 
-'data.frame':	87 obs. of  1 variable:
- $ V1: num  59.8 57.5 57 58 58 ...  
-head(rownames(spotpriceAugNovdataframe)) 
-[1] "2023-08-01" "2023-08-02" "2023-08-03" "2023-08-04" "2023-08-07"
-[6] "2023-08-08" 
-head(spotpriceAugNovdataframe[,1]) 
-[1] 59.75 57.50 57.00 58.00 58.00 59.90
-
-spotpriceAugNovdataframe1 <- data.frame(date = rownames(spotpriceAugNovdataframe),price = spotpriceAugNovdataframe[,1]) 
-str(spotpriceAugNovdataframe1 ) 
-'data.frame':	87 obs. of  2 variables:
- $ date : chr  "2023-08-01" "2023-08-02" "2023-08-03" "2023-08-04" ...
- $ price: num  59.8 57.5 57 58 58 ... 
-
-spotpriceAugNovdataframe1$date <- as.Date(spotpriceAugNovdataframe1$date) 
-
-spotpriceAugNovdataframe1$date[1] 
-[1] "2023-08-01"
-as.numeric(spotpriceAugNovdataframe1$date[54])
-19643 
-
- spotpriceAugNovdataframe1$date[54]
-[1] "2023-10-13" 
-
-svg(filename="NZU-spotpricesAug2023c-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
-plot(spotpriceAugNovdataframe1,type='l',lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit Aug Nov 2023 spot prices")
-abline(v = 19643,col = 4,lwd =2,lty =2) 
-dev.off()
-ls()
-
-svg(filename="NZU-spotpricesxts2010-2023-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
-plot(spotpricexts,type='l',lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit spot prices")
-dev.off()
-
-
-dim(spotpricextsAugNov) 
-[1] 87  1 
-index((spotpricextsAugNov)[87] ) 
-[1] "2023-11-30"
-# election date
-index((spotpricextsAugNov)[54] )
-[1] "2023-10-13"
-str(index(spotpricextsAugNov)[87] ) 
-Date[1:1], format: "2023-11-30"
-
-
-
-dim(spotpricexts)
-[1] 1718    1 
-plot(spotpricexts[1600:1718])
-str(spotpricextsJulynov)
-An xts object on 2023-07-03 / 2023-11-29 containing: 
-  Data:    double [105, 1]
-  Index:   Date [105] (TZ: "UTC") 
-max(spotpricextsJulynov)
-
-plot(spotpricextsJulynov,ylim=c(0,75), col="#F32424",lwd=1)
-spotpricexts[1595:1596]
-            [,1]
-2023-06-01 54.75
-2023-06-02 55.00
-
-# the general function, internally calls sapply 
-meanspotxts <- period.apply(spotpricexts,INDEX=endpoints(spotpricexts),FUN=mean)
-str(meanspotxts) 
-An xts object on 2010-05-29 / 2023-11-29 containing: 
-  Data:    double [163, 1]
-  Index:   Date [163] (TZ: "UTC") 
-  
-
-# weekly infilled by interpolation time series price chart in Base R, 720 by 540,  
-svg(filename="NZU-week-time-series-prices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-par(mar=c(2.7,2.7,1,1)+0.1)
-plot(weekts,tck=0.01,axes=TRUE,ann=TRUE, las=1,col="#F32424",lwd=2,type='l',lty=1) # color is Pomegranate not 'red'.
-grid(col="darkgray",lwd=1)
-axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
-mtext(side=1,cex=0.9,line=-1.3,"Data: 'NZU monthly prices' https://github.com/theecanmole/nzu")
-mtext(side=3,cex=1.2, line=-2.2,expression(paste("New Zealand Unit mean weekly spot prices 2010 - 2023")) )
-mtext(side=2,cex=1, line=-1.3,"$NZ Dollars/tonne")
-mtext(side=4,cex=0.75, line=0.05,R.version.string)
-dev.off()  
-
-https://www.nbr.co.nz/politics/judicial-review-helps-drive-ets-unit-prices-up/
-
-user@wgtnadmin:~
-$ uname -a && lsb_release -a
-
-
 ## fill in missing values in week day spot prices
 library("xts")
 library("zoo")
@@ -814,3 +441,239 @@ theme(plot.caption = element_text( hjust = 0.5 )) +
 labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(spotpricefilleddataframe[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off() 
+
+## Graphs
+# what is the most recent month? (maximum extent of date or x axis)
+max(monthprice[["date"]]) 
+[1] "2023-12-15" 
+
+# This is the month data in a format closest to my preferred base R chart - it is in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 1 year
+svg(filename="NZU-monthprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("NZU-monthprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(monthprice, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "year", date_labels = "%Y") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit mean monthly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= max(monthprice[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+dev.off()
+
+# weekly mean prices x axis years annual
+svg(filename="NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("NZU-weeklypriceYr-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(weeklypricefilleddataframe, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
+theme_bw(base_size = 12) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "year", date_labels = "%Y") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit mean weekly prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= max(weeklyprice[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+dev.off()
+
+# spot price theme black and white  - bw
+svg(filename="NZU-spotprice-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("NZU-spotprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(spotprices, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "year", date_labels = "%Y") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= max(spotprices[["date"]]), y = min(spotprices[["price"]]), size = 3, angle = 0, hjust = 1, label=R.version.string)
+dev.off()
+
+
+
+
+## subset a dataframe of spot prices from 1/12/2023 to 24/11/2023
+d2 <- data[1494:1725,1:2]
+
+https://www.youtube.com/watch?v=DLn-gs626Ts 
+
+https://www.carbonnews.co.nz/story.asp?storyID=26749
+Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations
+Friday 16 Dec 22 10:00am    By Jeremy Rose
+Cabinet has ignored a Climate Change Commission recommendation to significantly increase the trigger price of the cost containment reserve and failed to reduce the number of credits available at auction by as much as the commission proposed. 
+The decision, announced just after 5pm yesterday, has seen the price of carbon plummet on the secondary market from $86.00 at the close of trade yesterday to $75.00 as Carbon News goes to press.
+
+https://www.carbonnews.co.nz/story.asp?storyID=28019
+Carbon price plummets: what does ETS review mean for future prices? Thursday 22 Jun 23 10:30am
+The carbon price on the secondary market has slumped to its lowest point since 2021 in the wake of the government’s ETS announcement, after rallying briefly following last week’s failed Emissions Trading Scheme auction.
+# another vertical line at 22/06/2023
+https://consult.environment.govt.nz/climate/nzets-review/ Opened 19 Jun 2023  
+https://environment.govt.nz/news/nz-ets-review-consultation-now-closed/ New Zealanders were invited to have their say on a review of the design of the New Zealand Emissions Trading Scheme (NZ ETS) and its permanent forestry category. Last updated: 19 June 2023 
+# reduce gross emissions or rely on forestry removals in ETS
+dev.off()
+
+svg(filename="NZU-spotprice2023-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("NZU-spotprice22023-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(d2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "month", date_labels = "%b") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit spot prices 2022 - 2023", x ="Date", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= max(d2[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) +
+geom_vline(xintercept = as.numeric(19342),colour="blue",linetype ="dashed") +
+annotate("text", x= d2[["date"]][12]-10, y = 2, size = 3, angle = 90, hjust = 0, label="16/12/2023 Cabinet rejects Commission ETS 2023 price recommendations") +
+geom_vline(xintercept = as.numeric(d2[["date"]][111]),colour="blue",linetype ="dashed") +
+annotate("text", x= d2[["date"]][111]-10, y = 2, size = 3, angle = 90, hjust = 0, label="19/06/2023 ETS gross emissions vs forestry removals consultation") +
+geom_vline(xintercept = d2[["date"]][135], colour="blue",linetype ="dashed")    +
+annotate("text", x= d2[["date"]][135]-10, y = 2, size = 3, angle = 90, hjust = 0, label="25/07/2023 ETS Prices & Settings 2024 announcement") 
+dev.off()
+
+https://www.etsauctions.govt.nz/public/auction_noticeboard      07/12/2022
+d2[["date"]][5]
+[1] "2022-12-07"            d2[["date"]][5]
+https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/where-to-buy-new-zealand-emissions-units/#the-government-is-now-auctioning-nzus
+Four auctions are scheduled for 2023, as shown below:
+Date            Volume available*
+15 March        4.475 million NZUs
+d2[["date"]][53]
+14 June         4.475 million NZUs
+d2[["date"]][109]
+6 September     4.475 million NZUs
+d2[["date"]][166]
+6 December      4.475 million NZUs
+d2[["date"]][230]
+
+svg(filename="NZU-auctions-2023-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("NZU-auctions-2023-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(d2, aes(x = date, y = price)) +  geom_line(colour = "#ED1A3B") +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "month", date_labels = "%b") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit auctions and spot prices 2023", x ="Date", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= max(d2[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) +
+geom_vline(xintercept = d2[["date"]][5] ,colour="blue",linetype ="dashed") +
+annotate("text", x= d2[["date"]][5]+5, y = 2, size = 3, angle = 90, hjust = 0, label="7/12/2022 ETS Auction 4,825,000 units sold") +
+geom_vline(xintercept = d2[["date"]][53] ,colour="blue",linetype ="dashed") +
+annotate("text", x= d2[["date"]][53]+5, y = 2, size = 3, angle = 90, hjust = 0, label="15/03/2023 ETS Auction reserve not met") +
+geom_vline(xintercept = as.numeric(d2[["date"]][109]),colour="blue",linetype ="dashed") +
+annotate("text", x= d2[["date"]][109]+5, y = 2, size = 3, angle = 90, hjust = 0, label="14/06/2023 ETS Auction reserve not met") +
+geom_vline(xintercept = d2[["date"]][166], colour="blue",linetype ="dashed")    +
+annotate("text", x= d2[["date"]][166]+5, y = 2, size = 3, angle = 90, hjust = 0, label="25/09/2023 ETS Auction reserve not met") + 
+geom_vline(xintercept = d2[["date"]][230], colour="blue",linetype ="dashed")    +
+annotate("text", x= d2[["date"]][230]+5, y = 2, size = 3, angle = 90, hjust = 0, label="6/12/2023 ETS Auction reserve not met") 
+dev.off()
+--------------------------------------------------------------------------
+xts 
+str(weeklyprice)
+'data.frame':	611 obs. of  3 variables:
+ $ date : Date, format: "2010-05-10" "2010-05-17" ...
+ $ price: num  17.8 17.5 17.5 17 17.8 ...
+ $ week : 'aweek' chr  "2010-W19" "2010-W20" "2010-W21" "2010-W23" ...
+  ..- attr(*, "week_start")= int 1 
+  
+# create an xts timeseries from the weekly mean prices dataframe
+weeklyprice_ts <- xts(weeklyprice$price, weeklyprice$date)
+# look at first 6 rows of time series
+head(weeklyprice_ts)
+            [,1]
+2010-05-10 17.75
+2010-05-17 17.50
+2010-05-24 17.50
+2010-06-07 17.00
+2010-06-21 17.75
+2010-06-28 17.50 
+
+# create an xts format (irregular) timeseries from the spot prices dataframe
+spotpricexts <- xts(spotprices$price, spotprices$date)
+str(spotpricexts) 
+An xts object on 2010-05-14 / 2023-12-01 containing: 
+  Data:    double [1720, 1]
+  Index:   Date [1720] (TZ: "UTC")
+
+# create a XTS plot from the spot price 'xts' object
+
+svg(filename="NZU-spotXTStimeseriesprices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+plot(spotpricexts,type='l',lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit spot prices")
+dev.off()
+
+# create a XTS plot from the weekly 'xts' object
+
+svg(filename="NZU-weeklyXTStimeseriesprices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+plot(weeklyprice_ts,type='l',las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit mean weekly spot prices")
+dev.off()
+
+svg(filename="NZU-spotprices2023-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
+plot(spotpricexts['2023'],ylim=c(0,75),lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit 2023 spot prices")
+dev.off()
+svg(filename="NZU-spotprices2023a-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
+plot(spotpricexts['2023'], lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit 2023 spot prices")
+dev.off()
+# create July to Nov 2023 prices xts matrix
+spotpricextsJulyNov <- spotpricexts[c('2023-07','2023-08','2023-09','2023-10','2023-11')]
+# create July to Nov 2023 prices xts matrix
+spotpricextsAugNov <- spotpricexts[c('2023-08','2023-09','2023-10','2023-11')]
+
+svg(filename="NZU-spotpricesAug2023-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
+plot(spotpricextsAugNov,ylim=c(0,75),lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit Aug Nov 2023 spot prices")
+dev.off()
+svg(filename="NZU-spotpricesAug2023a-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
+plot(spotpricextsAugNov,lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit Aug Nov 2023 spot prices")
+abline(v = as.numeric(index(spotpricextsAugNov[54] )),col = 4,lwd =2,lty =2)  # didn't work
+dev.off()
+
+spotpriceAugNovdataframe <- as.data.frame(spotpricextsAugNov)  
+str(spotpriceAugNovdataframe) 
+'data.frame':	87 obs. of  1 variable:
+ $ V1: num  59.8 57.5 57 58 58 ...  
+head(rownames(spotpriceAugNovdataframe)) 
+[1] "2023-08-01" "2023-08-02" "2023-08-03" "2023-08-04" "2023-08-07"
+[6] "2023-08-08" 
+head(spotpriceAugNovdataframe[,1]) 
+[1] 59.75 57.50 57.00 58.00 58.00 59.90
+
+spotpriceAugNovdataframe1 <- data.frame(date = rownames(spotpriceAugNovdataframe),price = spotpriceAugNovdataframe[,1]) 
+str(spotpriceAugNovdataframe1 ) 
+'data.frame':	87 obs. of  2 variables:
+ $ date : chr  "2023-08-01" "2023-08-02" "2023-08-03" "2023-08-04" ...
+ $ price: num  59.8 57.5 57 58 58 ... 
+
+svg(filename="NZU-spotpricesAug2023c-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
+plot(spotpriceAugNovdataframe1,type='l',lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit Aug Nov 2023 spot prices")
+abline(v = 19643,col = 4,lwd =2,lty =2) 
+dev.off()
+ls()
+
+svg(filename="NZU-spotpricesxts2010-2023-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
+plot(spotpricexts,type='l',lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit spot prices")
+dev.off()
+
+dim(spotpricexts)
+[1] 1718    1 
+plot(spotpricexts[1600:1718])
+str(spotpricextsJulynov)
+An xts object on 2023-07-03 / 2023-11-29 containing: 
+  Data:    double [105, 1]
+  Index:   Date [105] (TZ: "UTC") 
+max(spotpricextsJulynov)
+
+plot(spotpricextsJulynov,ylim=c(0,75), col="#F32424",lwd=1)
+spotpricexts[1595:1596]
+            [,1]
+2023-06-01 54.75
+2023-06-02 55.00
+
+# weekly infilled by interpolation time series price chart in Base R, 720 by 540,  
+svg(filename="NZU-week-time-series-prices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+par(mar=c(2.7,2.7,1,1)+0.1)
+plot(weekts,tck=0.01,axes=TRUE,ann=TRUE, las=1,col="#F32424",lwd=2,type='l',lty=1) # color is Pomegranate not 'red'.
+grid(col="darkgray",lwd=1)
+axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
+mtext(side=1,cex=0.9,line=-1.3,"Data: 'NZU monthly prices' https://github.com/theecanmole/nzu")
+mtext(side=3,cex=1.2, line=-2.2,expression(paste("New Zealand Unit mean weekly spot prices 2010 - 2023")) )
+mtext(side=2,cex=1, line=-1.3,"$NZ Dollars/tonne")
+mtext(side=4,cex=0.75, line=0.05,R.version.string)
+dev.off()  
+
+user@wgtnadmin:~
+$ uname -a && lsb_release -a

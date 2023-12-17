@@ -11,8 +11,9 @@ The prices are then processed in the [R programming language](https://www.r-proj
 * [average weekly prices (with the missing values filled by linear interpolation)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklypricefilled.csv) 
 * [spot prices (with missing values)](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/spotprices.csv).
 * [spot prices (with the missing values filled by linear interpolation)](spotpricesinfilled.csv)
+* [31 day rolling mean of the infilled spot prices](spotrollmean31.csv)
 
-The price data is then charted in R Ggplot2 and in R with an 'xts' object.
+These sets of price data are then charted in R Ggplot2.
 
 This graph is the mean price for each calendar month.
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
@@ -26,7 +27,10 @@ This graph is the spot prices of trading on week days. It is an irregular time s
 This graph is the spot prices of trading on week days. The missing values are filled via linear interpolation. It is almost a regular time series.
 ![](NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg)
 
-This graph is the spot prices from November 2022 to December 2023. I have marked with blue dashed horizontal lines three dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
+This graph is the 31 day rolling mean of the infiled spot prices of unit trading on week days.
+![](NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.svg)
+
+This graph displays the spot prices from November 2022 to December 2023. I have marked with blue dashed horizontal lines three dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
 ![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg)
 
 This graph is the spot prices from December 2022 to December 2023. Blue dashed horizontal lines mark the dates of the quarterly NZU auctions. The December 2022 auction met it's reserve price. The four 2023 auctions did not meet the reserve price and no units were sold.

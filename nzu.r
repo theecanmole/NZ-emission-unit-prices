@@ -123,6 +123,7 @@ weeklyprice[["date"]] <- as.Date(weeklyprice[["week"]])
 # change order of columns
 weeklyprice <- weeklyprice[,c(3,2,1)]
 # check dataframe
+
 str(weeklyprice)
 'data.frame':	615 obs. of  3 variables:
  $ date : Date, format: "2010-05-10" "2010-05-17" ...
@@ -297,7 +298,7 @@ str(monthprice)
 monthprice <- read.csv("nzu-month-price.csv", colClasses = c("Date","numeric"))
 weeklyprice <- read.csv("weeklymeanprice.csv", colClasses = c("Date","numeric","character")) 
 data <- read.csv("nzu-final-prices-data.csv", colClasses = c("Date","numeric","character","character","character")) 
-# spotprices <- read.csv("spotprices.csv", colClasses = c("Date","numeric"))
+spotprices <- read.csv("spotprices.csv", colClasses = c("Date","numeric"))
 
 ## fill in missing values in week day spot prices
 library("xts")
@@ -307,7 +308,7 @@ library("ggplot2")
 spot <- read.csv("spotprices.csv", colClasses = c("Date","numeric"))
 
 str(spot) 
-'data.frame':	1725 obs. of  2 variables:
+'data.frame':	1730 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-21" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ... 
 
@@ -329,7 +330,12 @@ head(spotpricealldatesmissingprices)
 
 # Convert the data frame price and date columns to a zoo time series object
 spotpricealldatesmissingpriceszoo <- zoo(spotpricealldatesmissingprices[["price"]], spotpricealldatesmissingprices[["date"]])
-
+# check the object's structure
+str(spotpricealldatesmissingpriceszoo)
+‘zoo’ series from 2010-05-14 to 2023-12-15
+  Data: num [1:4964] 17.8 NA NA NA NA ...
+  Index:  Date[1:4964], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+# look a first 6 lines/rows
 head(spotpricealldatesmissingpriceszoo) 
 2010-05-14 2010-05-15 2010-05-16 2010-05-17 2010-05-18 2010-05-19 
      17.75         NA         NA         NA         NA         NA
@@ -376,9 +382,14 @@ head(spotpricefilleddataframe)
 colnames(spotpricefilleddataframe)[2] <- c("price")
 
 head(spotpricefilleddataframe) 
-        date    price
-1 2010-05-14 17.75000
-2 2010-05-15 17.71429
+> head(spotpricefilleddataframe) 
+        date price
+1 2010-05-14 17.75
+2 2010-05-15 17.71
+3 2010-05-16 17.68
+4 2010-05-17 17.64
+5 2010-05-18 17.61
+6 2010-05-19 17.57
 
 # round mean prices to whole cents
 #spotpricefilleddataframe[["price"]] = round(spotpricefilleddataframe[["price"]], digits = 2)
@@ -391,24 +402,20 @@ str(spotpricefilleddataframe)
 # Get the days of week 
 spotpricefilleddataframe$day <- format(as.Date(spotpricefilleddataframe$date), "%A")
 
-head(spotpricefilleddataframe$date)  
-[1] "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18"
-[6] "2010-05-19" 
-
-head(spotpricefilleddataframe) 
+head(spotpricefilleddataframe)  
         date price       day
 1 2010-05-14 17.75    Friday
 2 2010-05-15 17.71  Saturday
 3 2010-05-16 17.68    Sunday
 4 2010-05-17 17.64    Monday
 5 2010-05-18 17.61   Tuesday
-6 2010-05-19 17.57 Wednesday
+6 2010-05-19 17.57 Wednesday 
 
 # Where are the Saturdays ? use Logical indexing
 idSat <- spotpricefilleddataframe$day == "Saturday"  
 idSat
-[1] FALSE FALSE  TRUE FALSE 
-
+[1] FALSE FALSE  TRUE FALSE ....
+# 4964 records
 # leave out the Saturdays
 spotpricefilleddataframe <- spotpricefilleddataframe[!idSat, ]
 
@@ -436,6 +443,79 @@ str(spotpricefilleddataframe)
 # write the spot prices dataframe to a .csv file 
 write.table(spotpricefilleddataframe, file = "spotpricesinfilled.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
 
+## create rolling mean time series
+# read in the infilled spot prices data
+spotpricesinfilled <- read.csv("spotpricesinfilled.csv")
+spotpricesinfilled[["date"]] <- as.Date(spotpricesinfilled[["date"]]) 
+
+str(spotpricesinfilled)
+'data.frame':	3546 obs. of  3 variables:
+ $ date : Date, format: "2010-05-14" "2010-05-17" ...
+ $ price: num  17.8 17.6 17.6 17.6 17.5 ...
+ $ day  : chr  "Friday" "Monday" "Tuesday" "Wednesday" ...
+
+spot <- spotpricefilleddataframe[,1:2]
+str(spot) 
+'data.frame':	3546 obs. of  3 variables:
+ $ date      : Date, format: "2010-05-14" "2010-05-17" ...
+ $ price     : num  17.8 17.6 17.6 17.6 17.5 ...
+ $ spotroll31: num  NA NA NA NA NA NA NA NA NA NA ...
+# write the spot prices dataframe to a .csv file 
+write.table(spot, file = "spotpricesinfilled.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
+'data.frame':	3546 obs. of  2 variables:
+ $ date : Date, format: "2010-05-14" "2010-05-17" ...
+ $ price: num  17.8 17.6 17.6 17.6 17.5 ...
+
+## Generic functions for computing rolling means, maximums, medians, and sums of ordered observations.
+
+Usage
+rollmean(x, k, fill = if (na.pad) NA, na.pad = FALSE, align = c("center", "left", "right"), ...)
+# create 31 day (a month) rolling average
+
+spot$spotroll31 <- rollmean(spot[["price"]], k =31,  fill = NA, align = c("center"))
+
+str(spot) 
+'data.frame':	3546 obs. of  3 variables:
+ $ date      : Date, format: "2010-05-14" "2010-05-17" ...
+ $ price     : num  17.8 17.6 17.6 17.6 17.5 ...
+ $ spotroll31: num  NA NA NA NA NA NA NA NA NA NA ... 
+
+# create dataframe of only the 31 day rolling mean values and dates
+spotrollmean31  <-spot[,c(1,3)] 
+colnames(spotrollmean31) <- c("date","price") 
+str(spotrollmean31) 
+'data.frame':	3546 obs. of  2 variables:
+ $ date : Date, format: "2010-05-14" "2010-05-17" ...
+ $ price: num  NA NA NA NA NA NA NA NA NA NA ...
+
+# write the spot prices dataframe to a .csv file 
+write.table(spotrollmean31, file = "spotrollmean31.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)  
+ 
+# Draw ggplot2 plot, two dataframes spot and spotrollmean31 
+
+ggplot(NULL, aes(date, price)) + geom_line(data = spot, col = "blue",alpha=0.25) + geom_line(data = spotrollmean31, col = "red")
+  
+ggplot(NULL, aes(date, price)) +
+geom_line() +
+geom_smooth() +
+  labs(title = "NZU prices have crashed and burned and peaked") 
+ 
+plot(spot[["date"]][1:500],spot$price[1:500], col=4,lwd=0.5,type="l") 
+lines(spot[["date"]][1:500],spot$spotroll31[1:500],col = "#ED1A3B",lwd=0.5) 
+points(spot[["date"]][1:500],spot$price[1:500],col = 4,cex=0.5,pch=16) 
+
+lines(monthpricetimeseries,col=5, lwd=0.5)
+
+format(spot[["date"]][1:100], "%Y")  
+  [1] "2010" "2010" "2010" "2010" "2010" "2010" "2010" "2010" "2010" "2010"
+
+format(spot[["date"]][3000:3546], "%Y")  
+  [1] "2021" "2021" "2021" "2021" "2021" "2021" "2021" "2021" "2021" "2021"
+ [11] "2021" "2021" "2021" "2021" "2021" "2021" "2021" "2021" "2021" "2021"  
+ 
+format(spot[["date"]][3500:3546], "%b")
+
+
 # This is a chart of the infilled spot price data in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 1 year
 svg(filename="NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 #png("NZU-spotpriceinfilled-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
@@ -449,41 +529,33 @@ labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZ
 annotate("text", x= max(spotpricefilleddataframe[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off() 
 
-## create rolling mean time series
-spotpricefilleddataframe
+# This is a chart of the 31 day rolling mean of the infilled spot price data in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 1 year
+svg(filename="NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
+ggplot(spotrollmean31, aes(x = date, y = price)) +  geom_line(colour = 4) +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
+scale_x_date(date_breaks = "year", date_labels = "%Y") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit rolling mean spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= max(spotrollmean31[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+dev.off() 
+
+str(spotpricesinfilled)
 
 str(spotpricealldatesmissingpriceszoo)
 ‘zoo’ series from 2010-05-14 to 2023-12-08
   Data: num [1:4957] 17.8 NA NA NA NA ...
   Index:  Date[1:4957], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
-  str(spotpricefilled)
+str(spotpricefilled)
 ‘zoo’ series from 2010-05-14 to 2023-12-08
   Data: num [1:4957] 17.8 17.7 17.7 17.6 17.6 ...
   Index:  Date[1:4957], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ... 
 
 # align right means that the 12 month periods start from the last month, align left means periods start from first month..
 # average over 20 or 21 days is roughly the same as monthly given that the filled time series has a price for every week day i.e. 20 or 21 days per calendar month
-spotrollingmean21 <- rollmean(spotpricefilled, 21, align = 'center')
-str(spotrollingmean21) 
-‘zoo’ series from 2010-05-24 to 2023-11-28
-  Data: num [1:4937] 17.5 17.5 17.5 17.5 17.4 ...
-  Index:  Date[1:4937], format: "2010-05-24" "2010-05-25" "2010-05-26" "2010-05-27" "2010-05-28" ... 
-
-monthpricetimeseries <- ts(monthprice[["price"]], start = c(2010,5), frequency =12 )
-
-plot(spotrollingmean21,col=4,lwd=0.5) 
-lines(spotpricefilled,col = "#ED1A3B",lwd=0.5) 
-lines(monthpricetimeseries,col=5, lwd=0.5)
-
-plot(monthpricetimeseries,col=6, lwd=0.5,lty=2)
-lines(spotrollingmean21,col=4,lwd=0.75) 
-lines(spotpricefilled,col = "#ED1A3B",lwd=0.5) 
-
-#lines(monthpricetimeseries,col=5, lwd=0.5)
-
-spotrollingmean <- rollmean(spotpricefilled, 12, align = 'left')
-
   
 ## Graphs
 # what is the most recent month? (maximum extent of date or x axis)
@@ -528,9 +600,6 @@ theme(plot.caption = element_text( hjust = 0.5 )) +
 labs(title="New Zealand Unit spot prices 2010 - 2023", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(spotprices[["date"]]), y = min(spotprices[["price"]]), size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
-
-
-
 
 ## subset a dataframe of spot prices from 1/12/2023 to 24/11/2023
 d2 <- data[1494:1725,1:2]
@@ -720,3 +789,13 @@ dev.off()
 
 user@wgtnadmin:~
 $ uname -a && lsb_release -a
+# most basic line chart code frm help file geom_line
+ggplot(spotpricealldatesmissingprices, aes(date, price)) + geom_line()
+
+spotpricealldatesmissingprices
+
+# geom_path lets you explore how two variables are related over time,
+# e.g. unemployment and personal savings rate
+m <- ggplot(economics, aes(unemploy/pop, psavert))
+m + geom_path()
+m + geom_path(aes(colour = as.numeric(date)))

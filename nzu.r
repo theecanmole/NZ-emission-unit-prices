@@ -515,6 +515,7 @@ format(spot[["date"]][3000:3546], "%Y")
  
 format(spot[["date"]][3500:3546], "%b")
 
+ggplot(data = spotrollmean31 )
 
 # This is a chart of the infilled spot price data in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 1 year
 svg(filename="NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  

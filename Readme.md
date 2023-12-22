@@ -27,7 +27,7 @@ This graph is the spot prices of trading on week days. It is an irregular time s
 This graph is the spot prices of trading on week days. The missing values are filled via linear interpolation. It is almost a regular time series.
 ![](NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg)
 
-This graph is the 31 day rolling mean of the infiled spot prices of unit trading on week days.
+This graph is the 31 day rolling mean of the infilled spot prices of unit trading on week days.
 ![](NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.svg)
 
 This graph displays the spot prices from November 2022 to December 2023. I have marked with blue dashed horizontal lines three dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  

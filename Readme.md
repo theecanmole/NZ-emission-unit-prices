@@ -22,7 +22,7 @@ This graph is the mean price for each week. The missing values are infilled via 
 ![](NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg)
 
 This graph is the spot prices of trading on week days. It is an irregular time series. When trading of units started in 2010, the volume of trades was sufficiently low that several days or weeks could pass by without any trading. 
-![](NZU-spotprice-720by540-ggplot-theme-bw.svg)
+![](NZU-spotprice-720by540-ggplot-theme-bw.svg)Briefing: Report back on Phase 1 of the Financial Sustainability Reviewhange 
 
 This graph is the spot prices of trading on week days. The missing values are filled via linear interpolation. It is almost a regular time series.
 ![](NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg)
@@ -30,8 +30,8 @@ This graph is the spot prices of trading on week days. The missing values are fi
 This graph is the 31 day rolling mean of the infilled spot prices of unit trading on week days.
 ![](NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.svg)
 
-This graph displays the spot prices from November 2022 to December 2023. I have marked with blue dashed horizontal lines three dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
-![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg)
+This graph displays the spot prices from November 2022 to December 2023. I have marked with blue dashed horizontal lines two dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, when the Labour Government decided not to follow the price advice from the Climate Change Commission [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
+![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg).
 
 This graph is the spot prices from December 2022 to December 2023. Blue dashed horizontal lines mark the dates of the quarterly NZU auctions. The December 2022 auction met it's reserve price. The four 2023 auctions did not meet the reserve price and no units were sold.
 ![](NZU-auctions-2023-720by540-ggplot-theme-bw.svg)

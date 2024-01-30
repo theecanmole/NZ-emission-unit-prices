@@ -22,7 +22,7 @@ This graph is the mean price for each week. The missing values are infilled via 
 ![](NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg)
 
 This graph is the spot prices of trading on week days. It is an irregular time series. When trading of units started in 2010, the volume of trades was sufficiently low that several days or weeks could pass by without any trading. 
-![](NZU-spotprice-720by540-ggplot-theme-bw.svg)Briefing: Report back on Phase 1 of the Financial Sustainability Reviewhange 
+![](NZU-spotprice-720by540-ggplot-theme-bw.svg)
 
 This graph is the spot prices of trading on week days. The missing values are filled via linear interpolation. It is almost a regular time series.
 ![](NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg)

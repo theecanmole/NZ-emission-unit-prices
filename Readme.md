@@ -13,7 +13,10 @@ The prices are then processed in the [R programming language](https://www.r-proj
 * [spot prices (with the missing values filled by linear interpolation)](spotpricesinfilled.csv)
 * [31 day rolling mean of the infilled spot prices](spotrollmean31.csv)
 
-These sets of price data are then charted in R Ggplot2.
+These sets of price data are then charted in R Ggplot2. 
+
+First, lets look at 2024. Since the auction on 15 March 2024, the spot price is now consistently less than the auction reserve minimum price.
+![](spotprice2024b-720by540.svg)
 
 This graph is the mean price for each calendar month.
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)

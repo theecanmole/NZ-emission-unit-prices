@@ -954,7 +954,7 @@ monthprice <- read.csv("nzu-month-price.csv", colClasses = c("Date","numeric"))
 spotprices <- read.csv("spotprices.csv", colClasses = c("Date","numeric"))
 spotrollmean31 <- read.csv("spotrollmean31.csv", colClasses = c("Date","numeric"))  
 str(spotprices)
-'data.frame':	1800 obs. of  2 variables:
+'data.frame':	1829 obs. of  2 variables:
  $ date : chr  "2010-05-14" "2010-05-21" "2010-05-29" "2010-06-11" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ... 
 spotprices[["date"]]  <- as.Date(spotprices[["date"]])
@@ -1061,21 +1061,22 @@ spotprices[1738:1739,]
 1738 2023-12-29 69.15
 1739 2024-01-03 69.74
 # select ALL 2024 spot prices including 15 March auction
-spot2024b <- spotprices[1738:1805,] 
+spot2024 <- spotprices[1738:nrow(spotprices),] 
+str(spot2024) 
+'data.frame':	92 obs. of  2 variables:
+ $ date : Date, format: "2023-12-29" "2024-01-03" ...
+ $ price: num  69.2 69.7 71 70 70 ... 
+ 
 # check prices after auction
 spotprices[1791:1805,]
 
-str(spot2024b)
-'data.frame':	68 obs. of  2 variables:
- $ date : Date, format: "2023-12-29" "2024-01-03" ...
- $ price: num  69.2 69.7 71 70 70 ...
 # the prices after the auction
 spot2024b[54:68,]
 # the auction date
 spot2024b[50:50,]
            date price
 1787 2024-03-15    65
- spot2024b[50:54,]
+spot2024b[50:54,]
            date price
 1787 2024-03-15  65.0
 1788 2024-03-18  64.5
@@ -1084,6 +1085,7 @@ spot2024b[50:50,]
 1791 2024-03-21  51.0 
 as.numeric(as.Date(2024-03-20))
 # col="#CD0BBC"
+
 # chart of 2024 pcdlus auction
 svg(filename="spotprice2024b-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 #png("spotprice2024b-560by420.png", bg="white", width=560, height=420,pointsize = 14)
@@ -1092,18 +1094,15 @@ plot(spot2024,ylim=c(40,85),tck=0.01,ann=T, las=1,col="red",lwd=1,type='l',lty=1
 grid(col="darkgray",lwd=1)
 abline(v=19802,col='blue',lwd=2,lty=2)
 abline(h=64,col='blue',lwd=2,lty=2)
-#points(auction,64,col=1,cex=1.25,pch=19)
 points(spot2024[1:53,],col="red",pch=16)
-lines(spot2024[53:68,],col="red",lwd=1)
-points(spot2024[54:79,],col="red",pch=16)
-#mtext(side=3,cex=0.9, line=-7.5,expression(paste("$64 NZU auction reserve price 2024")) )
+points(spot2024[54:nrow(spot2024),],col="red",pch=16)
 text(19762,62,expression(paste("$64 NZU auction reserve price 2024")) )
 axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
 mtext(side=1,cex=1,line=-1.1,"Data https://github.com/theecanmole/NZ-emission-unit-prices")
 mtext(side=3,cex=1.2, line=-2.2,expression(paste("2024 NZU spot prices are now less than the auction reserve price")) )
 mtext(side=2,cex=1, line=-1.3,"$NZD")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
-text(19802,45,cex=0.9, labels = "Auction\n15 March")
+text(19802,48,cex=0.9, labels = "Auction\n15 March")
 dev.off() 
 
 str(auction)

@@ -15,8 +15,8 @@ The prices are then processed in the [R programming language](https://www.r-proj
 
 These sets of price data are then charted in R Ggplot2. 
 
-First, lets look at 2024. Since the auction on 15 March 2024, the spot price is now consistently less than the auction reserve minimum price.
-![](spotprice2024b-720by540.svg)
+First, lets look at 2024. Since the auction on 15 March 2024, where bids failed to meet the reserve price, the spot price is now consistently less than the auction reserve minimum price of $64 for 2024. In the June auction, bids again did not meet the reserve and the bids were not accepted.
+![](spotprice2024c-720by540.svg)
 
 This graph is the mean price for each calendar month.
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)

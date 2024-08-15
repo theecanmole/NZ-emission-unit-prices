@@ -535,7 +535,7 @@ points(spot2024[54:nrow(spot2024),],col="red",pch=16)
 text(19850,62,expression(paste("$64 NZU auction reserve price 2024")) )
 axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
 mtext(side=1,cex=1,line=-1.1,"Data https://github.com/theecanmole/NZ-emission-unit-prices")
-mtext(side=3,cex=1.2, line=-2.8,expression(paste("Two auctions of NZU have failed to meet the reserve price\nand spot prices are now less than the auction reserve price")) )
+mtext(side=3,cex=1.2, line=-2.8,expression(paste("In two auctions bids have failed to meet the reserve price\nand spot prices are now less than the auction reserve price")) )
 mtext(side=2,cex=1, line=-1.3,"$NZD")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 text(19802,48,cex=0.9, labels = "Auction\n15 March")
@@ -754,19 +754,26 @@ head(weeklyprice_ts)
 # create an xts format (irregular) timeseries from the spot prices dataframe
 spotpricexts <- xts(spotprices$price, spotprices$date)
 str(spotpricexts) 
-An xts object on 2010-05-14 / 2023-12-22 containing: 
-  Data:    double [1845, 1]
-  Index:   Date [1845] (TZ: "UTC")
+An xts object on 2010-05-14 / 2024-08-15 containing: 
+  Data:    double [1890, 1]
+  Index:   Date [1890] (TZ: "UTC")
 
 # create a XTS plot from the spot price 'xts' object
 
 svg(filename="NZU-spotXTStimeseriesprices-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 plot(spotpricexts,type='l',lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit spot prices")
+text(19850,62,expression(paste("$64 NZU auction reserve price 2024")) )
 dev.off()
+
+# create a XTS plot from the 2024 spot prices
 svg(filename="NZU-spotXTStimeseriesprices2024-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 plot(spotpricexts['2024'],ylim=c(0,75),type='l',lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit spot prices 2024")
-abline(h=64,lty=2)
+abline(h=64,lty=2,col='blue')
+mtext(side=3,cex=0.9, line=-6.25,expression(paste("New Zealand Unit auction reserve price 2024")) )
 dev.off()
+#text(19828,62,"$64 NZU auction reserve price 2024")
+#text(19828,62,expression(paste("$64 NZU auction reserve price 2024")) )
+
 
 # create a XTS plot from the weekly 'xts' object
 
@@ -793,7 +800,8 @@ Date[1:1], format: "2024-03-15"
 
 as.numeric(as.Date("2024-03-15"))
  19797
-
+as.numeric(as.Date("2024-04-15"))
+[1] 19828 
 # plot without specifying 0 as y axis limit
 svg(filename="NZU-spotprices2023a-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel")) 
 plot(spotpricexts['2023'], lwd=1,las=1,col="#F32424",ylab="$NZ unit", main ="New Zealand Unit 2023 spot prices")
@@ -856,6 +864,7 @@ svg(filename="NZU-spotpricesxts-2024-720by540.svg", width = 8, height = 6, point
 plot(spotpricexts[1735:1800], col="#F32424",ylab="$NZ unit", main ="New Zealand Unit spot prices")
 points(spotpricexts[1735:1800],col="#F32424",pch=16)
 abline(h=64,lwd=2,col=4,lty=3)
+mtext(side=3,cex=0.9, line=-7.5,expression(paste("New Zealand Unit auction reserve price 2024")) )
 dev.off()
 
 spotpricexts[1735:1736]
@@ -995,6 +1004,7 @@ An xts object on 2010-05-14 / 2024-03-08 containing:
 monthpricexts
 plot(spotxts,col='blue')  # xts uses a bespoke plot style
 help(zoo)
+
 # create zoo time series object
 monthzoo <- zoo(monthprice[["price"]], order.by = monthprice[["date"]])
 str(monthzoo)
@@ -1064,6 +1074,7 @@ str(spot2024b)
  $ date : Date, format: "2023-12-29" "2024-01-03" ...
  $ price: chr  "69.15" "69.74" "71" "70" ... 
 spot2024b[["price"]] <- as.numeric(spot2024b[["price"]]) 
+
 # chart of 2024 plus auction
 svg(filename="spotprice2024-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 #png("spotprice2024-560by420.png", bg="white", width=560, height=420,pointsize = 14)

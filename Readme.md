@@ -15,7 +15,7 @@ The prices are then processed in the [R programming language](https://www.r-proj
 
 These sets of price data are then charted in R Ggplot2. 
 
-First, lets look at 2024. Since the auction on 15 March 2024, where bids failed to meet the reserve price, the spot price is now consistently less than the auction reserve minimum price of $64 for 2024. In the June auction, bids again did not meet the reserve and the bids were not accepted.
+First, lets look at 2024. Since the auction on 15 March 2024, where bids failed to meet the reserve price, the spot price is now consistently less than the auction reserve minimum price of $64 for 2024. In the June auction, bids again did not meet the reserve and the bids were not accepted. However, on 20 August 2024, Minister for Climate Change, Simon Watts anoounced the [](https://www.beehive.govt.nz/release/updated-settings-restore-ets-market-confidence) [Annual updates to emission unit limits and price control settings](https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/annual-updates-to-emission-unit-limits-and-price-control-settings/). It appears that there has been a 'bump' of $5 in the carbon price in response.
 ![](spotprice2024c-720by540.svg)
 
 This graph is the mean price for each calendar month.

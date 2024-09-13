@@ -982,8 +982,8 @@ class(spotzoo)
 [1] "zoo" 
 str(spotzoo)
 ‘zoo’ series from 2010-05-14 to 2024-09-06
-  Data: num [1:1905] 17.8 17.5 17.5 17 17.8 ...
-  Index:  Date[1:1905], format: "2010-05-14" "2010-05-21" "2010-05-29" "2010-06-11" "2010-06-25" ... 
+  Data: num [1:1910] 17.8 17.5 17.5 17 17.8 ...
+  Index:  Date[1:1910], format: "2010-05-14" "2010-05-21" "2010-05-29" "2010-06-11" "2010-06-25" ... 
 is.ts(spotzoo) 
 [1] FALSE 
 is.xts(spotzoo) 
@@ -1032,21 +1032,35 @@ dev.off()
 help(xts)
 
 zoo2024 <- last(spotzoo, "1 year")
+zoo2024[1:2,]
+2024-01-03 2024-01-04 
+     69.74      71.00  
 str(zoo2024)
 ‘zoo’ series from 2024-01-03 to 2024-09-06
   Data: num [1:167] 69.7 71 70 70 68.8 ...
   Index:  Date[1:167], format: "2024-01-03" "2024-01-04" "2024-01-05" "2024-01-08" "2024-01-09" ...  
-svg(filename="spotprice-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-png("spotprice-560by420.png", bg="white", width=560, height=420,pointsize = 14)
+
+svg(filename="spotprice2024-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
+#png("spotprice2024-560by420.png", bg="white", width=560, height=420,pointsize = 14)
 par(mar=c(2.7,2.7,1,1)+0.1)
 plot(zoo2024,tck=0.01,ylim=c(0,75),axes=T,ann=T, las=1,col="red",lwd=1,type='l',lty=1,xlab ="",ylab="")
 grid(col="darkgray",lwd=1)
 axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
 mtext(side=1,cex=1,line=-1.1,"Data https://github.com/theecanmole/NZ-emission-unit-prices")
-mtext(side=3,cex=1.3, line=-2.2,expression(paste("New Zealand Unit spot prices")) )
+mtext(side=3,cex=1.3, line=-2.2,expression(paste("New Zealand Unit spot prices 2024")) )
 mtext(side=2,cex=1, line=-1.3,"$NZD")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off() 
+
+zoo2023_2024 <- last(spotzoo, "2 years") 
+plot(zoo2023_2024,tck=0.01,ylim=c(0,75),axes=T,ann=T, las=1,col="red",lwd=1,type='l',lty=1,xlab ="",ylab="")
+grid(col="darkgray",lwd=1)
+axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
+mtext(side=1,cex=1,line=-1.1,"Data https://github.com/theecanmole/NZ-emission-unit-prices")
+mtext(side=3,cex=1.3, line=-2.2,expression(paste("New Zealand Unit spot prices 2023 2024")) )
+mtext(side=2,cex=1, line=-1.3,"$NZD")
+mtext(side=4,cex=0.75, line=0.05,R.version.string)
+
 help(xts)
 
 # the beginning of the data through 2007
@@ -1077,3 +1091,35 @@ is.xts(spotxts2zoo)
 [1] TRUE
 plot(spotxts2zoo) 
 # plots the same as xts  
+
+head(spotzoo)
+2010-05-14 2010-05-21 2010-05-29 2010-06-11 2010-06-25 2010-06-30 
+     17.75      17.50      17.50      17.00      17.75      17.50 
+tail(spotzoo)
+2024-09-06 2024-09-09 2024-09-10 2024-09-11 2024-09-12 2024-09-13 
+     61.83      61.25      61.72      61.83      61.80      61.49 
+dim(spotzoo)
+NULL
+spotzoo[1:100]
+2010-05-14 2010-05-21 2010-05-29 2010-06-11 2010-06-25 2010-06-30 2010-07-09 
+     17.75      17.50      17.50      17.00      17.75      17.50      18.00 
+     
+str(spotzoo)
+‘zoo’ series from 2010-05-14 to 2024-09-13
+  Data: num [1:1910] 17.8 17.5 17.5 17 17.8 ...
+  Index:  Date[1:1910], format: "2010-05-14" "2010-05-21" "2010-05-29" "2010-06-11" "2010-06-25" ...
+summary(spotzoo)
+     Index               spotzoo     
+ Min.   :2010-05-14   Min.   : 1.60  
+ 1st Qu.:2018-01-31   1st Qu.:20.63  
+ Median :2020-05-20   Median :28.91  
+ Mean   :2019-10-26   Mean   :38.28  
+ 3rd Qu.:2022-08-31   3rd Qu.:61.79  
+ Max.   :2024-09-13   Max.   :88.50   
+
+plot(spotzoo[1700:1910,1])
+# what dates are the last day of 2023 and first price of 2024?
+spotzoo[1738:1739,1]
+2023-12-29 2024-01-03 
+     69.15      69.74
+plot(spotzoo[1700:1910,1])     

@@ -39,9 +39,6 @@ This graph displays the spot prices from November 2022 to December 2023. I have 
 This graph is the spot prices from December 2022 to December 2023. Blue dashed horizontal lines mark the dates of the quarterly NZU auctions. The December 2022 auction met it's reserve price. The four 2023 auctions did not meet the reserve price and no units were sold.
 ![](NZU-auctions-2023-720by540-ggplot-theme-bw.svg)
 
-This is the plot of the spot prices when expressed in the 'xts' format. It has interesting defaults for the price axis and the date axis and title.
-![](NZU-spotXTStimeseriesprices-720by540.svg)
-
 ### License
 
 #### ODC-PDDL-1.0

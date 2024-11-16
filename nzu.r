@@ -22,9 +22,9 @@ getwd()
 data <- read.csv("nzu-edited-raw-prices-data.csv",header=FALSE)
 
 dim(data)
-[1] 1950    5
+[1] 1955    5
 str(data) 
-'data.frame':	1950 obs. of  5 variables:
+'data.frame':	1955 obs. of  5 variables:
  $ V1: chr  "2010/05/14" "2010/05/21" "2010/05/29" "2010/06/11" ...
  $ V2: chr  "17.75" "17.5" "17.5" "17" ...
  $ V3: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -36,15 +36,15 @@ str(data)
 # look at that last 3 rows again
 tail(data,3)
              V1    V2                                                   V3
-1948 2024/11/07 63.74 https://www.carbonnews.co.nz/story.asp?storyID=33059
-1949 2024/11/08 63.77 https://www.carbonnews.co.nz/story.asp?storyID=33073
-1950       date price                                            reference
+1953 2024/11/14 63.87 https://www.carbonnews.co.nz/story.asp?storyID=33123
+1954 2024/11/15 63.78 https://www.carbonnews.co.nz/story.asp?storyID=33134
+1955       date price                                            reference
           V4       V5
-1948 2024-11 2024-W45
-1949 2024-11 2024-W45
-1950   month     week  
+1953 2024-11 2024-W46
+1954 2024-11 2024-W46
+1955   month     week 
 
-# try converting the last row to a character vector
+# convert the last row to a character vector
 as.character(data[nrow(data),])
 [1] "date"      "price"     "reference" "month"     "week" 
 # add column names as character formated last row cells
@@ -73,7 +73,7 @@ data$month <- as.factor(format(data$date, "%Y-%m"))
 
 # check the dataframe again
 str(data) 
-'data.frame':	1949 obs. of  5 variables:
+'data.frame':	1955 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -88,13 +88,15 @@ write.csv(data, file = "nzu-final-prices-data.csv", row.names = FALSE)
 spotprices <- data[,1:2]
 
 str(spotprices) 
-'data.frame':	1949 obs. of  2 variables:
+'data.frame':	1954 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-21" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ... 
 
 # write the spot prices dataframe to a .csv file 
 write.table(spotprices, file = "spotprices.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
+
 #spotprices <- read.csv("spotprices.csv",colClasses = c("Date","numeric"))
+# write.table and csv from a dataframe is still the best
 
 ## mean price each month
 
@@ -114,9 +116,33 @@ str(monthprice)
 
 # write the mean monthly price dataframe to a .csv file 
 write.table(monthprice, file = "nzu-month-price.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)
+monthprice <- read.csv("nzu-month-price.csv", colClasses = c("Date","numeric"))
 
 # Convert the data frame price and date columns to a zoo time series object,
 monthpricezoo <- zoo(monthprice[["price"]], monthprice[["date"]])
+monthpricezoo[154:175]
+monthprice22 <- monthpricezoo[154:175] 
+plot(monthprice22,ylim=c(0,80),col='green') 
+points(monthprice22,col='green',pch=16)
+
+dput(monthprice22) 
+
+mp22a <- structure(c(70.81, 64.75, 60.1, 53.81, 51.79, 47.58, 62.43, 68.91, 
+67.84, 70.82, 71.08, 69.39, 70.47, 63.45, 55.79, 51.39, 51.25, 
+52.18, 55.84, 61.68, 62.84, 63.52), index = structure(c(19403, 
+19431, 19462, 19492, 19523, 19553, 19584, 19615, 19645, 19676, 
+19706, 19737, 19768, 19797, 19828, 19858, 19889, 19919, 19950, 
+19981, 20011, 20042), class = "Date"), class = "zoo")
+mp22a 
+2023-02-15 2023-03-15 2023-04-15 2023-05-15 2023-06-15 2023-07-15 2023-08-15 
+     70.81      64.75      60.10      53.81      51.79      47.58      62.43 
+2023-09-15 2023-10-15 2023-11-15 2023-12-15 2024-01-15 2024-02-15 2024-03-15 
+     68.91      67.84      70.82      71.08      69.39      70.47      63.45 
+2024-04-15 2024-05-15 2024-06-15 2024-07-15 2024-08-15 2024-09-15 2024-10-15 
+     55.79      51.39      51.25      52.18      55.84      61.68      62.84 
+2024-11-15 
+     63.52
+str(mp22a) 
 
 # create chart - its the same as chart of dataframe of date and price
 svg(filename="NZUpriceZoo-720by540.svg", width = 8, height = 6, pointsize = 12, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
@@ -158,14 +184,17 @@ library("zoo")
 # How many days of dates should be included if there were prices for all days from May 2010 to today?
 spotpricealldates <- seq.Date(min(spotprices$date), max(spotprices$date), "day")
 length(spotpricealldates) 
-[1] 5293
+[1] 5300
 # how many missing values are there?
 length(spotpricealldates) - nrow(spotprices) 
-[1] 3344
+[1] 3346
 
 # create dataframe of all the days including days with missing prices added as NA
 spotpricealldatesmissingprices <- merge(x= data.frame(date = spotpricealldates),  y = spotprices,  all.x=TRUE)
-
+str(spotpricealldatesmissingprices) 
+'data.frame':	5300 obs. of  2 variables:
+ $ date : Date, format: "2010-05-14" "2010-05-15" ...
+ $ price: num  17.8 NA NA NA NA ...
 head(spotpricealldatesmissingprices) 
         date price
 1 2010-05-14 17.75
@@ -181,8 +210,8 @@ spotpricealldatesmissingpriceszoo <- zoo(x = spotpricealldatesmissingprices[["pr
 # check the object's structure
 str(spotpricealldatesmissingpriceszoo)
 ‘zoo’ series from 2010-05-14 to 2024-04-05
-  Data: num [1:5293] 17.8 NA NA NA NA ...
-  Index:  Date[1:5293], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+  Data: num [1:5300] 17.8 NA NA NA NA ...
+  Index:  Date[1:5300], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
 # look a first 6 lines/rows
 head(spotpricealldatesmissingpriceszoo) 
@@ -191,7 +220,7 @@ head(spotpricealldatesmissingpriceszoo)
 
 # create a zoo matrix with filled in the missing prices with linear interpolation via zoo package and save output  
 spotpricefilled <- na.approx(spotpricealldatesmissingpriceszoo)
-#spotpricefilledspline <- na.spline(spotpricealldatesmissingpriceszoo)
+spotpricefilledspline <- na.spline(spotpricealldatesmissingpriceszoo)
 
 # round infilled values to cents
 spotpricefilled <- round(spotpricefilled,2)
@@ -202,8 +231,8 @@ head(spotpricefilled)
 
 str(spotpricefilled) 
 ‘zoo’ series from 2010-05-14 to 2024-08-30
-  Data: num [1:5293] 17.8 17.7 17.7 17.6 17.6 ...
-  Index:  Date[1:5293], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+  Data: num [1:5300] 17.8 17.7 17.7 17.6 17.6 ...
+  Index:  Date[1:5300], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
 plot(spotpricefilled, spotpricefilledspline)  
 
@@ -235,7 +264,7 @@ head(spotpricefilleddataframe)
 6 2010-05-19 17.57
 
 str(spotpricefilleddataframe) 
-'data.frame':	5293 obs. of  2 variables:
+'data.frame':	5300 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-15" ...
  $ price: num  17.8 17.7 17.7 17.6 17.6 .. 
  
@@ -286,7 +315,7 @@ tail(spotpricefilleddataframe)
 5293 2024-11-08 63.77    Friday
 
 str(spotpricefilleddataframe)
-'data.frame':	3781 obs. of  3 variables:
+'data.frame':	3786 obs. of  3 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  17.8 17.6 17.6 17.6 17.5 ...
  $ day  : chr  "Friday" "Monday" "Tuesday" "Wednesday" ...
@@ -300,7 +329,7 @@ write.table(spotpricefilleddataframe, file = "spotpricesinfilled.csv", sep = ","
 #spotpricefilleddataframe <- read.csv("spotpricesinfilled.csv", colClasses = c("Date","numeric")) 
 
 str(spotpricefilleddataframe) 
-'data.frame':	3781 obs. of  2 variables:
+'data.frame':	3786 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  17.8 17.6 17.6 17.6 17.5 ... 
  
@@ -314,8 +343,8 @@ tail(spotfilledzoo)
      
 str(spotfilledzoo)
 ‘zoo’ series from 2010-05-14 to 2024-11-01
-  Data: num [1:3781] 17.8 17.6 17.6 17.6 17.5 ...
-  Index:  Date[1:3781], format: "2010-05-14" "2010-05-17" "2010-05-18" "2010-05-19" "2010-05-20" ...
+  Data: num [1:3786] 17.8 17.6 17.6 17.6 17.5 ...
+  Index:  Date[1:3786], format: "2010-05-14" "2010-05-17" "2010-05-18" "2010-05-19" "2010-05-20" ...
 
 # create a base R plot of infilled spot prices  
 svg(filename="spotpricefilled-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
@@ -385,7 +414,7 @@ spot <- read.csv(file = "spotpricesinfilled.csv", colClasses = c("Date","numeric
 spot$spotroll31 <- rollmean(spot[["price"]], k =21,  fill = NA, align = c("center"))
 
 str(spot) 
-'data.frame':	3781 obs. of  3 variables:
+'data.frame':	3786 obs. of  3 variables:
  $ date      : Date, format: "2010-05-14" "2010-05-17" ...
  $ price     : num  17.8 17.6 17.6 17.6 17.5 ...
  $ spotroll31: num  NA NA NA NA NA NA NA NA NA NA ... 
@@ -401,7 +430,7 @@ colnames(spotrollmean31) <- c("date","price")
 
 # examine dataframe
 str(spotrollmean31) 
-'data.frame':	3781 obs. of  2 variables:
+'data.frame':	3786 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  NA NA NA NA NA NA NA NA NA NA ...
 
@@ -438,12 +467,12 @@ date  price
 756 2024-10-28 63.064 
 
 str(spotprices) 
-'data.frame':	1949 obs. of  2 variables:
+'data.frame':	1954 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-21" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ... 
 
 str(spotpricesinfilled)
-'data.frame':	3776 obs. of  2 variables:
+'data.frame':	3786 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  17.8 17.6 17.6 17.6 17.5 ... 
  
@@ -458,8 +487,8 @@ weekpricezoo <- aggregate(spotfilledzoo, as.Date(cut(time(spotfilledzoo), "week"
 
 str(weekpricezoo)
 ‘zoo’ series from 2010-05-10 to 2024-10-28
-  Data: num [1:757] 17.8 17.6 17.5 17.3 17.1 ...
-  Index:  Date[1:757], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ...
+  Data: num [1:758] 17.8 17.6 17.5 17.3 17.1 ...
+  Index:  Date[1:758], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ...
 
 # Convert  the zoo vector to a data frame
 weeklypricefilleddataframe <- data.frame(date=index(weekpricezoo),price = coredata(weekpricezoo))
@@ -484,7 +513,7 @@ dev.off()
 ## 2024 infilled spot prices
 
 str(spotpricefilleddataframe)
-'data.frame':	3781 obs. of  2 variables:
+'data.frame':	3786 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  17.8 17.6 17.6 17.6 17.5 ...
 
@@ -493,7 +522,7 @@ str(spotpricefilleddataframe)
 spot2024 <- spotpricefilleddataframe[spotpricefilleddataframe$date > as.Date("2024-01-01"),]
 
 str(spot2024) 
-'data.frame':	224 obs. of  2 variables:
+'data.frame':	229 obs. of  2 variables:
  $ date : Date, format: "2024-01-02" "2024-01-03" ...
  $ price: num  69.6 69.7 71 70 70 ...
 

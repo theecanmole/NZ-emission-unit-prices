@@ -15,13 +15,13 @@ The prices are then processed in the [R programming language](https://www.r-proj
 
 These sets of price data are then charted in R Ggplot2. 
 
-First, lets look at price trends in 2024. Until the first auction on 15 March 2024, the spot price was consistently above the auction minimum price of $64. The (https://www.etsauctions.govt.nz/public/auction_noticeboard/50)[March auction partly cleared]. Bids for 3 million units (out of 3.5 million available) were accepted as so those bids must have been greater than the auction reserve price. And the unfilled bids must have been less than the reserve price.  
+First, lets look at price trends in 2024. Until the first auction on 15 March 2024, the spot price was consistently above the auction minimum price of $64. The [March auction partly cleared](https://www.etsauctions.govt.nz/public/auction_noticeboard/50). Bids for 3 million units (out of 3.5 million available) were accepted as so those bids must have been greater than the auction reserve price. And the unfilled bids must have been less than the reserve price.  
 
-In the June auction, bids did not meet the reserve price and [https://www.etsauctions.govt.nz/public/auction_noticeboard/52](no bids were accepted). The trend in the spot price reversed from downward to upward. 
+In the June auction, [bids did not meet the reserve price](https://www.etsauctions.govt.nz/public/auction_noticeboard/52) and no bids were accepted. The trend in the spot price reversed from downward to upward. 
 
 On 20 August 2024, Minister for Climate Change, Simon Watts [announced](https://www.beehive.govt.nz/release/updated-settings-restore-ets-market-confidence) the [Annual updates to emission unit limits and price control settings](https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/annual-updates-to-emission-unit-limits-and-price-control-settings/). It appears there was  an immediate 'bump' of $5 in the NZU price in response.
 
-The 4 ("September 2024 auction produced no clearing price because there were no bids")[https://www.etsauctions.govt.nz/public/auction_noticeboard/54]. There was no obvious response in the spot price.
+"The 4 [September 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/54) produced no clearing price because there were no bids". There was no obvious response in the spot price.
 
 2024 secondary market spot prices in the Ggplot2 design.
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw.svg)

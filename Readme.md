@@ -11,7 +11,7 @@ The prices are then processed in the [R programming language](https://www.r-proj
 * [average weekly prices (with the missing values filled by linear interpolation)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklypricefilled.csv) 
 * [spot prices (with missing values)](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/spotprices.csv).
 * [spot prices (with the missing values filled by linear interpolation)](spotpricesinfilled.csv)
-* [31 day rolling mean of the infilled spot prices](spotrollmean31.csv)
+* [21 day rolling mean of the infilled spot prices](spotrollmean31.csv)
 
 These sets of price data are then charted in R Ggplot2. 
 

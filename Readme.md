@@ -21,7 +21,9 @@ In the June auction, [bids did not meet the reserve price](https://www.etsauctio
 
 On 20 August 2024, Minister for Climate Change, Simon Watts [announced](https://www.beehive.govt.nz/release/updated-settings-restore-ets-market-confidence) the [Annual updates to emission unit limits and price control settings](https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/annual-updates-to-emission-unit-limits-and-price-control-settings/). It appears there was  an immediate 'bump' of $5 in the NZU price in response.
 
-"The [4 September 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/54) produced no clearing price because there were no bids". There was no obvious response in the spot price.
+"The [4 September 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/54) did not clear as there were no bids". There was no obvious response in the spot price.
+
+"The [4 December 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/60) part cleared and 4,032,500 units were sold. Again there was no obvious response in the spot price.
 
 2024 secondary market spot prices in the Ggplot2 design.
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw.svg)

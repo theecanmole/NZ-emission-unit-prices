@@ -15,15 +15,15 @@ The prices are then processed in the [R programming language](https://www.r-proj
 
 These sets of price data are then charted in R Ggplot2. 
 
-First, lets look at price trends in 2024. Until the first auction on 15 March 2024, the spot price was consistently above the auction minimum price of $64. The [March auction partly cleared](https://www.etsauctions.govt.nz/public/auction_noticeboard/50). Bids for 3 million units (out of 3.5 million available) were accepted as so those bids must have been greater than the auction reserve price. And the unfilled bids must have been less than the reserve price.  
+First, lets look at price trends in 2024. Until the first auction on 20 March 2024, the spot price was consistently above the auction minimum price of $64. The [March auction partly cleared](https://www.etsauctions.govt.nz/public/auction_noticeboard/50). Bids for 3 million units (out of 3.5 million available) were accepted as so those bids must have been greater than the auction reserve price. And the unfilled bids must have been less than the reserve price. The price fell sharply from 65.40 on 20 March to 51.00 on 21 March 2024.
 
-In the June auction, [bids did not meet the reserve price](https://www.etsauctions.govt.nz/public/auction_noticeboard/52) and no bids were accepted. The trend in the spot price reversed from downward to upward. 
+In the 19 June auction, [bids did not meet the reserve price](https://www.etsauctions.govt.nz/public/auction_noticeboard/52) and no bids were accepted. There was a small uptick in price and the trend reversed from downward to upward. 
 
-On 20 August 2024, Minister for Climate Change, Simon Watts [announced](https://www.beehive.govt.nz/release/updated-settings-restore-ets-market-confidence) the [Annual updates to emission unit limits and price control settings](https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/annual-updates-to-emission-unit-limits-and-price-control-settings/). It appears there was  an immediate 'bump' of $5 in the NZU price in response.
+On 20 August 2024, Minister for Climate Change, Simon Watts [announced](https://www.beehive.govt.nz/release/updated-settings-restore-ets-market-confidence) the [Annual updates to emission unit limits and price control settings](https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/annual-updates-to-emission-unit-limits-and-price-control-settings/). It appears there was  an immediate overnight 'bump' of $5 in the NZU price in response.
 
-"The [4 September 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/54) did not clear as there were no bids". There was no obvious response in the spot price.
+The [4 September 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/54) did not clear as there were no bids. There was no obvious response in the spot price. After the auction the price trend showed a slow convergence back to the 64.00 minimum auction price
 
-"The [4 December 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/60) part cleared and 4,032,500 units were sold. Again there was no obvious response in the spot price.
+"The [4 December 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/60) part cleared and 4,032,500 units were sold at exactly 64.00. Again there was no obvious response in the spot price on 5 December.
 
 2024 secondary market spot prices in the Ggplot2 design.
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw.svg)

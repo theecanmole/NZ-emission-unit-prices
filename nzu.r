@@ -578,13 +578,16 @@ theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
 theme(plot.caption = element_text( hjust = 0.5 )) +
 labs(title="NZU spot prices 2024", x ="2024", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(spot2024[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) +
+geom_vline(xintercept = as.Date("2024-12-04"), colour="blue",linetype ="dashed") +
+geom_vline(xintercept = as.Date("2024-12-05"), colour="blue",linetype ="dashed") +
 geom_vline(xintercept = as.Date("2024-12-11"), colour="blue",linetype ="dashed") +
-annotate("text", x= as.Date("2024-12-11")+9, y = 2, size = 4, angle = 90, hjust = 0, label="11/12/2024 Second Emissions Reduction Plan") +
+annotate("text", x= as.Date("2024-12-11")+9, y = 30, size = 4, angle = 90, hjust = 0, label="December policy announcements") +
 geom_hline(yintercept = 64, colour="blue",linetype ="dashed") +
-annotate("text", x= spot2024[["date"]][85], y = 62, size = 4, angle = 0, hjust = 0, label="2024 ETS Auction floor price $64") +
-annotate("text", x= spot2024[["date"]][65], y = 42, size = 4, angle = 0, hjust = 0, label="11 Dec Emissions Reduction Plan tanks NZU price by $4")
+annotate("text", x= spot2024[["date"]][85], y = 62, size = 3, angle = 0, hjust = 0, label="2024 ETS Auction floor price $64") +
+annotate("text", x= spot2024[["date"]][45], y = 35, size = 4, angle = 0, hjust = 0, label="December announcements tank NZU price by $4\n04/12/2024 Methane target report,\n04/12/2024 ETS carbon forestry limits\n11/12/2024 Second Emissions Reduction Plan")
 dev.off() 
 
+#annotate("text", x= as.Date("2024-12-04")+9, y = 2, size = 4, angle = 90, hjust = 0, label="04/12/2024 Methane target report, ETS carbon forestry limits") +
 # second chart of 2024 unit prices after 20 March
 # what is x axis for https://www.etsauctions.govt.nz/public/auction_noticeboard/50 Units sold	2,974,300
 as.numeric(as.Date("2024-03-20"))

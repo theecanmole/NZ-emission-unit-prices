@@ -565,7 +565,8 @@ dev.off()
 
 -------------------------------------------------------------------------- 
  
-# This is a chart of the infilled spot price data in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 1 year
+# This is a chart of the 2024 infilled spot price data in the Ggplot2 theme 'black and white' with x axis at 10 grid and y axis at 1 year
+
 svg(filename="NZU-spotpriceinfilled2024-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 #png("NZU-spotpriceinfilled2024-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 #png("NZU-spotpriceinfilled2024-540by405-ggplot-theme-bw.png", bg="white", width=540, height=405)
@@ -607,6 +608,12 @@ https://www.etsauctions.govt.nz/public/auction_noticeboard/54 04/09/2024
 # The September 2024 auction produced no clearing price because there were no bids. As a result, all available units will be rolled over to the next auction on 4 December 2024. units sold 0
 as.numeric(as.Date("2024-09-04"))
 [1] 19970 
+
+5 December 2024
+https://www.climatecommission.govt.nz/news/commission-delivers-first-review-of-the-2050-target-and-advice-on-the-fourth-emissions-budget/
+https://www.climatecommission.govt.nz/our-work/advice-to-government-topic/review-of-the-2050-emissions-target/2024-review-of-the-2050-emissions-target/final-report/
+https://www.climatecommission.govt.nz/our-work/advice-to-government-topic/preparing-advice-on-emissions-budgets/advice-on-the-fourth-emissions-budget/final-report/
+
 
 svg(filename="spotprice2024c-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 #png("spotprice2024c-560by420.png", bg="white", width=560, height=420,pointsize = 14)

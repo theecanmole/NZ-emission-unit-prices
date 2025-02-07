@@ -13,9 +13,12 @@ The prices are then processed in the [R programming language](https://www.r-proj
 * [spot prices (with the missing values filled by linear interpolation)](spotpricesinfilled.csv)
 * [21 day rolling mean of the infilled spot prices](spotrollmean31.csv)
 
-These sets of price data are then charted in R Ggplot2. 
+These sets of price data are charted in R Ggplot2. 
+
 ## 2025 prices
-So far 2025 prices seem to be drifting around the 2024 auction reserve limit of $64. There seems to have been no clear price response to the [Government's announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions reduction target.
+
+So far 2025 prices seem to be drifting around the 2024 auction reserve limit of $64. There seems to have been no clear price response to the [Government's announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target.
+
 ![](spotprice2025-720by540.svg)
 
 ## 2024 prices
@@ -23,7 +26,7 @@ So far 2025 prices seem to be drifting around the 2024 auction reserve limit of 
 In December 2024 there was a log-jam of five Government policy announcements as well as a partly-cleared unit auction. There was a brief $4 dip in NZU price before it recovered to $63 on 17 December 2024.
 ![](NZU-spotpriceinfilled2024-720by540-ggplot-theme-bw.svg)
 
-Lets look at price trends in 2024. Until the first auction on 20 March 2024, the spot price was consistently above the auction minimum price of $64. The [March auction partly cleared](https://www.etsauctions.govt.nz/public/auction_noticeboard/50). Bids for 3 million units (out of 3.5 million available) were accepted as so those bids must have been greater than the auction reserve price. And the unfilled bids must have been less than the reserve price. The price fell sharply from 65.40 on 20 March to 51.00 on 21 March 2024.
+Lets look back at price trends in 2024. Until the first auction on 20 March 2024, the spot price was consistently above the auction minimum price of $64. The [March auction partly cleared](https://www.etsauctions.govt.nz/public/auction_noticeboard/50). Bids for 3 million units (out of 3.5 million available) were accepted as so those bids must have been greater than the auction reserve price. And the unfilled bids must have been less than the reserve price. The price fell sharply from 65.40 on 20 March to 51.00 on 21 March 2024.
 
 In the 19 June auction, [bids did not meet the reserve price](https://www.etsauctions.govt.nz/public/auction_noticeboard/52) and no bids were accepted. There was a small uptick in price and the trend reversed from downward to upward. 
 

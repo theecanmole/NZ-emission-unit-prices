@@ -14,6 +14,11 @@ The prices are then processed in the [R programming language](https://www.r-proj
 * [21 day rolling mean of the infilled spot prices](spotrollmean31.csv)
 
 These sets of price data are then charted in R Ggplot2. 
+## 2025 prices
+So far 2025 prices seem to be drifting around the 2024 auction reserve limit of $64. There seems to have been no clear price response to the [Government's announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions reduction target.
+![](spotprice2025-720by540.svg)
+
+## 2024 prices
 
 In December 2024 there was a log-jam of five Government policy announcements as well as a partly-cleared unit auction. There was a brief $4 dip in NZU price before it recovered to $63 on 17 December 2024.
 ![](NZU-spotpriceinfilled2024-720by540-ggplot-theme-bw.svg)

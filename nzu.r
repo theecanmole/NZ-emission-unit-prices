@@ -982,17 +982,6 @@ mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off() 
 help(xts)
 
-# chart of xts object "spotprice" the irregular series
-plot(spotxts,tck=0.01,axes=T,ann=T, las=1,col="red",lwd=1,type='l',lty=1,xlab ="Date",ylab="$NZD")
-
-svg(filename="spotpricexts-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("spotprice-560by420.png", bg="white", width=560, height=420,pointsize = 14)
-#par(mar=c(2.7,2.7,1,1)+0.1)
-plot(spotxts,tck=0.01,axes=T,ann=T, las=1,col="red",lwd=1,type='l',lty=1,xlab ="",ylab="SNZD")
-dev.off() 
-
-help(xts)
-
 zoo2024 <- last(spotzoo, "1 year")
 zoo2024[1:2,]
 2024-01-03 2024-01-04 
@@ -1024,17 +1013,6 @@ mtext(side=1,cex=1,line=-1.1,"Data https://github.com/theecanmole/NZ-emission-un
 mtext(side=3,cex=1.3, line=-2.2,expression(paste("New Zealand Unit spot prices 2023 2024")) )
 mtext(side=2,cex=1, line=-1.3,"$NZD")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
-
-help(xts)
-
-# the beginning of the data through 2007
-ls() 
-str(spotxts) 
-An xts object on 2010-05-14 / 2024-09-06 containing: 
-  Data:    double [1905, 1]
-  Index:   Date [1905] (TZ: "UTC") 
-
-tail(spotpricesinfilled)
 
 ## zoo aggregate
 

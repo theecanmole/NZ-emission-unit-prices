@@ -1,6 +1,6 @@
 ## New Zealand Unit spot prices 2010–2024.
-Theecanmole. (2024).
-[Data set] https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/ spotpricesinfilled.csv
+
+Theecanmole. (2024). [Data set] https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/ spotpricesinfilled.csv
 
 # remember to "find and replace" "-" with "/" (replace short dashs with backslashs in the csv file "nzu-edited-raw-prices-data.csv"
 
@@ -1169,31 +1169,7 @@ str(spotfilledzoo)
 tail(spotfilledzoo)
 2024-10-25 2024-10-28 2024-10-29 2024-10-30 2024-10-31 2024-11-01 
      62.93      62.99      63.01      62.93      63.15      63.24 
-     
-# basic Ggplot using zoo and fortify
-svg(filename="NZUpriceFortifyZoo-720by540.svg", width = 8, height = 6, pointsize = 12, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-par(mar=c(2.7,2.7,1,1)+0.1)
-ggplot(aes(x = Index, y = Value), data = fortify(spotfilledzoo, melt = TRUE)) +  geom_line() + xlab("Date") + ylab("Price $NZD") + geom_smooth(se = TRUE) + labs(title="New Zealand Unit prices 2010 to 2024", caption="Data: 'NZU monthly prices https://github.com/theecanmole/nzu")
-dev.off() 
 
-ggplot(aes(x = Index, y = Value), data = fortify(spot2023zoo, melt = TRUE)) +  geom_line(colour = "#ED1A3B",size = 0.5) + xlab("Date") + ylab("Price $NZD") + labs(title="New Zealand Unit prices 2023 to 2024", caption="Data: 'NZU monthly prices https://github.com/theecanmole/nzu")
-
-autoplot(spot2023zoo) 
-# very basic ggplot
-
-# my preferred Ggplot for 2024 using zoo and fortify
-svg(filename="NZU-spotpriceFORTIFY-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-#png("NZU-spotpriceFORTIFY-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
-ggplot( aes(x = Index, y = Value), data = fortify(spotfilledzoo, melt = TRUE) ) +  geom_line(colour = "#ED1A3B",size = 0.5) + 
-theme_bw(base_size = 14) +
-#geom_smooth(se = TRUE) +
-scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
-scale_x_date(date_breaks = "year", date_labels = "%Y") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices", x ="Date", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
-annotate("text", x= max(index(spotfilledzoo)), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string) 
-dev.off() 
 
 # my preferred Ggplot for 2024 using zoo and fortify
 svg(filename="NZU-spotprice2023FORTIFY-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
@@ -1325,21 +1301,6 @@ cor(coredata(monthpricezoocut),coredata(monthpricezoo))
 So the month mean of raw prices with omissions (n = 1940) is 99.99403 % the same as the month mean price aggregated via zoo of the infilled spot prices (n = 3771) 
 
 ,xlab="",ylab=""
-
-plot(coredata(monthpricezoocut),coredata(monthpricezoo))
-
-svg(filename="Monthmeanpricecorrelation-720by540.svg", width = 8, height = 6, pointsize = 12, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
-par(mar=c(2.7,2.7,1,1)+0.1)
-plot(coredata(monthpricezoocut),coredata(monthzoo),tck=0.01,ann=TRUE, las=1,col='red',lwd=1,type='p',lty=1)
-#points(monthpricezoo,col='red',pch=19,cex=0.5)
-#grid(col="darkgray",lwd=1)
-axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
-#mtext(side=1,cex=0.8,line=-1.1,"Data: 'NZU monthly prices' https://github.com/theecanmole/nzu")
-mtext(side=3,cex=1.5, line=-2.2,expression(paste("Correlation of mean month methods 2010 - 2024")) )
-mtext(side=1,cex=1, line=-1.3,"month prices from infilled spot prices (n = 3776)")
-mtext(side=2,cex=1, line=-1.3,"month prices from raw spot prices (n = 1943)")
-mtext(side=4,cex=0.75, line=0.05,R.version.string)
-dev.off()
 
 sessionInfo()
 R version 4.3.2 (2023-10-31)

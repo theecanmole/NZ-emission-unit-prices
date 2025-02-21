@@ -36,31 +36,39 @@ The [4 September 2024 auction](https://www.etsauctions.govt.nz/public/auction_no
 
 "The [4 December 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/60) part cleared and 4,032,500 units were sold at exactly 64.00. Again there was no obvious response in the spot price on 5 December.
 
-2024 secondary market spot prices in the Ggplot2 design.
+## 2024 secondary market spot prices in the Ggplot2 design
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw.svg)
 
-2024 secondary market spot prices in base R plot design
+## 2024 were the secondary market spot prices influenced by the auctions (in the Ggplot2 format)
+![](NZU-auctions-2024-720by540-ggplot-theme-bw2024-12-06.svg)
+
+## 2024 secondary market spot prices in base R plot design
 ![](spotprice2024c-720by540.svg)
 
-This graph is the mean price for each calendar month.
+## Other NZU price data sets
+## This graph is the mean price for each calendar month.
 ![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
 
-This graph is the mean price for each week. The missing values are infilled via linear interpolation
+## This graph is the mean price for each week. The missing values are infilled via linear interpolation
 ![](NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg)
 
-This graph is the spot prices of trading on week days. It is an irregular time series. When trading of units started in 2010, the volume of trades was sufficiently low that several days or weeks could pass by without any trading. 
+## This graph is the spot prices of trading on week days
+It is an irregular time series. When trading of units started in 2010, the volume of trades was sufficiently low that several days or weeks could pass by without any trading. 
 ![](NZU-spotprice-720by540-ggplot-theme-bw.svg)
 
-This graph is the spot prices of trading on week days. The missing values are filled via linear interpolation. It is almost a regular time series.
+## This graph is the spot prices of trading on week days
+The missing values are filled via linear interpolation. It is almost a regular time series.
 ![](NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg)
 
-This graph is the 31 day rolling mean of the infilled spot prices of unit trading on week days.
+## This graph is the 31 day rolling mean of the infilled spot prices of unit trading on week days
 ![](NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.svg)
 
-This graph displays the spot prices from November 2022 to December 2023. I have marked with blue dashed horizontal lines two dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, when the Labour Government decided not to follow the price advice from the Climate Change Commission [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
+## This graph displays the spot prices from November 2022 to December 2023
+I have marked with blue dashed horizontal lines two dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, when the Labour Government decided not to follow the price advice from the Climate Change Commission [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
 ![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg).
 
-This graph is the spot prices from December 2022 to December 2023. Blue dashed horizontal lines mark the dates of the quarterly NZU auctions. The December 2022 auction met it's reserve price. The four 2023 auctions did not meet the reserve price and no units were sold.
+## This graph is the spot prices from December 2022 to December 2023
+Blue dashed horizontal lines mark the dates of the quarterly NZU auctions. The December 2022 auction met it's reserve price. The four 2023 auctions did not meet the reserve price and no units were sold.
 ![](NZU-auctions-2023-720by540-ggplot-theme-bw.svg)
 
 ### License

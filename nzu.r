@@ -5,6 +5,10 @@ Theecanmole. (2024). [Data set] https://github.com/theecanmole/NZ-emission-unit-
 # remember to "find and replace" "-" with "/" (replace short dashs with backslashs in the csv file "nzu-edited-raw-prices-data.csv"
 
 # change directory in an xterminal run "python3 api.py"
+# user@mx:~/R/nzu/nzu-fork-master/apipy
+$ python3 api.py
+/usr/lib/python3/dist-packages/bs4/builder/__init__.py:545: XMLParsedAsHTMLWarning: It looks like youre parsing an XML document using an HTML parser. If this really is an HTML document (maybe it's XHTML?), you can ignore or filter this warning. If it's XML, you should know that using an XML parser will be more reliable. To parse this document as XML, make sure you have the lxml package installed, and pass the keyword argument `features="xml"` into the BeautifulSoup constructor.
+  warnings.warn(
 
 # the csv file "nzu-edited-raw-prices-data.csv" is the output of 'api.py'
 
@@ -22,9 +26,9 @@ getwd()
 data <- read.csv("nzu-edited-raw-prices-data.csv",header=FALSE)
 
 dim(data)
-[1] 2001    5
+[1] 2006    5
 str(data) 
-'data.frame':	2001 obs. of  5 variables:
+'data.frame':	2006 obs. of  5 variables:
  $ V1: chr  "2010/05/14" "2010/05/21" "2010/05/29" "2010/06/11" ...
  $ V2: chr  "17.75" "17.5" "17.5" "17" ...
  $ V3: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -65,7 +69,7 @@ data$month <- as.factor(format(data$date, "%Y-%m"))
 
 # check the dataframe again
 str(data) 
-'data.frame':	2000 obs. of  5 variables:
+'data.frame':	2005 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -80,7 +84,7 @@ write.csv(data, file = "nzu-final-prices-data.csv", row.names = FALSE)
 spotprices <- data[,1:2]
 
 str(spotprices) 
-'data.frame':	2000 obs. of  2 variables:
+'data.frame':	2005 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-21" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ... 
 
@@ -153,16 +157,16 @@ library("zoo")
 # How many days of dates should be included if there were prices for all days from May 2010 to today?
 spotpricealldates <- seq.Date(min(spotprices$date), max(spotprices$date), "day")
 length(spotpricealldates) 
-[1] 5398
+[1] 5405
 # how many missing values are there?
 length(spotpricealldates) - nrow(spotprices)
-[1] 3398
+[1] 3400
 
 # create dataframe of "all the days" or 'x' including days with missing prices added as NA
 spotpricealldatesmissingprices <- merge(x= data.frame(date = spotpricealldates),  y = spotprices,  all.x=TRUE)
 
 str(spotpricealldatesmissingprices) 
-'data.frame':	5398 obs. of  2 variables:
+'data.frame':	5405 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-15" ...
  $ price: num  17.8 NA NA NA NA ...
 
@@ -181,8 +185,8 @@ spotpricealldatesmissingpriceszoo <- zoo(x = spotpricealldatesmissingprices[["pr
 # check the object's structure
 str(spotpricealldatesmissingpriceszoo)
 ‘zoo’ series from 2010-05-14 to 2024-04-05
-  Data: num [1:5398] 17.8 NA NA NA NA ...
-  Index:  Date[1:5398], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+  Data: num [1:5405] 17.8 NA NA NA NA ...
+  Index:  Date[1:5405], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
 # look a first 6 lines/rows
 head(spotpricealldatesmissingpriceszoo) 
@@ -201,9 +205,6 @@ head(spotpricefilled)
      17.75      17.71      17.68      17.64      17.61      17.57
 
 str(spotpricefilled) 
-‘zoo’ series from 2010-05-14 to 2024-08-30
-  Data: num [1:5398] 17.8 17.7 17.7 17.6 17.6 ...
-  Index:  Date[1:5398], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
 # Create a data frame from the zoo vector
 spotpricefilleddataframe <- data.frame(date=index(spotpricefilled),price= coredata(spotpricefilled))   
@@ -218,7 +219,7 @@ head(spotpricefilleddataframe)
 6 2010-05-19 17.57
 
 str(spotpricefilleddataframe) 
-'data.frame':	5398 obs. of  2 variables:
+'data.frame':	5405 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-15" ...
  $ price: num  17.8 17.7 17.7 17.6 17.6 .. 
  
@@ -261,15 +262,15 @@ head(spotpricefilleddataframe)
 
 tail(spotpricefilleddataframe)
            date price       day
-5391 2025-02-14 63.10    Friday
-5394 2025-02-17 63.13    Monday
-5395 2025-02-18 63.04   Tuesday
-5396 2025-02-19 62.83 Wednesday
-5397 2025-02-20 62.89  Thursday
 5398 2025-02-21 62.66    Friday
+5401 2025-02-24 63.33    Monday
+5402 2025-02-25 63.28   Tuesday
+5403 2025-02-26 63.01 Wednesday
+5404 2025-02-27 63.08  Thursday
+5405 2025-02-28 63.23    Friday
 
 str(spotpricefilleddataframe)
-'data.frame':	3856 obs. of  3 variables:
+'data.frame':	3861 obs. of  3 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  17.8 17.6 17.6 17.6 17.5 ...
  $ day  : chr  "Friday" "Monday" "Tuesday" "Wednesday" ...
@@ -288,8 +289,6 @@ spotfilledzoo <- zoo(x = spotpricefilleddataframe[["price"]], order.by = spotpri
 #spotfilledzoo <- zoo(x = spotpricesinfilled[["price"]], order.by = spotpricesinfilled[["date"]])
 
 tail(spotfilledzoo) 
-2025-02-14 2025-02-17 2025-02-18 2025-02-19 2025-02-20 2025-02-21
-     63.10      63.13      63.04      62.83      62.89      62.66
 
 # create a base R plot of infilled spot prices      #  axes=T,
 svg(filename="spotpricefilled-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
@@ -306,10 +305,10 @@ dev.off()
 
 # does not include Saturdays and Sundays
 dim(spotprices)
-[1] 2000    2
+[1] 2005    2
 
 dim(spotpricefilleddataframe)
-[1] 3856    2
+[1] 3861    2
 
 
 # This is a Ggplot2 chart of the infilled spot price data in the theme 'black and white' with x axis at 10 grid and y axis at 1 year
@@ -351,7 +350,7 @@ spot <- read.csv(file = "spotpricesinfilled.csv", colClasses = c("Date","numeric
 spot$spotroll31 <- rollmean(spot[["price"]], k =21,  fill = NA, align = c("center"))
 
 str(spot) 
-'data.frame':	3856 obs. of  3 variables:
+'data.frame':	3861 obs. of  3 variables:
  $ date      : Date, format: "2010-05-14" "2010-05-17" ...
  $ price     : num  17.8 17.6 17.6 17.6 17.5 ...
  $ spotroll31: num  NA NA NA NA NA NA NA NA NA NA ... 
@@ -367,7 +366,7 @@ colnames(spotrollmean31) <- c("date","price")
 
 # examine dataframe
 str(spotrollmean31) 
-'data.frame':	3851 obs. of  2 variables:
+'data.frame':	3861 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  NA NA NA NA NA NA NA NA NA NA ...
 
@@ -418,8 +417,8 @@ weekpricezoo <- aggregate(spotfilledzoo, as.Date(cut(time(spotfilledzoo), "week"
 
 str(weekpricezoo)
 ‘zoo’ series from 2010-05-10 to 2024-10-28
-  Data: num [1:772] 17.8 17.6 17.5 17.3 17.1 ...
-  Index:  Date[1:772], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ...
+  Data: num [1:773] 17.8 17.6 17.5 17.3 17.1 ...
+  Index:  Date[1:773], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ...
 summary(coredata(weekpricezoo)) 
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   1.636   7.397  20.130  27.838  38.163  88.244 
@@ -472,13 +471,14 @@ tail(spot2024,1)
 # subset 2025 prices
 spot2025 <- spotpricefilleddataframe[spotpricefilleddataframe$date > as.Date("2024-12-31"),]
 str(spot2025)
-'data.frame':	38 obs. of  2 variables:
+'data.frame':	43 obs. of  2 variables:
  $ date : Date, format: "2025-01-01" "2025-01-02" ...
  $ price: num  62.2 62.3 62.4 62.6 62.7 .
+
 # add end of 2025 date to allow x axis to be for full year
 spot2025 <- rbind(spot2025, c(as.Date("2025-12-31"),NA))
 str(spot2025)
-'data.frame':	39 obs. of  2 variables:
+'data.frame':	44 obs. of  2 variables:
  $ date : Date, format: "2025-01-01" "2025-01-02" ...
  $ price: num  62.2 62.3 62.4 62.6 62.7 ...
 summary(spot2025)

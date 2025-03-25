@@ -7,7 +7,6 @@ The price data has been web-scraped by a Python script 'api.py' (which was kindl
 The prices are then processed in the [R programming language](https://www.r-project.org/) via commands in a R script file [nzu.r](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu.r) into data sets of;
 
 * [average monthly prices](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-month-price.csv) 
-* [average weekly prices (with missing values)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklymeanprice.csv) 
 * [average weekly prices (with the missing values filled by linear interpolation)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklypricefilled.csv) 
 * [spot prices (with missing values)](https://github.com/theecanmole/nz-emission-unit-prices/blob/main/spotprices.csv).
 * [spot prices (with the missing values filled by linear interpolation)](spotpricesinfilled.csv)
@@ -17,7 +16,7 @@ These sets of price data are charted in R Ggplot2.
 
 ### 2025 prices
 
-So far 2025 prices seem to be drifting around the 2024 auction reserve limit of $64. There seems to have been no clear price response to the [Government's announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target.
+So far 2025 prices have declined well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price. There seems to have been no clear price response to the [Government's announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target. The 19 March auction failed to sell any units.
 
 ![](spotprice2025-720by540.svg)
 

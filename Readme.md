@@ -16,7 +16,7 @@ These sets of price data are charted in R Ggplot2.
 
 ### 2025 prices
 
-So far 2025 prices have declined well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price. There seems to have been no clear price response to the [Government's announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target. The 19 March auction failed to sell any units.
+So far 2025 prices have declined well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price. There seems to have been no clear price response to the 30 January [Government announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target. The 19 March auction failed to sell any units.
 
 ![](spotprice2025-720by540.svg)
 
@@ -33,7 +33,7 @@ On 20 August 2024, Minister for Climate Change, Simon Watts [announced](https://
 
 The [4 September 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/54) did not clear as there were no bids. There was no obvious response in the spot price. After the auction the price trend showed a slow convergence back to the 64.00 minimum auction price
 
-"The [4 December 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/60) part cleared and 4,032,500 units were sold at exactly 64.00. Again there was no obvious response in the spot price on 5 December.
+The [4 December 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/60) part cleared and 4,032,500 units were sold at exactly 64.00. Again there was no obvious response in the spot price on 5 December.
 
 ### 2024 secondary market spot prices in the Ggplot2 design
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw.svg)

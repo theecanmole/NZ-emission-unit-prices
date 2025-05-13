@@ -16,7 +16,7 @@ These sets of price data are charted in R Ggplot2.
 
 ### 2025 prices
 
-So far 2025 prices have declined well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price. There seems to have been no clear price response to the 30 January [Government announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target. The 19 March auction failed to sell any units.
+So far 2025 prices have declined well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price. The 30 January [Government announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target marked the nearest price peak to the reserve prices and then a declining prices. The 19 March auction failed to sell any units and the downward trend increased. The Climate Change Commission's ETS Prices and Settings Advice on 23 April 2025 appears to have ended a short uptick in price. The 29 April price of 47.50 was the lowest so far this year. 
 
 ![](spotprice2025-720by540.svg)
 

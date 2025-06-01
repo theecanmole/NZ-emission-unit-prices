@@ -2,7 +2,7 @@
 
 This repository features prices of the [New Zealand emission unit](https://environment.govt.nz/what-government-is-doing/areas-of-work/climate-change/ets/nz-ets-market/where-to-buy-new-zealand-emissions-units) or NZU. The NZU is the "the primary domestic unit of trade" in the [New Zealand Emissions Trading Scheme](https://www.climatecommission.govt.nz/get-involved/new-content-page/what-is-the-nz-ets/). 
 
-The price data has been web-scraped by a Python script 'api.py' (which was kindly contributed by [Edi Rose](https://github.com/edi-rose/)). and saved to a .csv file [nzu-edited-raw-prices-data.csv](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-edited-raw-prices-data.csv).
+The price data has been either web-scraped manually or web-scraped by a Python script 'api.py' (which was kindly contributed by [Edi Rose](https://github.com/edi-rose/)). and saved to a .csv file [nzu-edited-raw-prices-data.csv](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-edited-raw-prices-data.csv).
 
 The prices are then processed in the [R programming language](https://www.r-project.org/) via commands in a R script file [nzu.r](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu.r) into data sets of;
 
@@ -16,7 +16,7 @@ These sets of price data are charted in R Ggplot2.
 
 ### 2025 prices
 
-So far in 2025, NZU prices mainly been on a downward trend, to points well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price of $68. The 30 January [Government announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target marked the start of the downward trend. The 19 March auction failed to sell any units and the downward trend increased. The Climate Change Commission's ETS Prices and Settings Advice on 23 April 2025 appears to have ended a short uptick in price. The 29 April price of 47.50 was the lowest so far this year. 
+So far in 2025, NZU prices mainly been on a downward trend, to well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price of $68. The 30 January [Government announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target marked the start of the downward trend. The 19 March auction failed to sell any units and the downward trend increased. The Climate Change Commission's ETS Prices and Settings Advice on 23 April 2025 appears to have ended a short uptick in price. The 29 April price of 47.50 was the lowest so far this year. However, prices have in the last weeks of May recovered to about $55.00.
 
 ![](spotprice2025-720by540.svg)
 

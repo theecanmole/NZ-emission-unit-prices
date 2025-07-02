@@ -24,9 +24,9 @@ getwd()
 data <- read.csv("nzu-edited-raw-prices-data.csv",header=FALSE)
 
 dim(data)
-[1] 2062    5
+[1] 2073    5
 str(data) 
-'data.frame':	2062 obs. of  5 variables:
+'data.frame':	2073 obs. of  5 variables:
  $ V1: chr  "2010/05/14" "2010/05/21" "2010/05/29" "2010/06/11" ...
  $ V2: chr  "17.75" "17.5" "17.5" "17" ...
  $ V3: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
@@ -67,11 +67,11 @@ data$month <- as.factor(format(data$date, "%Y-%m"))
 
 # check the dataframe again
 str(data) 
-'data.frame':	2061 obs. of  5 variables:
+'data.frame':	2072 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
- $ month    : Factor w/ 181 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
+ $ month    : Factor w/ 182 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
  $ week     : chr  "2010/W19" "2010/W20" "2010/W21" "2010/W23" ...
 
 # Are there any NAs in date?
@@ -87,7 +87,7 @@ write.csv(data, file = "nzu-final-prices-data.csv", row.names = FALSE)
 spotprices <- data[,1:2]
 
 str(spotprices) 
-'data.frame':	2061 obs. of  2 variables:
+'data.frame':	2072 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-21" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ... 
 
@@ -109,7 +109,7 @@ monthprice[["month"]] = seq(as.Date('2010-05-15'), by = 'months', length = nrow(
 colnames(monthprice) <- c("date","price")
 # check structure of dataframe
 str(monthprice) 
-'data.frame':	181 obs. of  2 variables:
+'data.frame':	182 obs. of  2 variables:
  $ date : Date, format: "2010-05-15" "2010-06-15" ...
  $ price: num  17.6 17.4 18.1 18.4 20.1 ...
 
@@ -159,20 +159,27 @@ library("zoo")
 summary(spotprices$date)
 # no NAs detected
 
+# last date in a time series
+spotprices$date[nrow(spotprices)]
+max(spotprices$date)
+
 # How many days of dates should be included if there were prices for all days from May 2010 to today?
-spotpricealldates <- seq.Date(from=spotprices$date[1], to=spotprices$date[nrow(spotprices)], by="day")
-#spotpricealldates <- seq.Date(min(spotprices$date), max(spotprices$date), "day")
+#spotpricealldates <- seq.Date(from=spotprices$date[1], to=spotprices$date[nrow(spotprices)], by="day")
+spotpricealldates <- seq.Date(min(spotprices$date), max(spotprices$date), "day")
 length(spotpricealldates) 
-[1] 5496
+[1] 5522
+str(spotpricealldates)
+ Date[1:5522], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+
 # how many missing values are there?
 length(spotpricealldates) - nrow(spotprices)
-[1] 3435
+[1] 3450
 
 # create a dataframe of "all the days" or 'x' including days with missing prices added as NA
 spotpricealldatesmissingprices <- merge(x= data.frame(date = spotpricealldates),  y = spotprices,  all.x=TRUE)
 
 str(spotpricealldatesmissingprices) 
-'data.frame':	5496 obs. of  2 variables:
+'data.frame':	5522 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-15" ...
  $ price: num  17.8 NA NA NA NA ...
 
@@ -190,9 +197,7 @@ spotpricealldatesmissingpriceszoo <- zoo(x = spotpricealldatesmissingprices[["pr
 
 # check the object's structure
 str(spotpricealldatesmissingpriceszoo)
-‘zoo’ series from 2010-05-14 to 2025-05-30
-  Data: num [1:5496] 17.8 NA NA NA NA ...
-  Index:  Date[1:5496], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+
 
 # look a first 6 lines/rows
 head(spotpricealldatesmissingpriceszoo) 
@@ -212,8 +217,8 @@ head(spotpricefilled)
 
 str(spotpricefilled) 
 ‘zoo’ series from 2010-05-14 to 2025-05-30
-  Data: num [1:5496] 17.8 17.7 17.7 17.6 17.6 ...
-  Index:  Date[1:5496], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+  Data: num [1:5522] 17.8 17.7 17.7 17.6 17.6 ...
+  Index:  Date[1:5522], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
 # Create a data frame from the zoo vector
 spotpricefilleddataframe <- data.frame(date=index(spotpricefilled),price= coredata(spotpricefilled))   
@@ -228,9 +233,7 @@ head(spotpricefilleddataframe)
 6 2010-05-19 17.57
 
 str(spotpricefilleddataframe) 
-'data.frame':	5475 obs. of  2 variables:
- $ date : Date, format: "2010-05-14" "2010-05-15" ...
- $ price: num  17.8 17.7 17.7 17.6 17.6 .. 
+
  
 # Get the days of week and add to dateframe
 spotpricefilleddataframe$day <- format(as.Date(spotpricefilleddataframe$date), "%A")
@@ -271,12 +274,12 @@ head(spotpricefilleddataframe)
 
 tail(spotpricefilleddataframe)
            date price       day
-5489 2025-05-23 54.49    Friday
-5492 2025-05-26 55.17    Monday
-5493 2025-05-27 55.22   Tuesday
-5494 2025-05-28 54.52 Wednesday
-5495 2025-05-29 55.17  Thursday
-5496 2025-05-30 55.25    Friday
+5515 2025-06-18 57.50 Wednesday
+5516 2025-06-19 57.50  Thursday
+5517 2025-06-20 57.75    Friday
+5520 2025-06-23 58.50    Monday
+5521 2025-06-24 59.00   Tuesday
+5522 2025-06-25 59.00 Wednesday
 
 # omit the days of week column
 spotpricefilleddataframe <- spotpricefilleddataframe[,1:2] 
@@ -309,10 +312,9 @@ dev.off()
 
 # does not include Saturdays and Sundays
 dim(spotprices)
-[1] 2061    2
-
+[1] 2072    2
 dim(spotpricefilleddataframe)
-[1] 3926    2
+[1] 3944    2
 
 # This is a Ggplot2 chart of the infilled spot price data in the theme 'black and white' with x axis at 10 grid and y axis at 1 year
 svg(filename="NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
@@ -353,7 +355,7 @@ spot <- read.csv(file = "spotpricesinfilled.csv", colClasses = c("Date","numeric
 spot$spotroll31 <- rollmean(spot[["price"]], k =21,  fill = NA, align = c("center"))
 
 str(spot) 
-'data.frame':	3926 obs. of  3 variables:
+'data.frame':	3944 obs. of  3 variables:
  $ date      : Date, format: "2010-05-14" "2010-05-17" ...
  $ price     : num  17.8 17.6 17.6 17.6 17.5 ...
  $ spotroll31: num  NA NA NA NA NA NA NA NA NA NA ... 
@@ -369,7 +371,7 @@ colnames(spotrollmean31) <- c("date","price")
 
 # examine dataframe
 str(spotrollmean31) 
-'data.frame':	3926 obs. of  2 variables:
+'data.frame':	3944 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  NA NA NA NA NA NA NA NA NA NA ...
 
@@ -417,8 +419,8 @@ weekpricezoo <- aggregate(spotfilledzoo, as.Date(cut(time(spotfilledzoo), "week"
 
 str(weekpricezoo)
 ‘zoo’ series from 2010-05-10 to 2025-05-26
-  Data: num [1:786] 17.8 17.6 17.5 17.3 17.1 ...
-  Index:  Date[1:786], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ...
+  Data: num [1:790] 17.8 17.6 17.5 17.3 17.1 ...
+  Index:  Date[1:790], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ...
 
 # round to cents i.e 2 decimal places
 coredata(weekpricezoo) <- round(coredata(weekpricezoo),2)
@@ -470,30 +472,28 @@ tail(spot2024,1)
 # subset 2025 prices
 spot2025 <- spotpricefilleddataframe[spotpricefilleddataframe$date > as.Date("2024-12-31"),]
 str(spot2025)
-'data.frame':	108 obs. of  2 variables:
+'data.frame':	126 obs. of  2 variables:
  $ date : Date, format: "2025-01-01" "2025-01-02" ...
  $ price: num  62.2 62.3 62.4 62.6 62.7 ..
 
 # add end of 2025 date and a NA to allow x axis to be for full year
 spot2025 <- rbind(spot2025, c(as.Date("2025-12-31"),NA))
 str(spot2025)
-'data.frame':	109 obs. of  2 variables:
- $ date : Date, format: "2025-01-01" "2025-01-02" ...
- $ price: num  62.2 62.3 62.4 62.6 62.7 ...
+
 summary(spot2025)
       date                price
  Min.   :2025-01-01   Min.   :47.50
- 1st Qu.:2025-02-07   1st Qu.:54.50
- Median :2025-03-18   Median :59.75
- Mean   :2025-03-19   Mean   :58.38
- 3rd Qu.:2025-04-24   3rd Qu.:63.13
+ 1st Qu.:2025-02-13   1st Qu.:54.79
+ Median :2025-03-31   Median :58.50
+ Mean   :2025-03-31   Mean   :58.13
+ 3rd Qu.:2025-05-13   3rd Qu.:63.03
  Max.   :2025-12-31   Max.   :64.73
                       NAs   :1
-
+75
 svg(filename="spotprice2025-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))
 #png("spotprice2025-560by420.png", bg="white", width=560, height=420,pointsize = 14)
 par(mar=c(2.7,2.7,1,1)+0.1)
-plot(spot2025,ylim=c(40,75),xlab ="",ylab="",tck=0.01, ann=T, las=1, type='l',lty=1, col="red",lwd=1)
+plot(spot2025,ylim=c(40,70),xlab ="",ylab="",tck=0.01, ann=T, las=1, type='l',lty=1, col="red",lwd=1)
 points(spot2025,col="red",pch=19,cex=0.5)
 grid(col="darkgray",lwd=1)
 abline(v=as.numeric(as.Date("2025-01-30")), col='blue',lwd=1,lty=2)
@@ -507,14 +507,14 @@ text(as.numeric(as.Date("2025-03-19")), 46,adj=0,cex=0.9, labels = "Auction\n19 
 abline(v= as.numeric(as.Date("2025-04-23"))  , col='blue',lwd=1,lty=2)
 text(as.numeric(as.Date("2025-04-23")), 60,adj=0,cex=0.9, labels = "CCC ETS\nPrices\nSettings\nAdvice")
 abline(v= as.numeric(as.Date("2025-06-18"))  , col='blue',lwd=1,lty=2)
-text(as.numeric(as.Date("2025-06-18")), 48,adj=0,cex=0.9, labels = "Auction\n18 June")
+text(as.numeric(as.Date("2025-06-18")), 48,adj=0,cex=0.9, labels = "Auction\n18 June\nno sales")
 abline(v= as.numeric(as.Date("2025-09-10"))  , col='blue',lwd=1,lty=2)
 text(as.numeric(as.Date("2025-09-10")), 48,adj=0,cex=0.9, labels = "Auction\n10 Sept")
 abline(v= as.numeric(as.Date("2025-12-03"))  , col='blue',lwd=1,lty=2)
 text(as.numeric(as.Date("2025-12-03")), 48,adj=0,cex=0.9, labels = "Auction\n03 Dec")
 axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
 mtext(side=1,cex=1,line=-1.1,"Data https://github.com/theecanmole/NZ-emission-unit-prices")
-mtext(side=3,cex=1.3, line=-2.6,expression(paste("2025 NZU price trends")) )
+#mtext(side=3,cex=1.3, line=-2.6,expression(paste("2025 NZU price trends")) )
 mtext(side=2,cex=1, line=-1.3,"$NZD")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off()
@@ -1307,40 +1307,36 @@ cor(coredata(monthpricezoocut),coredata(monthpricezoo))
 
 So the month mean of raw prices with omissions (n = 1940) is 99.99403 % the same as the month mean price aggregated via zoo of the infilled spot prices (n = 3771) 
 
-,xlab="",ylab=""
-
 sessionInfo()
-R version 4.3.2 (2023-10-31)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Debian GNU/Linux 11 (bullseye)
+R version 4.4.2 (2024-10-31)
+Platform: x86_64-pc-linux-gnu
+Running under: Debian GNU/Linux 12 (bookworm)
 
 Matrix products: default
-BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0 
-LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.21.so;  LAPACK version 3.11.0
 
 locale:
- [1] LC_CTYPE=en_NZ.UTF-8          LC_NUMERIC=C                 
- [3] LC_TIME=en_NZ.UTF-8           LC_COLLATE=en_NZ.UTF-8       
- [5] LC_MONETARY=en_NZ.UTF-8       LC_MESSAGES=en_NZ.UTF-8      
- [7] LC_PAPER=en_NZ.UTF-8          LC_NAME=en_NZ.UTF-8          
- [9] LC_ADDRESS=en_NZ.UTF-8        LC_TELEPHONE=en_NZ.UTF-8     
+ [1] LC_CTYPE=en_NZ.UTF-8          LC_NUMERIC=C
+ [3] LC_TIME=en_NZ.UTF-8           LC_COLLATE=en_NZ.UTF-8
+ [5] LC_MONETARY=en_NZ.UTF-8       LC_MESSAGES=en_NZ.UTF-8
+ [7] LC_PAPER=en_NZ.UTF-8          LC_NAME=en_NZ.UTF-8
+ [9] LC_ADDRESS=en_NZ.UTF-8        LC_TELEPHONE=en_NZ.UTF-8
 [11] LC_MEASUREMENT=en_NZ.UTF-8    LC_IDENTIFICATION=en_NZ.UTF-8
 
 time zone: Pacific/Auckland
 tzcode source: system (glibc)
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats     graphics  grDevices utils     datasets  methods   base
 
 other attached packages:
-[1] zoo_1.8-12    ggplot2_3.5.1 rkward_0.7.2 
+[1] zoo_1.8-12    ggplot2_3.5.1 rkward_0.7.5
 
 loaded via a namespace (and not attached):
- [1] vctrs_0.6.5      nlme_3.1-152     cli_3.6.3        rlang_1.1.4     
- [5] generics_0.1.3   labeling_0.4.3   glue_1.8.0       colorspace_2.1-1
- [9] scales_1.3.0     fansi_1.0.6      grid_4.3.2       munsell_0.5.1   
-[13] tibble_3.2.1     lifecycle_1.0.4  compiler_4.3.2   dplyr_1.1.4     
-[17] pkgconfig_2.0.3  mgcv_1.8-34      farver_2.1.2     lattice_0.20-41 
-[21] R6_2.5.1         tidyselect_1.2.1 utf8_1.2.4       pillar_1.9.0    
-[25] splines_4.3.2    magrittr_2.0.3   Matrix_1.3-2     tools_4.3.2     
-[29] withr_3.0.2      gtable_0.3.6 
+ [1] R6_2.5.1         tidyselect_1.2.1 lattice_0.22-6   farver_2.1.2
+ [5] magrittr_2.0.3   gtable_0.3.6     glue_1.8.0       tibble_3.2.1
+ [9] pkgconfig_2.0.3  generics_0.1.3   dplyr_1.1.4      lifecycle_1.0.4
+[13] cli_3.6.3        scales_1.3.0     grid_4.4.2       vctrs_0.6.5
+[17] withr_3.0.2      compiler_4.4.2   tools_4.4.2      munsell_0.5.1
+[21] pillar_1.10.1    colorspace_2.1-1 rlang_1.1.5

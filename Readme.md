@@ -16,7 +16,7 @@ These sets of price data are charted in R Ggplot2.
 
 ### 2025 prices
 
-So far in 2025, NZU prices mainly been on a downward trend, to well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price of $68. The 30 January [Government announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target marked the start of the downward trend. Three auctions have failed to sell any units. The 4 November Government announcement(https://environment.govt.nz/news/government-announces-a-series-of-changes-to-nzs-climate-change-law/) was described as [Gutting of Zero Carbon Act crashes bipartisan climate consensus](https://newsroom.co.nz/2025/11/06/gutting-of-zero-carbon-act-crashes-bipartisan-climate-consensus/). The spot price dropped 5 cents.
+So far in 2025, NZU prices mainly been on a downward trend, to well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price of $68. The 30 January [Government announcement](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target) of the Paris Agreement 2035 emissions target marked the start of the downward trend. Three auctions have failed to sell any units. The 4 November [Government announcement](https://environment.govt.nz/news/government-announces-a-series-of-changes-to-nzs-climate-change-law/) was described by Newsroom in [Gutting of Zero Carbon Act crashes bipartisan climate consensus](https://newsroom.co.nz/2025/11/06/gutting-of-zero-carbon-act-crashes-bipartisan-climate-consensus/). The spot price dropped 5 cents.
 
 ![](spotprice2025-720by540.svg)
 

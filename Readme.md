@@ -20,11 +20,9 @@ So far in 2025, NZU prices mainly been on a downward trend, to well below the 20
 
 ![](NZU-spotpriceinfilled2025-720by540-ggplot-theme-bw.svg)
 
-On 30 January the Government set the (second) Paris Agreement emissions target for 2025 [Setting New Zealand’s second international climate target](https://www.beehive.govt.nz/release/setting-new-zealand%E2%80%99s-second-international-climate-target). 
+The four auctions in March June September and December did not have any bids above the auction price floor. All auctions failed to sell any units. 
 
-The three auctions in March June and September have failed to sell any units. 
-
-The 4 November Government announcement [Improving New Zealand’s climate change act](https://www.beehive.govt.nz/release/improving-new-zealand%E2%80%99s-climate-change-act) had an immediate effect on spot prices. Marc Daalder of Newsroom described the announcement as a [Gutting of Zero Carbon Act crashes bipartisan climate consensus](https://newsroom.co.nz/2025/11/06/gutting-of-zero-carbon-act-crashes-bipartisan-climate-consensus/).
+Only one policy announcement spooked the spot price. The 4 November Government announcement [Improving New Zealand’s climate change act](https://www.beehive.govt.nz/release/improving-new-zealand%E2%80%99s-climate-change-act) had an immediate effect on spot prices. Marc Daalder of Newsroom described the announcement as a [Gutting of Zero Carbon Act crashes bipartisan climate consensus](https://newsroom.co.nz/2025/11/06/gutting-of-zero-carbon-act-crashes-bipartisan-climate-consensus/).
 
 ### 2024 prices
 

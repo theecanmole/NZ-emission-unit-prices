@@ -16,13 +16,13 @@ These sets of price data are charted in R Ggplot2.
 
 ### 2025 prices
 
-So far in 2025, NZU prices mainly been on a downward trend, to well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price of $68. 
+In 2025, NZU prices mainly been on a downward trend, to well below the 2024 auction reserve price of $64. Let alone the 2025 reserve price of $68. 
 
 ![](NZU-spotpriceinfilled2025-720by540-ggplot-theme-bw.svg)
 
-The four auctions in March June September and December did not have any bids above the auction price floor. All auctions failed to sell any units. 
+The four auctions (March June September and December) had no bids above the auction price floor. All auctions failed to sell any units. 
 
-Only one policy announcement spooked the spot price. The 4 November Government announcement [Improving New Zealand’s climate change act](https://www.beehive.govt.nz/release/improving-new-zealand%E2%80%99s-climate-change-act) had an immediate effect on spot prices. Marc Daalder of Newsroom described the announcement as a [Gutting of Zero Carbon Act crashes bipartisan climate consensus](https://newsroom.co.nz/2025/11/06/gutting-of-zero-carbon-act-crashes-bipartisan-climate-consensus/).
+Only one policy announcement spooked the spot price. The 4 November Government announcement [Improving New Zealand’s climate change act](https://www.beehive.govt.nz/release/improving-new-zealand%E2%80%99s-climate-change-act) stated that it was ***"removing the requirement for ETS Settings to accord with Nationally Determined Contributions"***. That had an immediate effect on spot prices. Marc Daalder of Newsroom described the announcement as a [Gutting of Zero Carbon...Act consensus](https://newsroom.co.nz/2025/11/06/gutting-of-zero-carbon-act-crashes-bipartisan-climate-consensus/).
 
 ### 2024 prices
 

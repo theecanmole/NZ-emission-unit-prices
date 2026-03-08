@@ -1,4 +1,4 @@
-## New Zealand Unit spot prices from 2010 to 2025.
+## New Zealand Unit spot prices from 2010 to 2026.
 
 Theecanmole. (2025). [Data set] https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/ spotpricesinfilled.csv
 
@@ -24,7 +24,7 @@ getwd()
 data <- read.csv("nzu-edited-raw-prices-data.csv",header=FALSE)
 
 dim(data)
-[1] 2171    5
+[1] 2196    5
 str(data) 
 'data.frame':	2171 obs. of  5 variables:
  $ V1: chr  "2010/05/14" "2010/05/21" "2010/05/29" "2010/06/11" ...
@@ -63,14 +63,14 @@ data$month <- as.factor(format(data$date, "%Y-%m"))
 
 # check the dataframe again
 str(data) 
-'data.frame':	2170 obs. of  5 variables:
+'data.frame':	2195 obs. of  5 variables:
  $ date     : Date, format: "2010-05-14" "2010-05-21" ...
  $ price    : num  17.8 17.5 17.5 17 17.8 ...
  $ reference: chr  "http://www.carbonnews.co.nz/story.asp?storyID=4529" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4540" "http://www.carbonnews.co.nz/story.asp?storyID=4588" ...
  $ month    : Factor w/ 189 levels "2010-05","2010-06",..: 1 1 1 2 2 2 3 3 4 4 ...
  $ week     : chr  "2010/W19" "2010/W20" "2010/W21" "2010/W23" ...
 
-tail(data)
+tail(data,2)
 
 # Are there any NAs in the date column?
 summary(data$date)
@@ -85,14 +85,14 @@ write.csv(data, file = "nzu-final-prices-data.csv", row.names = FALSE)
 spotprices <- data[,1:2]
 
 str(spotprices) 
-'data.frame':	2170 obs. of  2 variables:
+'data.frame':	2195 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-21" ...
  $ price: num  17.8 17.5 17.5 17 17.8 ... 
 
 # write the spot prices dataframe to a .csv file 
 write.table(spotprices, file = "spotprices.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE) 
 
-spotprices <- read.csv("spotprices.csv",colClasses = c("Date","numeric"))
+# spotprices <- read.csv("spotprices.csv",colClasses = c("Date","numeric"))
 # write.table and csv from a dataframe is still the best
 
 ## mean price each month
@@ -107,26 +107,27 @@ monthprice[["month"]] = seq(as.Date('2010-05-15'), by = 'months', length = nrow(
 colnames(monthprice) <- c("date","price")
 # check structure of dataframe
 str(monthprice) 
-'data.frame':	189 obs. of  2 variables:
+'data.frame':	190 obs. of  2 variables:
  $ date : Date, format: "2010-05-15" "2010-06-15" ...
  $ price: num  17.6 17.4 18.1 18.4 20.1 ...
 
 # write the mean monthly price dataframe to a .csv file 
 write.table(monthprice, file = "nzu-month-price.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)
+# read in again if needed
 #monthprice <- read.csv("nzu-month-price.csv", colClasses = c("Date","numeric"))
 
 # Convert the data frame price and date columns to a zoo time series object,
-monthpricezoo <- zoo(x = monthprice[["price"]], order.by = monthprice[["date"]])
+# monthpricezoo <- zoo(x = monthprice[["price"]], order.by = monthprice[["date"]])
 
 # create chart of the zoo time series matrix - its the same as chart of dataframe of date and price
 svg(filename="NZUpriceZoo-720by540.svg", width = 8, height = 6, pointsize = 12, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 par(mar=c(2.7,2.7,1,1)+0.1)
-plot(monthpricezoo,tck=0.01,xlab="",ylab="",ann=TRUE, las=1,col='red',lwd=1,type='l',lty=1)
-points(monthpricezoo,col='red',pch=19,cex=0.75)
+plot(monthprice,tck=0.01,xlab="",ylab="",ann=TRUE, las=1,col='red',lwd=1,type='l',lty=1)
+points(monthprice,col='red',pch=19,cex=0.75)
 grid(col="darkgray",lwd=1)
 axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
 mtext(side=1,cex=0.8,line=-1.1,"Data: 'NZU prices' https://github.com/theecanmole/nzu")
-mtext(side=3,cex=1.5, line=-2.2,expression(paste("New Zealand Unit monthly mean prices 2010 - 2025")) )
+mtext(side=3,cex=1.5, line=-2.2,expression(paste("New Zealand Unit monthly mean prices 2010 - 2026")) )
 mtext(side=2,cex=1, line=-1.3,"$NZ Dollars/unit")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off()
@@ -137,12 +138,14 @@ svg(filename="NZU-monthprice-720by540-ggplot-theme-bw.svg", width = 8, height = 
 #png("NZU-monthprice-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(monthprice, aes(x = date, y = price)) +
 geom_line(colour = "#ED1A3B") +
-#geom_point(colour = "#ED1A3B") +
+geom_point(colour = "#ED1A3B") +
 theme_bw(base_size = 14) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "year", date_labels = "%Y") +
-theme(plot.title = element_text(size = 20, hjust = 0.5, vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
+theme(axis.ticks.length = unit(-4,"pt"),
+plot.title = element_text(size = 20,
+hjust = 0.5, vjust= -8 ),
+plot.caption = element_text( hjust = 0.5 )) +
 labs(title="New Zealand Unit mean monthly prices 2010 - 2026", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(monthprice[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
@@ -159,26 +162,26 @@ summary(spotprices$date)
 
 # last date in a time series
 spotprices$date[nrow(spotprices)]
-[1] "2026-01-19"
+[1] "2026-02-25"
 max(spotprices$date)
-[1] "2026-01-19"
+[1] "2026-02-25"
 # How many days of dates should be included if there were prices for all days from May 2010 to today?
 #spotpricealldates <- seq.Date(from=spotprices$date[1], to=spotprices$date[nrow(spotprices)], by="day")
 spotpricealldates <- seq.Date(min(spotprices$date), max(spotprices$date), "day")
 length(spotpricealldates) 
-[1] 5730
+[1] 5767
 str(spotpricealldates)
- Date[1:5730], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+ Date[1:5767], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
 # compared to the sequence of all dates, how many missing dates are there?
 length(spotpricealldates) - nrow(spotprices)
-[1] 3560
+[1] 3572
 
 # create a dataframe of "all the days" or 'x' including days with missing prices added as NA
 spotpricealldatesmissingprices <- merge(x= data.frame(date = spotpricealldates),  y = spotprices,  all.x=TRUE)
 
 str(spotpricealldatesmissingprices) 
-'data.frame':	5730 obs. of  2 variables:
+'data.frame':	5767 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-15" ...
  $ price: num  17.8 NA NA NA NA ...
 
@@ -197,8 +200,8 @@ spotpricealldatesmissingpriceszoo <- zoo(x = spotpricealldatesmissingprices[["pr
 # check the object's structure
 str(spotpricealldatesmissingpriceszoo)
 ‘zoo’ series from 2010-05-14 to 2025-12-19
-  Data: num [1:5730] 17.8 NA NA NA NA ...
-  Index:  Date[1:5730], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+  Data: num [1:5767] 17.8 NA NA NA NA ...
+  Index:  Date[1:5767], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
 # look a first 6 lines/rows
 head(spotpricealldatesmissingpriceszoo) 
@@ -216,13 +219,15 @@ head(spotpricefilled)
 2010-05-14 2010-05-15 2010-05-16 2010-05-17 2010-05-18 2010-05-19 
      17.75      17.71      17.68      17.64      17.61      17.57
 tail(spotpricefilled)
-2026-01-14 2026-01-15 2026-01-16 2026-01-17 2026-01-18 2026-01-19
-      35.6       35.0       33.2       33.4       33.6       33.6
+2026-02-20 2026-02-21 2026-02-22 2026-02-23 2026-02-24 2026-02-25
+     44.55      43.00      44.15      45.30      46.75      47.50
+#2026-01-14 2026-01-15 2026-01-16 2026-01-17 2026-01-18 2026-01-19
+#      35.6       35.0       33.2       33.4       33.6       33.6
 
 str(spotpricefilled) 
 ‘zoo’ series from 2010-05-14 to 2026-01-19
-  Data: num [1:5730] 17.8 17.7 17.7 17.6 17.6 ...
-  Index:  Date[1:5730], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
+  Data: num [1:5767] 17.8 17.7 17.7 17.6 17.6 ...
+  Index:  Date[1:5767], format: "2010-05-14" "2010-05-15" "2010-05-16" "2010-05-17" "2010-05-18" ...
 
 # Create a data frame from the zoo vector
 spotpricefilleddataframe <- data.frame(date=index(spotpricefilled),price= coredata(spotpricefilled))   
@@ -237,19 +242,18 @@ head(spotpricefilleddataframe)
 6 2010-05-19 17.57
 
 str(spotpricefilleddataframe) 
-'data.frame':	5730 obs. of  2 variables:
+'data.frame':	5767 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-15" ...
  $ price: num  17.8 17.7 17.7 17.6 17.6 ...
+
 # check for NAs, none found
 summary(spotpricefilleddataframe)
-      date                price
  Min.   :2010-05-14   Min.   : 1.600
- 1st Qu.:2014-04-15   1st Qu.: 8.227
- Median :2018-03-17   Median :21.175
- Mean   :2018-03-17   Mean   :29.793
- 3rd Qu.:2022-02-16   3rd Qu.:51.000
- Max.   :2026-01-19   Max.   :88.500
-
+ 1st Qu.:2014-04-24   1st Qu.: 8.425
+ Median :2018-04-05   Median :21.220
+ Mean   :2018-04-05   Mean   :29.852
+ 3rd Qu.:2022-03-16   3rd Qu.:50.790
+ Max.   :2026-02-25   Max.   :88.500
 
 # Get the days of week and add to dateframe
 spotpricefilleddataframe$day <- format(as.Date(spotpricefilleddataframe$date), "%A")
@@ -279,7 +283,10 @@ idSun
 # leave out the Sundays
 spotpricefilleddataframe <- spotpricefilleddataframe[!idSun, ] 
 str(spotpricefilleddataframe)
-
+'data.frame':	4119 obs. of  3 variables:
+ $ date : Date, format: "2010-05-14" "2010-05-17" ...
+ $ price: num  17.8 17.6 17.6 17.6 17.5 ...
+ $ day  : chr  "Friday" "Monday" "Tuesday" "Wednesday" .
 
 # load qlcal package for holidays and business days
 library(qlcal)
@@ -295,7 +302,7 @@ setCalendar("NewZealand")
 spotpricefilleddataframe$businessday <- isBusinessDay(spotpricefilleddataframe[["date"]])
 
 str(spotpricefilleddataframe)
-'data.frame':	4092 obs. of  4 variables:
+'data.frame':	4119 obs. of  4 variables:
  $ date       : Date, format: "2010-05-14" "2010-05-17" ...
  $ price      : num  17.8 17.6 17.6 17.6 17.5 ...
  $ day        : chr  "Friday" "Monday" "Tuesday" "Wednesday" ...
@@ -303,13 +310,13 @@ str(spotpricefilleddataframe)
 
 table(spotpricefilleddataframe$businessday)
 FALSE  TRUE
-  175  3917
+  176  3943
 # create logical index of holidays
 idHoliday <- spotpricefilleddataframe$businessday == "FALSE"
 table(idHoliday)
 idHoliday
 FALSE  TRUE
-3917   175
+3943   176
 
 str(idHoliday)
  logi [1:4071] FALSE FALSE FALSE FALSE FALSE FALSE ...
@@ -318,7 +325,7 @@ str(idHoliday)
 spotpricefilleddataframe <- spotpricefilleddataframe[!idHoliday, ]
 
 str(spotpricefilleddataframe)
-'data.frame':	3917 obs. of  4 variables:
+'data.frame':	3943 obs. of  4 variables:
  $ date       : Date, format: "2010-05-14" "2010-05-17" ...
  $ price      : num  17.8 17.6 17.6 17.6 17.5 ...
  $ day        : chr  "Friday" "Monday" "Tuesday" "Wednesday" ...
@@ -336,14 +343,14 @@ head(spotpricefilleddataframe)
 # check the dates are only business days
 table(spotpricefilleddataframe$businessday)
 TRUE
-3917
+3943
 # check the dates are week days
 table(spotpricefilleddataframe$day)
    Friday    Monday  Thursday   Tuesday Wednesday
-      789       726       802       796       804
+      793       731       807       802       810
 
 # omit the days of week and business day columns ## not today 09/12/2025
-# spotpricefilleddataframe <- spotpricefilleddataframe[,1:2]
+spotpricefilleddataframe <- spotpricefilleddataframe[,1:2]
  
 # write the spot prices dataframe to a .csv file 
 write.table(spotpricefilleddataframe, file = "spotpricefilleddataframe.csv", sep = ",", col.names = TRUE, qmethod = "double",row.names = FALSE)
@@ -351,13 +358,6 @@ write.table(spotpricefilleddataframe, file = "spotpricefilleddataframe.csv", sep
 # spotpricefilleddataframe <- read.csv("spotpricesfilleddataframe.csv", colClasses = c("Date","numeric"))
 
 tail(spotpricefilleddataframe)
-           date price       day businessday
-5720 2026-01-09 37.15    Friday        TRUE
-5723 2026-01-12 36.00    Monday        TRUE
-5724 2026-01-13 36.15   Tuesday        TRUE
-5725 2026-01-14 35.60 Wednesday        TRUE
-5726 2026-01-15 35.00  Thursday        TRUE
-5727 2026-01-16 33.20    Friday        TRUE
 
 # create a second zoo series that has same nrow as 'spotpricefilleddataframe'
 #spotfilledzoo <- zoo(x = spotpricefilleddataframe[["price"]], order.by = spotpricefilleddataframe[["date"]])
@@ -374,16 +374,15 @@ plot(spotpricefilleddataframe[["date"]], spotpricefilleddataframe[["price"]] ,tc
 grid(col="darkgray",lwd=1)
 axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
 mtext(side=1,cex=1,line=-1.1,"Data https://github.com/theecanmole/NZ-emission-unit-prices")
-mtext(side=3,cex=1.5, line=-2.2,expression(paste("New Zealand Unit spot prices 2010 2026")) )
+mtext(side=3,cex=1.6, line=-2.2,expression(paste("New Zealand Unit spot prices 2010 to 2026")) )
 mtext(side=2,cex=1, line=-1.3,"$NZD")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 dev.off() 
 
 # does not include Saturdays and Sundays or statutory hoildays
-
-# the dimensions of the dataframe of infilled prices that includes holidays and weekends.
+# the dimensions of the dataframe of infilled prices
 dim(spotpricefilleddataframe)
-[1] 3917    4
+[1] 3943    2
 
 # This is a Ggplot2 chart of the infilled spot price data for business days in the theme 'black and white' with x axis at 10 grid and y axis at 1 year
 svg(filename="NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
@@ -392,9 +391,11 @@ ggplot(spotpricefilleddataframe, aes(x = date, y = price)) +  geom_line(colour =
 theme_bw(base_size = 14) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "year", date_labels = "%Y") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit spot prices 2010 - 2026", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+theme(axis.ticks.length = unit(-4,"pt"),
+plot.title = element_text(size = 20,
+hjust = 0.5, vjust= -8 ),
+plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit spot prices 2010 to 2026", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(spotpricefilleddataframe[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
@@ -418,21 +419,13 @@ spotfilledzoo <- zoo(x = spot[["price"]], order.by = spot[["date"]])
 spotroll31 <- rollmean(spotfilledzoo, k =21,  fill = NA, align = c("center"))
 
 str(spotroll31)
-‘zoo’ series from 2010-05-14 to 2026-01-16
-  Data: num [1:3917] NA NA NA NA NA NA NA NA NA NA ...
-  Index:  Date[1:3917], format: "2010-05-14" "2010-05-17" "2010-05-18" "2010-05-19" "2010-05-20" ...
+‘zoo’ series from 2010-05-14 to 2026-02-25
+  Data: num [1:3943] NA NA NA NA NA NA NA NA NA NA ...
+  Index:  Date[1:3943], format: "2010-05-14" "2010-05-17" "2010-05-18" "2010-05-19" "2010-05-20" ...
 
 #spotroll31 <- rollmean(spotfilledzoo, k =21,  fill = NA, align = c("center"))
 
 summary(spotroll31)
-     Index              spotroll31
- Min.   :2010-05-14   Min.   : 1.750
- 1st Qu.:2014-03-31   1st Qu.: 7.984
- Median :2018-02-21   Median :21.033
- Mean   :2018-02-21   Mean   :29.692
- 3rd Qu.:2022-01-12   3rd Qu.:51.801
- Max.   :2025-12-08   Max.   :86.946
-                      NAs   :20
 
 # Create a data frame from the zoo vector
 spotroll31dataframe <- data.frame(date=index(spotroll31),price= coredata(spotroll31))
@@ -441,20 +434,21 @@ spotroll31dataframe <- data.frame(date=index(spotroll31),price= coredata(spotrol
 spotroll31dataframe[["price"]] <- round(spotroll31dataframe[["price"]],2)
 
 str(spotroll31dataframe)
-'data.frame':	3917 obs. of  2 variables:
+'data.frame':	3943 obs. of  2 variables:
  $ date : Date, format: "2010-05-14" "2010-05-17" ...
  $ price: num  NA NA NA NA NA NA NA NA NA NA ...
 
 summary(spotroll31dataframe)
       date                price
  Min.   :2010-05-14   Min.   : 1.75
- 1st Qu.:2014-04-03   1st Qu.: 8.00
- Median :2018-02-28   Median :21.06
- Mean   :2018-02-27   Mean   :29.72
- 3rd Qu.:2022-01-21   3rd Qu.:51.71
- Max.   :2025-12-19   Max.   :86.95
+ 1st Qu.:2014-04-19   1st Qu.: 8.16
+ Median :2018-03-29   Median :21.19
+ Mean   :2018-03-30   Mean   :29.81
+ 3rd Qu.:2022-03-09   3rd Qu.:51.26
+ Max.   :2026-02-25   Max.   :86.95
                       NAs   :20
-# NB ten NAs at start and ten NAs at end
+
+# NB ten NAs at start and ten NAs at end which is expected in a rolling mean series
 
 
 # write the spot prices dataframe to a .csv file 
@@ -468,14 +462,16 @@ ggplot(spotroll31dataframe, aes(x = date, y = price)) +  geom_line(colour = "#9F
 theme_bw(base_size = 14) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "year", date_labels = "%Y") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit rolling mean spot prices 2010 - 2026", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+theme(axis.ticks.length = unit(-4,"pt"),
+plot.title = element_text(size = 20,
+hjust = 0.5, vjust= -8 ),
+plot.caption = element_text( hjust = 0.5 )) +
+labs(title="New Zealand Unit rolling mean spot prices 2010 to 2026", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(spotroll31dataframe[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
 
-# read back in to R the price data in three formats
+# read back in to R the price data
 monthprice <- read.csv("nzu-month-price.csv", colClasses = c("Date","numeric"))
 weeklyprice <- read.csv("weeklymeanprice.csv", colClasses = c("Date","numeric","character")) 
 data <- read.csv("nzu-final-prices-data.csv", colClasses = c("Date","numeric","character","character","character")) 
@@ -499,14 +495,14 @@ weekpricezoo <- aggregate(spotfilledzoo, as.Date(cut(time(spotfilledzoo), "week"
 
 str(weekpricezoo)
 ‘zoo’ series from 2010-05-10 to 2025-12-15
-  Data: num [1:819] 17.8 17.6 17.5 17.3 17.1 ...
-  Index:  Date[1:819], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ...
+  Data: num [1:825] 17.8 17.6 17.5 17.3 17.1 ...
+  Index:  Date[1:825], format: "2010-05-10" "2010-05-17" "2010-05-24" "2010-05-31" "2010-06-07" ...
 
 # round to cents i.e 2 decimal places
 coredata(weekpricezoo) <- round(coredata(weekpricezoo),2)
 summary(coredata(weekpricezoo))
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-  1.640   8.185  21.110  29.727  51.672  88.240
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+   1.64    8.55   21.25   29.85   50.92   88.24
 
 # Convert  the zoo vector to a data frame
 weeklypricefilleddataframe <- data.frame(date=index(weekpricezoo),price = coredata(weekpricezoo))
@@ -520,11 +516,13 @@ svg(filename="NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg", width = 8, height
 #png("NZU-weeklypriceYr-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(weeklypricefilleddataframe, aes(x = date, y = price)) +  geom_line(colour = "#984EA3") +
 theme_bw(base_size = 12) +
+theme(axis.ticks.length = unit(-4,"pt"),
+  plot.title = element_text(size = 20,
+  hjust = 0.5, vjust= -8 ),
+  plot.caption = element_text( hjust = 0.5 )) +
 scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80))  +
 scale_x_date(date_breaks = "year", date_labels = "%Y") +
-theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
-theme(plot.caption = element_text( hjust = 0.5 )) +
-labs(title="New Zealand Unit mean weekly prices 2010 - 2025", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+labs(title="New Zealand Unit mean weekly prices 2010 to 2026", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(weeklypricefilleddataframe[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off() 
 

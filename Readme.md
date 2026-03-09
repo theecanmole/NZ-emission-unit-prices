@@ -38,13 +38,13 @@ The [4 September 2024 auction](https://www.etsauctions.govt.nz/public/auction_no
 
 The [4 December 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/60) part cleared and 4,032,500 units were sold at exactly 64.00. Again there was no obvious response in the spot price on 5 December.
 
-#### 2024 secondary market spot prices in the Ggplot2 design
+#### This is a chart of the 2024 secondary market spot prices in the Ggplot2 design
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw.svg)
 
 #### In 2024 were the secondary market spot prices influenced by the auctions? Yes. (in the Ggplot2 format)
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw2024-12-06.svg)
 
-### 2024 secondary market spot prices in base R plot design
+#### 2024 secondary market spot prices in base R plot design
 ![](spotprice2024c-720by540.svg)
 
 ### Other NZU price charts

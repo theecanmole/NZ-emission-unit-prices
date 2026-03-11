@@ -6,16 +6,21 @@ The price data has been either web-scraped manually or web-scraped by a Python s
 
 The prices are then processed in the [R programming language](https://www.r-project.org/) via commands in a R script file [nzu.r](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu.r) into data sets of;
 
-* [spot prices (with the missing values filled by linear interpolation)](spotpricesinfilled.csv)
+* [spot prices (with the missing values filled by linear interpolation)](spotpricefilleddataframe.csv)
 * [average monthly prices](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/nzu-month-price.csv) 
-* [average weekly prices (with the missing values filled by linear interpolation)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklypricefilled.csv) 
-* [21 day rolling mean of the infilled spot prices](spotrollmean31.csv)
+* [average weekly prices (with the missing values filled by linear interpolation)](https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/weeklymeanprice.csv) 
+* [21 day rolling mean of the infilled spot prices](spotroll31dataframe.csv)
 
-These sets of price data are charted in R package Ggplot2. 
+These sets of price data are charted in the R package Ggplot2. 
 
-### 2025 prices
+![](NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg)
+![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
+![](NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg)
+![](NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.svg)
 
-In 2025, NZU prices mainly been on a downward trend, to well below the 2024 auction reserve price of $64. 
+### 2025 price trends
+
+In 2025, NZU prices were on a downward trend, to well below the 2024 auction reserve price of $64. 
 
 ![](NZU-spotpriceinfilled2025-720by540-ggplot-theme-bw.svg)
 
@@ -23,7 +28,7 @@ The four auctions (March June September and December) had no bids above the auct
 
 Only one policy announcement spooked the spot price. The 4 November Government announcement [Improving New Zealand’s climate change act](https://www.beehive.govt.nz/release/improving-new-zealand%E2%80%99s-climate-change-act) stated that it was ***"removing the requirement for ETS Settings to accord with Nationally Determined Contributions"***. That had an immediate effect on spot prices. Marc Daalder of Newsroom described the announcement as a [Gutting of Zero Carbon...Act consensus](https://newsroom.co.nz/2025/11/06/gutting-of-zero-carbon-act-crashes-bipartisan-climate-consensus/).
 
-### 2024 prices
+### 2024 price trends
 
 In December 2024 there was a log-jam of five Government policy announcements as well as a partly-cleared unit auction. There was a brief $4 dip in NZU price before it recovered to $63 on 17 December 2024.
 ![](NZU-spotpriceinfilled2024-720by540-ggplot-theme-bw.svg)
@@ -38,36 +43,18 @@ The [4 September 2024 auction](https://www.etsauctions.govt.nz/public/auction_no
 
 The [4 December 2024 auction](https://www.etsauctions.govt.nz/public/auction_noticeboard/60) part cleared and 4,032,500 units were sold at exactly 64.00. Again there was no obvious response in the spot price on 5 December.
 
-#### This is a chart of the 2024 secondary market spot prices in the Ggplot2 design
+This is a chart of the 2024 secondary market spot prices in the Ggplot2 design
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw.svg)
 
-#### In 2024 were the secondary market spot prices influenced by the auctions? Yes. (in the Ggplot2 format)
+In 2024 were the secondary market spot prices influenced by the auctions? Yes. (in the Ggplot2 format)
 ![](NZU-auctions-2024-720by540-ggplot-theme-bw2024-12-06.svg)
 
-#### 2024 secondary market spot prices in base R plot design
+This graph depicts the 2024 secondary market spot prices in base R plot design
 ![](spotprice2024c-720by540.svg)
 
-### Other NZU price charts
-
-#### This graph depicts the spot prices of trading on week days excluding public holidays. The missing values are filled via linear interpolation.
-![](NZU-spotpriceinfilled-720by540-ggplot-theme-bw.svg)
-
-#### This graph depicts the mean price for each calendar month since May 2010.
-![](NZU-monthprice-720by540-ggplot-theme-bw.svg)
-
-#### This graph depicts the mean price for each week. The missing values are infilled via linear interpolation.
-![](NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg)
-
-#### This graph depicts the 31 day rolling mean of the infilled spot prices of unit trading on week days
-![](NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.svg)
-
-#### This graph depicts the spot prices from November 2022 to December 2023
-I have marked with blue dashed horizontal lines two dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, when the Labour Government decided not to follow the price advice from the Climate Change Commission [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
+This graph depicts the spot prices from November 2022 to December 2023
+Two blue dashed horizontal lines mark two dates where Government announcements 'surprised' the market and the price changed sharply. The first was on 16 December 2022, when the Labour Government decided not to follow the price advice from the Climate Change Commission [Price of carbon plummets in response to Cabinet rejection of Climate Change Commission recommendations](https://www.carbonnews.co.nz/story.asp?storyID=26749).  
 ![](NZU-spotprice2023-720by540-ggplot-theme-bw.svg)
-
-#### This graph depicts the spot prices from December 2022 to December 2023
-Blue dashed horizontal lines mark the dates of the quarterly NZU auctions. The December 2022 auction met it's reserve price. The four 2023 auctions did not meet the reserve price and no units were sold.
-![](NZU-auctions-2023-720by540-ggplot-theme-bw.svg)
 
 #### License ODC-PDDL-1.0
 

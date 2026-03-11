@@ -1,6 +1,6 @@
-## New Zealand Unit spot prices from 2010 to 2026.
+## New Zealand Unit spot prices from 2010
 
-Theecanmole. (2025). [Data set] https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/ spotpricesinfilled.csv
+Theecanmole. (2025). [Data set] https://github.com/theecanmole/NZ-emission-unit-prices/blob/main/spotpricefilleddataframe.csv
 
 # remember to "find and replace" "-" with "/" (replace short dashs with backslashs in the dates in the csv file "nzu-edited-raw-prices-data.csv"
 

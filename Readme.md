@@ -18,6 +18,11 @@ These sets of price data are charted in the R package Ggplot2.
 ![](NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg)
 ![](NZU-spotpriceinfilledrollingmean-720by540-ggplot-theme-bw.svg)
 
+### 2026 price trends
+
+![](NZUprice2024_2025_2026-720by540.svg)
+![](NZU_Prices_2024-2025-2026ggplotbwtheme-720by540.svg)
+
 ### 2025 price trends
 
 In 2025, NZU prices were on a downward trend, to well below the 2024 auction reserve price of $64. 

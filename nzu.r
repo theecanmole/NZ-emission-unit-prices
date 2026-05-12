@@ -464,7 +464,7 @@ labs(title="New Zealand Unit rolling mean spot prices 2010 to 2026", x ="Years",
 annotate("text", x= max(spotroll31dataframe[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off()
 
-# read the price data back in to R if needed
+## read the price data back in to R if needed
 monthprice <- read.csv("nzu-month-price.csv", colClasses = c("Date","numeric"))
 weeklyprice <- read.csv("weeklymeanprice.csv", colClasses = c("Date","numeric","character")) 
 data <- read.csv("nzu-final-prices-data.csv", colClasses = c("Date","numeric","character","character","character")) 
@@ -504,7 +504,6 @@ write.table(weeklypricefilleddataframe, file = "weeklymeanprice.csv", sep = ",",
 
 # Chart of weekly mean prices x axis years annual. # colour = "#ED1A3B" and "#E7298A" is the purple from Dark accent, "#984EA3" is 'Affair' or purple
 
-
 svg(filename="NZU-weeklypriceYr-720by540-ggplot-theme-bw.svg", width = 8, height = 6, pointsize = 16, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))  
 #png("NZU-weeklypriceYr-720by540-ggplot-theme-bw.png", bg="white", width=720, height=540)
 ggplot(weeklypricefilleddataframe, aes(x = date, y = price)) +  geom_line(colour = "#984EA3") +
@@ -518,6 +517,154 @@ scale_x_date(date_breaks = "year", date_labels = "%Y") +
 labs(title="New Zealand Unit mean weekly prices 2010 to 2026", x ="Years", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
 annotate("text", x= max(weeklypricefilleddataframe[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
 dev.off() 
+
+## New chart comparing NZU prices 2026 to previous years
+setwd("/home/user/R/nzu/nzu-fork-master/apipy")
+
+spotpricefilleddataframe <- read.csv("spotpricefilleddataframe.csv", colClasses = c("Date","numeric"))
+
+# select dates of 2025 and 2026
+spot2025 <- spotpricefilleddataframe[spotpricefilleddataframe$date > as.Date("2024-12-31"),]
+
+# select only 2026 dates
+spot2026 <- spotpricefilleddataframe[spotpricefilleddataframe$date > as.Date("2025-12-31"),]
+
+# select only 2025 dates not 2026
+spot2025 <- spot2025[spot2025$date < as.Date("2026-01-01"),]
+
+str(spot2025)
+'data.frame':	249 obs. of  2 variables:
+ $ date : Date, format: "2025-01-03" "2025-01-06" ...
+ $ price: num  62.4 62.6 62.7 62.7 62.8 ...
+
+# subset 2024 and 2025 prices
+spot2024 <- spotpricefilleddataframe[spotpricefilleddataframe$date > as.Date("2023-12-31"),]
+
+# subset 2024 prices by excluding 2025 prices
+spot2024 <- spot2024[spot2024$date < as.Date("2025-01-01"),]
+str(spot2024)
+'data.frame':	250 obs. of  2 variables:
+ $ date : Date, format: "2024-01-02" "2024-01-03" ...
+ $ price: num  69.6 69.7 71 70 70 ...
+
+# use gsub to replace 2024 with 2025 year
+# names(df) <- gsub(" ", "_", names(df))                 # Replace spaces with underscores
+
+spot2024[["date"]] <- gsub("2024","2025",spot2024[["date"]])
+str(spot2024)
+'data.frame':	250 obs. of  2 variables:
+ $ date : chr  "2025-01-03" "2025-01-04" "2025-01-05" "2025-01-08" ...
+ $ price: num  69.7 71 70 70 68.8 ...
+
+spot2024[["date"]] <- as.Date(spot2024[["date"]])
+spot2026[["date"]] <- gsub("2026","2025",spot2026[["date"]])
+spot2026[["date"]] <- as.Date(spot2026[["date"]])
+summary(spot2026)
+      date                price
+ Min.   :2025-01-05   Min.   :33.20
+ 1st Qu.:2025-02-02   1st Qu.:38.17
+ Median :2025-03-03   Median :41.62
+ Mean   :2025-03-03   Mean   :41.88
+ 3rd Qu.:2025-03-31   3rd Qu.:45.08
+ Max.   :2025-05-01   Max.   :51.00
+summary(spot2025)
+      date                price
+ Min.   :2025-01-03   Min.   :38.00
+ 1st Qu.:2025-04-03   1st Qu.:53.00
+ Median :2025-07-07   Median :56.60
+ Mean   :2025-07-03   Mean   :55.03
+ 3rd Qu.:2025-10-01   3rd Qu.:58.50
+ Max.   :2025-12-31   Max.   :64.73
+
+summary(spot2024)
+      date                price
+ Min.   :2025-01-03   Min.   :44.63
+ 1st Qu.:2025-04-05   1st Qu.:54.06
+ Median :2025-07-05   Median :61.50
+ Mean   :2025-07-03   Mean   :59.89
+ 3rd Qu.:2025-10-01   3rd Qu.:63.90
+ Max.   :2025-12-31   Max.   :73.85
+ NAs   :1
+# Why is there a NA date in 2024?
+spot2024[["date"]][40]
+ [1] NA
+spot2024[40,]
+     date price
+3448 <NA> 66.62
+
+ spot2024[39,]
+           date price
+3447 2025-02-28  66.5
+# delete the row of NA it was 29/03/2024
+spot2024 <- spot2024[-40,]
+      date price
+3448 <NA> 66.62
+# the NA is 29/02/2024 as 2024 was a leap year
+
+str(spot2024)
+'data.frame':	249 obs. of  2 variables:
+ $ date : Date, format: "2025-01-03" "2025-01-04" ...
+ $ price: num  69.7 71 70 70 68.8 .
+# colours
+BBCblue <- "#2D74B5"
+reddishpurple <- "#CC79A7"
+crimson <- "#ED1A3B"
+GuardsmanRed <- "#B80000"
+purpledarkaccent <- "#E7298A"
+purpleaffair <- "#984EA3"
+darkpurplejazzberryjam <- "#9F116D"
+
+# create Base R chart - its the same as chart of dataframe of date and price
+svg(filename="NZUprice2024_2025_2026-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))
+png("NZUprice2024_2025_2026-720by540.png", bg="white", width=720, height=540,pointsize = 14)
+par(mar=c(2.7,2.7,1,1)+0.1)
+plot(spot2025,tck=0.01,ylim=c(0,79),xlab="",ylab="",ann=TRUE, las=1,col=BBCblue, lwd=2,type='l',lty=1)
+points(max(spot2026[["date"]]),tail(spot2026[["price"]],1) ,col=GuardsmanRed, pch=19,cex=1.5)
+lines(spot2026,col=GuardsmanRed, lwd=2,type='l')
+lines(spot2024,col=darkpurplejazzberryjam ,lwd=2,type='l')
+grid(col="darkgray",lwd=1)
+axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
+mtext(side=1,cex=1,line=-1.1,"Data: 'NZU monthly prices' https://github.com/theecanmole/nzu")
+mtext(side=3,cex=1.2, line=-2.2,expression(paste("NZU prices 2026 vs 2025 vs 2024")) )
+mtext(side=2,cex=1, line=-1.1,"$NZ Dollars/tonne")
+mtext(side=4,cex=0.75, line=0.05,R.version.string)
+text(x= min(spot2025[["date"]]), y = 60, adj=0,"2025",col=BBCblue,cex=1.2)
+text(x= min(spot2025[["date"]]), y = 77, adj=0,"2024",col=darkpurplejazzberryjam,cex=1.2)
+text(x= min(spot2025[["date"]]), y = 41, adj=0,"2026",col=GuardsmanRed,cex=1.2)
+text(x= max(spot2025[["date"]]), y = 44, adj=1,"2025",col=BBCblue,cex=1.2)
+text(x= max(spot2025[["date"]]), y = 66, adj=1,"2024",col=darkpurplejazzberryjam,cex=1.2)
+dev.off()
+
+library("ggplot2")                  # Load ggplot2 package
+# try a default grey theme in homage to Hadley Wickham
+svg(filename="NZU_Prices_2024-2025-2026ggplotgreydefault-720by540.svg", width = 8, height = 6, pointsize = 12, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))
+ggplot(NULL, aes(x = date, y = price)) +
+  geom_line(data = spot2025, col = GuardsmanRed) +
+  geom_line(data = spot2024, col = "#d95f02") +
+  geom_line(data = spot2026, col = "#E7298A") +
+  guide = guide_legend()
+dev.off()
+
+svg(filename="NZU_Prices_2024-2025-2026ggplotbwtheme-720by540.svg", width = 8, height = 6, pointsize = 12, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))
+#par(mar=c(2.7,1,1,1)+0.1)
+ggplot(NULL, aes(x = date, y = price)) +
+  geom_line(data = spot2025, col = BBCblue) +
+  geom_line(data = spot2024, col = "#d95f02") +
+  geom_line(data = spot2026, size =1, col = GuardsmanRed) +
+theme_bw(base_size = 14) +
+scale_y_continuous(breaks = c(0,10,20,30,40,50,60,70,80,90))  +
+scale_x_date(date_breaks = "month", date_labels = "%b") +
+theme(plot.title = element_text(size = 20, hjust = 0.5,vjust= -8 )) +
+theme(plot.caption = element_text( hjust = 0.5 )) +
+labs(title="NZU prices 2024 2025 2026", x ="Date", y ="Price $NZD", caption="Data: https://github.com/theecanmole/NZ-emission-unit-prices") +
+annotate("text", x= spot2025[["date"]][1], y = 42, size = 5, angle = 0, hjust = 0,col = GuardsmanRed, label="2026") +
+annotate("text", x= max(spot2025[["date"]]), y = 36, size = 5, angle = 0, hjust = 1, col=BBCblue,label="2025") +
+annotate("text", x= max(spot2025[["date"]]), y = 66, size = 5, angle = 0, hjust = 1, col="#d95f02", label="2024") +
+annotate("text", x= min(spot2025[["date"]]), y = 60, size = 5, angle = 0, hjust = 0, col=BBCblue,label="2025") +
+annotate("text", x= min(spot2025[["date"]]), y = 74, size = 5, angle = 0, hjust = 0, col="#d95f02", label="2024") +
+annotate("text", x= max(spot2025[["date"]]), y = 2, size = 3, angle = 0, hjust = 1, label=R.version.string)
+dev.off()
+
 
 ## subset 2025 prices
 spot2025 <- spotpricefilleddataframe[spotpricefilleddataframe$date > as.Date("2024-12-31"),]

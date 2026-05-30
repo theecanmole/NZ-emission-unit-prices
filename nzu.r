@@ -613,15 +613,15 @@ GuardsmanRed <- "#B80000"
 purpledarkaccent <- "#E7298A"
 purpleaffair <- "#984EA3"
 darkpurplejazzberryjam <- "#9F116D"
-
+"#d95f02"
 # create Base R chart - its the same as chart of dataframe of date and price
 svg(filename="NZUprice2024_2025_2026-720by540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white", antialias = c("default", "none", "gray", "subpixel"))
 #png("NZUprice2024_2025_2026-720by540.png", bg="white", width=720, height=540,pointsize = 14)
 par(mar=c(2.7,2.7,1,1)+0.1)
-plot(spot2025,tck=0.01,ylim=c(0,79),xlab="",ylab="",ann=TRUE, las=1,col=BBCblue, lwd=2,type='l',lty=1)
+plot(spot2025,tck=0.01,ylim=c(0,79),xlab="",ylab="",ann=TRUE, las=1,col=BBCblue, lwd=1,type='l',lty=1)
 points(max(spot2026[["date"]]),tail(spot2026[["price"]],1) ,col=GuardsmanRed, pch=19,cex=1.5)
 lines(spot2026,col=GuardsmanRed, lwd=2,type='l')
-lines(spot2024,col=darkpurplejazzberryjam ,lwd=2,type='l')
+lines(spot2024,col="#d95f02" ,lwd=1,type='l')
 grid(col="darkgray",lwd=1)
 axis(side=4, tck=0.01, las=0,tick=TRUE,labels = FALSE)
 mtext(side=1,cex=1,line=-1.1,"Data: 'NZU monthly prices' https://github.com/theecanmole/nzu")
@@ -629,10 +629,10 @@ mtext(side=3,cex=1.2, line=-2.2,expression(paste("NZU prices 2026 vs 2025 vs 202
 mtext(side=2,cex=1, line=-1.1,"$NZ Dollars/tonne")
 mtext(side=4,cex=0.75, line=0.05,R.version.string)
 text(x= min(spot2025[["date"]]), y = 60, adj=0,"2025",col=BBCblue,cex=1.2)
-text(x= min(spot2025[["date"]]), y = 77, adj=0,"2024",col=darkpurplejazzberryjam,cex=1.2)
+text(x= min(spot2025[["date"]]), y = 77, adj=0,"2024",col="#d95f02",cex=1.2)
 text(x= min(spot2025[["date"]]), y = 41, adj=0,"2026",col=GuardsmanRed,cex=1.2)
 text(x= max(spot2025[["date"]]), y = 44, adj=1,"2025",col=BBCblue,cex=1.2)
-text(x= max(spot2025[["date"]]), y = 66, adj=1,"2024",col=darkpurplejazzberryjam,cex=1.2)
+text(x= max(spot2025[["date"]]), y = 66, adj=1,"2024",col="#d95f02",cex=1.2)
 dev.off()
 
 library("ggplot2")                  # Load ggplot2 package
